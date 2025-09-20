@@ -1,0 +1,2 @@
+timestamp,city,aqi,station_id,co_value,dew_value,h_value,no2_value,o3_value,p_value,pm10_value,pm25_value,so2_value,t_value,w_value
+2025-09-20T03:02:53.834577,"Hombegowda Nagar, Bengaluru, India",38,11270,2.2,20,88.33333333333333,3.6,1.7,711.6666666666666,29,38,5.5,23.7,2.466666666666667

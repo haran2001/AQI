@@ -1,0 +1,19 @@
+[
+  {
+    "timestamp": "2025-09-20T03:02:53.834577",
+    "city": "Hombegowda Nagar, Bengaluru, India",
+    "aqi": 38,
+    "station_id": 11270,
+    "co_value": 2.2,
+    "dew_value": 20,
+    "h_value": 88.33333333333333,
+    "no2_value": 3.6,
+    "o3_value": 1.7,
+    "p_value": 711.6666666666666,
+    "pm10_value": 29,
+    "pm25_value": 38,
+    "so2_value": 5.5,
+    "t_value": 23.7,
+    "w_value": 2.466666666666667
+  }
+]

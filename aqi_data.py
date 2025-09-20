@@ -1,91 +1,44 @@
-import requests
-import json
-from dotenv import load_dotenv
-import os
+import openmeteo_requests
 
-load_dotenv()
+import pandas as pd
+import requests_cache
+from retry_requests import retry
 
-token = os.getenv('WAQI_API_TOKEN')
+# Setup the Open-Meteo API client with cache and retry on error
+cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
+retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
+openmeteo = openmeteo_requests.Client(session = retry_session)
 
+# Make sure all required weather variables are listed here
+# The order of variables in hourly or daily is important to assign them correctly below
+url = "https://air-quality-api.open-meteo.com/v1/air-quality"
+params = {
+	"latitude": 52.52,
+	"longitude": 13.41,
+	"hourly": ["pm10", "pm2_5"],
+}
+responses = openmeteo.weather_api(url, params=params)
 
-def get_air_quality(city, token):
-    """
-    Get air quality data for a city
-    """
-    base_url = "https://api.waqi.info"
-    
-    try:
-        # Make the API request
-        url = f"{base_url}/feed/{city}/?token={token}"
-        print(f"Making request to: {url}")
-        
-        response = requests.get(url)
-        print(f"Status Code: {response.status_code}")
-        print(f"Response Headers: {response.headers}")
-        print(f"Raw Response: {response.text}")
-        
-        # Check if request was successful
-        if response.status_code != 200:
-            print(f"HTTP Error: {response.status_code}")
-            return None
-            
-        # Try to parse JSON
-        try:
-            data = response.json()
-            print(f"Parsed JSON: {json.dumps(data, indent=2)}")
-        except json.JSONDecodeError as e:
-            print(f"JSON Decode Error: {e}")
-            print(f"Response text: {response.text}")
-            return None
-            
-        # Check API response status
-        if data.get('status') != 'ok':
-            print(f"API Error: {data.get('data', 'Unknown error')}")
-            return None
-            
-        # Extract and display data
-        city_data = data['data']
-        city_name = city_data.get('city', {}).get('name', 'Unknown')
-        aqi = city_data.get('aqi', 'N/A')
-        
-        print(f"\n=== AIR QUALITY DATA ===")
-        print(f"City: {city_name}")
-        print(f"AQI: {aqi}")
-        
-        # Additional data if available
-        if 'iaqi' in city_data:
-            pollutants = city_data['iaqi']
-            print(f"\nPollutant Details:")
-            for pollutant, info in pollutants.items():
-                if isinstance(info, dict) and 'v' in info:
-                    print(f"  {pollutant.upper()}: {info['v']}")
-        
-        return data
-        
-    except requests.exceptions.RequestException as e:
-        print(f"Request Error: {e}")
-        return None
-    except Exception as e:
-        print(f"Unexpected Error: {e}")
-        return None
+# Process first location. Add a for-loop for multiple locations or weather models
+response = responses[0]
+print(f"Coordinates: {response.Latitude()}°N {response.Longitude()}°E")
+print(f"Elevation: {response.Elevation()} m asl")
+print(f"Timezone difference to GMT+0: {response.UtcOffsetSeconds()}s")
 
-def main():
-    # Configuration
-    city = "bangalore"  # You can change this to any city
-    # token = "demo"  # Replace with your actual token from https://aqicn.org/data-platform/token/
-    
-    print("AQICN Air Quality Data Fetcher")
-    print("=" * 40)
-    
-    # Get air quality data
-    result = get_air_quality(city, token)
-    
-    if result is None:
-        print("\nTroubleshooting steps:")
-        print("1. Check if your API token is valid")
-        print("2. Verify the city name is correct")
-        print("3. Ensure you have internet connectivity")
-        print("4. Get a free token from: https://aqicn.org/data-platform/token/")
+# Process hourly data. The order of variables needs to be the same as requested.
+hourly = response.Hourly()
+hourly_pm10 = hourly.Variables(0).ValuesAsNumpy()
+hourly_pm2_5 = hourly.Variables(1).ValuesAsNumpy()
 
-if __name__ == "__main__":
-    main()
+hourly_data = {"date": pd.date_range(
+	start = pd.to_datetime(hourly.Time(), unit = "s", utc = True),
+	end = pd.to_datetime(hourly.TimeEnd(), unit = "s", utc = True),
+	freq = pd.Timedelta(seconds = hourly.Interval()),
+	inclusive = "left"
+)}
+
+hourly_data["pm10"] = hourly_pm10
+hourly_data["pm2_5"] = hourly_pm2_5
+
+hourly_dataframe = pd.DataFrame(data = hourly_data)
+print("\nHourly data\n", hourly_dataframe)
