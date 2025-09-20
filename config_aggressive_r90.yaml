@@ -1,0 +1,141 @@
+# Aggressive Configuration for 90% R² Target
+# Ultra-optimized for maximum performance
+
+# Data Configuration
+data:
+  input_file: "bangalore_historical_aqi_weather.csv"
+  # Use ALL available meaningful features from the dataset
+  features: [
+    # Primary pollution indicators (highest correlation with AQI)
+    "pm10", "pm2_5", "carbon_monoxide", "nitrogen_dioxide",
+    "sulphur_dioxide", "ozone", "dust",
+
+    # Weather factors affecting pollution
+    "temperature_2m", "relative_humidity_2m", "dew_point_2m",
+    "apparent_temperature", "wind_speed_10m", "wind_gusts_10m",
+    "wind_direction_10m", "pressure_msl", "surface_pressure",
+
+    # Environmental conditions
+    "cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high",
+    "uv_index", "uv_index_clear_sky", "precipitation", "rain", "snowfall",
+
+    # Advanced meteorological features
+    "vapour_pressure_deficit", "et0_fao_evapotranspiration",
+    "soil_temperature_0_to_7cm", "soil_moisture_0_to_7cm",
+    "wind_speed_100m", "wind_direction_100m", "weather_code"
+  ]
+  target: "calculated_aqi"
+  test_split: 0.1                             # Minimal test split - maximize training
+  validation_split: 0.1                       # Minimal validation split
+  random_state: 42
+  scale_features: true
+  scale_target: true
+
+# Model Architecture - Deep and wide for complex relationships
+model:
+  layers:
+    - units: 512                             # Large input processing
+      activation: "relu"
+      dropout: 0.05                          # Minimal dropout
+      batch_norm: true
+    - units: 1024                            # Expanded capacity for complex patterns
+      activation: "relu"
+      dropout: 0.1
+      batch_norm: true
+    - units: 512                             # Pattern consolidation
+      activation: "relu"
+      dropout: 0.1
+      batch_norm: true
+    - units: 256                             # Feature reduction
+      activation: "relu"
+      dropout: 0.05
+      batch_norm: true
+    - units: 128                             # Further compression
+      activation: "relu"
+      dropout: 0.05
+      batch_norm: true
+    - units: 64                              # Pre-output layer
+      activation: "relu"
+      dropout: 0.02
+      batch_norm: true
+    - units: 32                              # Final compression
+      activation: "relu"
+      dropout: 0.02
+      batch_norm: true
+  output:
+    units: 1
+    activation: "linear"
+
+# Training Configuration - Highly optimized
+training:
+  optimizer:
+    type: "adam"
+    learning_rate: 0.0003                    # Conservative learning rate
+  loss: "mse"
+  metrics: ["mae", "mse"]
+  epochs: 1000                               # Extended training
+  batch_size: 8                              # Small batch for stability
+  verbose: 1
+
+# Callbacks - Aggressive optimization
+callbacks:
+  early_stopping:
+    enabled: true
+    monitor: "val_loss"
+    patience: 100                            # Extended patience
+    restore_best_weights: true
+    verbose: 1
+
+  reduce_lr:
+    enabled: true
+    monitor: "val_loss"
+    factor: 0.2                              # Aggressive LR reduction
+    patience: 30                             # More patience
+    min_lr: 0.0000001                        # Very low minimum
+    verbose: 1
+
+# Output Configuration
+output:
+  save_model: true
+  model_path: "aqi_dnn_model_aggressive.keras"
+  save_scalers: true
+  scaler_x_path: "scaler_X_aggressive.pkl"
+  scaler_y_path: "scaler_y_aggressive.pkl"
+  save_predictions: true
+  predictions_path: "aqi_predictions_aggressive.csv"
+  save_plots: true
+  plots_path: "aqi_dnn_results_aggressive.png"
+  plot_dpi: 150
+
+# Evaluation Settings
+evaluation:
+  calculate_mape: true
+  show_sample_predictions: true
+  test_cases:
+    - pm10: 25.0
+      pm2_5: 15.0
+      carbon_monoxide: 250.0
+      nitrogen_dioxide: 15.0
+      temperature_2m: 25.0
+      relative_humidity_2m: 60.0
+      wind_speed_10m: 5.0
+      pressure_msl: 1013.0
+      description: "Moderate conditions"
+    - pm10: 75.0
+      pm2_5: 45.0
+      carbon_monoxide: 400.0
+      nitrogen_dioxide: 35.0
+      temperature_2m: 35.0
+      relative_humidity_2m: 40.0
+      wind_speed_10m: 1.0
+      pressure_msl: 1008.0
+      description: "High pollution episode"
+    - pm10: 12.0
+      pm2_5: 5.0
+      carbon_monoxide: 150.0
+      nitrogen_dioxide: 5.0
+      temperature_2m: 18.0
+      relative_humidity_2m: 85.0
+      wind_speed_10m: 15.0
+      pressure_msl: 1018.0
+      description: "Clean air conditions"

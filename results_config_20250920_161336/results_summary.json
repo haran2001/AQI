@@ -1,0 +1,226 @@
+{
+  "experiment_info": {
+    "timestamp": "2025-09-20T16:13:45.056888",
+    "config_file_used": "config.yaml",
+    "results_folder": "results_config_20250920_161336",
+    "dataset_name": "bangalore_historical_aqi_weather.csv",
+    "total_records": 744,
+    "clean_records": 702,
+    "features_used": [
+      "temperature_2m",
+      "relative_humidity_2m"
+    ]
+  },
+  "configuration": {
+    "data": {
+      "input_file": "bangalore_historical_aqi_weather.csv",
+      "features": [
+        "temperature_2m",
+        "relative_humidity_2m"
+      ],
+      "target": "calculated_aqi",
+      "test_split": 0.2,
+      "validation_split": 0.2,
+      "random_state": 42,
+      "scale_features": true,
+      "scale_target": true
+    },
+    "model": {
+      "layers": [
+        {
+          "units": 128,
+          "activation": "relu",
+          "dropout": 0.3,
+          "batch_norm": true
+        },
+        {
+          "units": 256,
+          "activation": "relu",
+          "dropout": 0.3,
+          "batch_norm": true
+        },
+        {
+          "units": 512,
+          "activation": "relu",
+          "dropout": 0.3,
+          "batch_norm": true
+        },
+        {
+          "units": 256,
+          "activation": "relu",
+          "dropout": 0.3,
+          "batch_norm": true
+        },
+        {
+          "units": 128,
+          "activation": "relu",
+          "dropout": 0.2,
+          "batch_norm": true
+        },
+        {
+          "units": 64,
+          "activation": "relu",
+          "dropout": 0.2,
+          "batch_norm": true
+        }
+      ],
+      "output": {
+        "units": 1,
+        "activation": "linear"
+      }
+    },
+    "training": {
+      "optimizer": {
+        "type": "adam",
+        "learning_rate": 0.001
+      },
+      "loss": "mse",
+      "metrics": [
+        "mae",
+        "mse"
+      ],
+      "epochs": 100,
+      "batch_size": 32,
+      "verbose": 1
+    },
+    "callbacks": {
+      "early_stopping": {
+        "enabled": false,
+        "monitor": "val_loss",
+        "patience": 15,
+        "restore_best_weights": true,
+        "verbose": 1
+      },
+      "reduce_lr": {
+        "enabled": true,
+        "monitor": "val_loss",
+        "factor": 0.5,
+        "patience": 5,
+        "min_lr": 1e-05,
+        "verbose": 1
+      }
+    },
+    "output": {
+      "save_model": true,
+      "model_path": "aqi_dnn_model.keras",
+      "save_scalers": true,
+      "scaler_x_path": "scaler_X.pkl",
+      "scaler_y_path": "scaler_y.pkl",
+      "save_predictions": true,
+      "predictions_path": "aqi_predictions.csv",
+      "save_plots": true,
+      "plots_path": "aqi_dnn_results.png",
+      "plot_dpi": 100
+    },
+    "evaluation": {
+      "calculate_mape": true,
+      "show_sample_predictions": true,
+      "test_cases": [
+        {
+          "temperature": 25.0,
+          "humidity": 60.0,
+          "description": "Moderate temp and humidity"
+        },
+        {
+          "temperature": 35.0,
+          "humidity": 40.0,
+          "description": "High temp, low humidity"
+        },
+        {
+          "temperature": 20.0,
+          "humidity": 80.0,
+          "description": "Low temp, high humidity"
+        },
+        {
+          "temperature": 30.0,
+          "humidity": 50.0,
+          "description": "High temp, moderate humidity"
+        }
+      ]
+    }
+  },
+  "dataset_statistics": {
+    "temperature_2m": {
+      "mean": 22.539917561253564,
+      "min": 17.761,
+      "max": 28.361,
+      "std": 2.703030093862542
+    },
+    "relative_humidity_2m": {
+      "mean": 81.39377471367521,
+      "min": 48.91442,
+      "max": 99.690895,
+      "std": 13.787208417329207
+    },
+    "calculated_aqi": {
+      "mean": 41.847334844049016,
+      "min": 5.00000019868215,
+      "max": 147.5000038146973,
+      "std": 22.853012425944925
+    }
+  },
+  "data_splits": {
+    "train_samples": 561,
+    "test_samples": 141,
+    "validation_samples": 113
+  },
+  "model_performance": {
+    "test_metrics": {
+      "mae": 16.72653804815646,
+      "mse": 441.1476960966205,
+      "rmse": 21.003516279342858,
+      "r2_score": 0.1407991578157537,
+      "mape": 61.07104923643744
+    },
+    "training_metrics": {
+      "final_epoch": 99,
+      "final_loss": 1.1055614948272705,
+      "final_mae": 0.8457518219947815,
+      "final_val_loss": 0.8611345291137695,
+      "final_val_mae": 0.7337138652801514,
+      "total_epochs_trained": 100
+    }
+  },
+  "model_architecture": {
+    "total_parameters": 342913,
+    "trainable_parameters": "340225",
+    "layers": [
+      {
+        "units": 128,
+        "activation": "relu",
+        "dropout": 0.3,
+        "batch_norm": true
+      },
+      {
+        "units": 256,
+        "activation": "relu",
+        "dropout": 0.3,
+        "batch_norm": true
+      },
+      {
+        "units": 512,
+        "activation": "relu",
+        "dropout": 0.3,
+        "batch_norm": true
+      },
+      {
+        "units": 256,
+        "activation": "relu",
+        "dropout": 0.3,
+        "batch_norm": true
+      },
+      {
+        "units": 128,
+        "activation": "relu",
+        "dropout": 0.2,
+        "batch_norm": true
+      },
+      {
+        "units": 64,
+        "activation": "relu",
+        "dropout": 0.2,
+        "batch_norm": true
+      }
+    ]
+  }
+}

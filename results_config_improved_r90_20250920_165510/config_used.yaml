@@ -1,0 +1,126 @@
+# Improved DNN Configuration for 90% R² Target
+# Key improvements: More features, better architecture, optimized training
+
+# Data Configuration
+data:
+  input_file: "bangalore_historical_aqi_weather.csv"
+  # All relevant pollution and weather features available in dataset
+  features: [
+    # "pm10", "pm2_5",                          # Direct pollution measurements (most important)
+    # "carbon_monoxide", "nitrogen_dioxide",     # Other pollutants
+    # "sulphur_dioxide", "ozone", "dust",       # Additional pollutants
+    "temperature_2m", "relative_humidity_2m",  # Weather conditions
+    "wind_speed_10m", "pressure_msl",         # Wind and pressure
+    "dew_point_2m", "apparent_temperature",   # Additional temperature measures
+    "cloud_cover", "uv_index",                # Environmental factors
+    "precipitation", "rain",                  # Precipitation
+    "surface_pressure", "vapour_pressure_deficit"  # Additional meteorological
+  ]
+  target: "calculated_aqi"
+  test_split: 0.15                           # Smaller test split to maximize training data
+  validation_split: 0.15                     # Smaller validation split
+  random_state: 42
+  scale_features: true
+  scale_target: true
+
+# Model Architecture - Simpler but more effective
+model:
+  layers:
+    - units: 256                             # Larger first layer for feature extraction
+      activation: "relu"
+      dropout: 0.1                           # Lower dropout for small dataset
+      batch_norm: true
+    - units: 512                             # Expanded capacity
+      activation: "relu"
+      dropout: 0.1
+      batch_norm: true
+    - units: 256                             # Gradual reduction
+      activation: "relu"
+      dropout: 0.1
+      batch_norm: true
+    - units: 128                             # Further reduction
+      activation: "relu"
+      dropout: 0.05                          # Minimal dropout
+      batch_norm: true
+    - units: 64                              # Final hidden layer
+      activation: "relu"
+      dropout: 0.05
+      batch_norm: true
+  output:
+    units: 1
+    activation: "linear"
+
+# Training Configuration - Optimized for better convergence
+training:
+  optimizer:
+    type: "adam"
+    learning_rate: 0.0005                    # Lower learning rate for stability
+  loss: "mse"
+  metrics: ["mae", "mse"]
+  epochs: 500                                # More epochs for convergence
+  batch_size: 16                             # Smaller batch size for small dataset
+  verbose: 1
+
+# Callbacks - Enable early stopping and better learning rate scheduling
+callbacks:
+  early_stopping:
+    enabled: true                            # Enable early stopping
+    monitor: "val_loss"
+    patience: 50                             # More patience for convergence
+    restore_best_weights: true
+    verbose: 1
+
+  reduce_lr:
+    enabled: true
+    monitor: "val_loss"
+    factor: 0.3                              # More aggressive LR reduction
+    patience: 20                             # More patience before reducing
+    min_lr: 0.000001                         # Lower minimum LR
+    verbose: 1
+
+# Output Configuration
+output:
+  save_model: true
+  model_path: "aqi_dnn_model_improved.keras"
+  save_scalers: true
+  scaler_x_path: "scaler_X_improved.pkl"
+  scaler_y_path: "scaler_y_improved.pkl"
+  save_predictions: true
+  predictions_path: "aqi_predictions_improved.csv"
+  save_plots: true
+  plots_path: "aqi_dnn_results_improved.png"
+  plot_dpi: 150                              # Higher resolution plots
+
+# Evaluation Settings
+evaluation:
+  calculate_mape: true
+  show_sample_predictions: true
+  test_cases:
+    - pm10: 25.0
+      pm2_5: 15.0
+      temperature_2m: 25.0
+      relative_humidity_2m: 60.0
+      wind_speed_10m: 5.0
+      pressure_msl: 1013.0
+      description: "Moderate conditions"
+    - pm10: 50.0
+      pm2_5: 35.0
+      temperature_2m: 35.0
+      relative_humidity_2m: 40.0
+      wind_speed_10m: 2.0
+      pressure_msl: 1008.0
+      description: "High pollution, hot weather"
+    - pm10: 15.0
+      pm2_5: 8.0
+      temperature_2m: 20.0
+      relative_humidity_2m: 80.0
+      wind_speed_10m: 10.0
+      pressure_msl: 1018.0
+      description: "Clean air, good ventilation"
+    - pm10: 40.0
+      pm2_5: 25.0
+      temperature_2m: 30.0
+      relative_humidity_2m: 50.0
+      wind_speed_10m: 3.0
+      pressure_msl: 1010.0
+      description: "Moderate pollution, warm weather"

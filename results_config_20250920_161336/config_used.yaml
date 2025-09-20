@@ -49,7 +49,7 @@ training:
     learning_rate: 0.001
   loss: "mse"
   metrics: ["mae", "mse"]
-  epochs: 10000
+  epochs: 100
   batch_size: 32
   verbose: 1
 

@@ -9,6 +9,10 @@ from tensorflow import keras
 from tensorflow.keras import layers, callbacks
 import yaml
 import argparse
+import json
+import os
+from datetime import datetime
+import shutil
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -17,6 +21,68 @@ def load_config(config_path='config.yaml'):
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)
     return config
+
+def create_results_folder(config_name='config'):
+    """Create a timestamped results folder for this run"""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    results_folder = f"results_{config_name}_{timestamp}"
+
+    # Create results directory
+    os.makedirs(results_folder, exist_ok=True)
+
+    print(f"✓ Created results folder: {results_folder}")
+    return results_folder
+
+def save_results_summary(results_folder, config, config_path, dataset_info, model_metrics, training_history, feature_names):
+    """Save comprehensive results summary to JSON file"""
+
+    # Extract final epoch metrics
+    final_epoch = len(training_history.history['loss']) - 1
+    training_metrics = {
+        'final_epoch': final_epoch,
+        'final_loss': float(training_history.history['loss'][-1]),
+        'final_mae': float(training_history.history['mae'][-1]) if 'mae' in training_history.history else None,
+        'final_val_loss': float(training_history.history['val_loss'][-1]) if 'val_loss' in training_history.history else None,
+        'final_val_mae': float(training_history.history['val_mae'][-1]) if 'val_mae' in training_history.history else None,
+        'total_epochs_trained': final_epoch + 1
+    }
+
+    # Create comprehensive results summary
+    results_summary = {
+        'experiment_info': {
+            'timestamp': datetime.now().isoformat(),
+            'config_file_used': config_path,
+            'results_folder': results_folder,
+            'dataset_name': dataset_info['dataset_name'],
+            'total_records': dataset_info['total_records'],
+            'clean_records': dataset_info['clean_records'],
+            'features_used': feature_names
+        },
+        'configuration': config,
+        'dataset_statistics': dataset_info['statistics'],
+        'data_splits': {
+            'train_samples': dataset_info['train_samples'],
+            'test_samples': dataset_info['test_samples'],
+            'validation_samples': dataset_info.get('validation_samples', 'Not specified')
+        },
+        'model_performance': {
+            'test_metrics': model_metrics,
+            'training_metrics': training_metrics
+        },
+        'model_architecture': {
+            'total_parameters': dataset_info.get('total_parameters', 'Not calculated'),
+            'trainable_parameters': dataset_info.get('trainable_parameters', 'Not calculated'),
+            'layers': [layer_config for layer_config in config['model']['layers']]
+        }
+    }
+
+    # Save to JSON file
+    results_file = os.path.join(results_folder, 'results_summary.json')
+    with open(results_file, 'w') as f:
+        json.dump(results_summary, f, indent=2, default=str)
+
+    print(f"✓ Results summary saved to {results_file}")
+    return results_file
 
 def load_and_prepare_data(config):
     """Load and prepare data for training"""
@@ -53,11 +119,35 @@ def load_and_prepare_data(config):
 
     # Print data statistics
     print(f"\nData Statistics:")
+    statistics = {}
     for i, feature in enumerate(data_config['features']):
-        print(f"{feature}: Mean={X[:, i].mean():.1f}, Min={X[:, i].min():.1f}, Max={X[:, i].max():.1f}")
-    print(f"{data_config['target']}: Mean={y.mean():.1f}, Min={y.min():.1f}, Max={y.max():.1f}")
+        feature_stats = {
+            'mean': float(X[:, i].mean()),
+            'min': float(X[:, i].min()),
+            'max': float(X[:, i].max()),
+            'std': float(X[:, i].std())
+        }
+        statistics[feature] = feature_stats
+        print(f"{feature}: Mean={feature_stats['mean']:.1f}, Min={feature_stats['min']:.1f}, Max={feature_stats['max']:.1f}")
 
-    return X, y, df_clean
+    target_stats = {
+        'mean': float(y.mean()),
+        'min': float(y.min()),
+        'max': float(y.max()),
+        'std': float(y.std())
+    }
+    statistics[data_config['target']] = target_stats
+    print(f"{data_config['target']}: Mean={target_stats['mean']:.1f}, Min={target_stats['min']:.1f}, Max={target_stats['max']:.1f}")
+
+    # Create dataset info
+    dataset_info = {
+        'dataset_name': data_config['input_file'],
+        'total_records': len(df),
+        'clean_records': len(df_clean),
+        'statistics': statistics
+    }
+
+    return X, y, df_clean, dataset_info
 
 def create_dnn_model(config, input_dim):
     """Create a Deep Neural Network model from config"""
@@ -203,7 +293,7 @@ def evaluate_model(model, X_test, y_test):
 
     return y_pred, mae, mse, rmse, r2
 
-def plot_results(config, history, y_test, y_pred, X_test, scaler_X, feature_names):
+def plot_results(config, history, y_test, y_pred, X_test, scaler_X, feature_names, results_folder=None):
     """Plot training history and predictions"""
     output_config = config['output']
 
@@ -277,25 +367,44 @@ def plot_results(config, history, y_test, y_pred, X_test, scaler_X, feature_name
     plt.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig(output_config['plots_path'], dpi=output_config['plot_dpi'], bbox_inches='tight')
-    plt.show()
-    print(f"\n✓ Plots saved to {output_config['plots_path']}")
 
-def save_model_and_predictions(config, model, scaler_X, scaler_y, y_test, y_pred, X_test, feature_names):
+    # Save to results folder if provided, otherwise use config path
+    if results_folder:
+        plots_path = os.path.join(results_folder, 'model_performance_plots.png')
+    else:
+        plots_path = output_config['plots_path']
+
+    plt.savefig(plots_path, dpi=output_config['plot_dpi'], bbox_inches='tight')
+    plt.show()
+    print(f"\n✓ Plots saved to {plots_path}")
+
+def save_model_and_predictions(config, model, scaler_X, scaler_y, y_test, y_pred, X_test, feature_names, results_folder=None):
     """Save model and predictions"""
     output_config = config['output']
 
+    # Determine save paths
+    if results_folder:
+        model_path = os.path.join(results_folder, 'model.keras')
+        scaler_x_path = os.path.join(results_folder, 'scaler_X.pkl')
+        scaler_y_path = os.path.join(results_folder, 'scaler_y.pkl')
+        predictions_path = os.path.join(results_folder, 'predictions.csv')
+    else:
+        model_path = output_config['model_path']
+        scaler_x_path = output_config['scaler_x_path']
+        scaler_y_path = output_config['scaler_y_path']
+        predictions_path = output_config['predictions_path']
+
     # Save model
     if output_config['save_model']:
-        model.save(output_config['model_path'])
-        print(f"✓ Model saved to {output_config['model_path']}")
+        model.save(model_path)
+        print(f"✓ Model saved to {model_path}")
 
     # Save scalers
     if output_config['save_scalers']:
         import joblib
-        joblib.dump(scaler_X, output_config['scaler_x_path'])
-        joblib.dump(scaler_y, output_config['scaler_y_path'])
-        print(f"✓ Scalers saved to {output_config['scaler_x_path']} and {output_config['scaler_y_path']}")
+        joblib.dump(scaler_X, scaler_x_path)
+        joblib.dump(scaler_y, scaler_y_path)
+        print(f"✓ Scalers saved to {scaler_x_path} and {scaler_y_path}")
 
     # Save predictions
     if output_config['save_predictions']:
@@ -311,8 +420,8 @@ def save_model_and_predictions(config, model, scaler_X, scaler_y, y_test, y_pred
         predictions_data['absolute_error'] = np.abs(y_test - y_pred)
 
         predictions_df = pd.DataFrame(predictions_data)
-        predictions_df.to_csv(output_config['predictions_path'], index=False)
-        print(f"✓ Predictions saved to {output_config['predictions_path']}")
+        predictions_df.to_csv(predictions_path, index=False)
+        print(f"✓ Predictions saved to {predictions_path}")
 
         # Print sample predictions
         print("\nSample Predictions (first 10):")
@@ -336,10 +445,21 @@ def main(config_path='config.yaml'):
 
     # Load configuration
     config = load_config(config_path)
+
+    # Create results folder
+    config_name = os.path.splitext(os.path.basename(config_path))[0]
+    results_folder = create_results_folder(config_name)
+
+    # Copy config file to results folder
+    config_copy_path = os.path.join(results_folder, 'config_used.yaml')
+    shutil.copy2(config_path, config_copy_path)
+    print(f"✓ Configuration file copied to {config_copy_path}")
+
     print("="*60)
     print("AQI PREDICTION USING DEEP NEURAL NETWORK")
     print("="*60)
     print(f"Configuration loaded from: {config_path}")
+    print(f"Results will be saved to: {results_folder}")
     print(f"Independent Variables: {config['data']['features']}")
     print(f"Dependent Variable: {config['data']['target']}")
     print(f"Train-Test Split: {100*(1-config['data']['test_split']):.0f}-{100*config['data']['test_split']:.0f}")
@@ -350,7 +470,7 @@ def main(config_path='config.yaml'):
     print("-"*40)
 
     try:
-        X, y, df = load_and_prepare_data(config)
+        X, y, df, dataset_info = load_and_prepare_data(config)
     except (FileNotFoundError, ValueError) as e:
         print(f"\n{e}")
         print("\nExiting...")
@@ -370,6 +490,10 @@ def main(config_path='config.yaml'):
 
     print(f"\n✓ Training set: {len(X_train)} samples")
     print(f"✓ Test set: {len(X_test)} samples")
+
+    # Update dataset info with splits
+    dataset_info['train_samples'] = len(X_train)
+    dataset_info['test_samples'] = len(X_test)
 
     # Scale features
     scaler_X = StandardScaler() if data_config['scale_features'] else None
@@ -394,11 +518,19 @@ def main(config_path='config.yaml'):
         random_state=data_config['random_state']
     )
 
+    # Update dataset info with validation split
+    dataset_info['validation_samples'] = len(X_val_scaled)
+
     # Train model
     print("\n2. TRAINING DNN MODEL")
     print("-"*40)
     model, history = train_model(config, X_train_scaled, y_train_scaled,
                                  X_val_scaled, y_val_scaled)
+
+    # Add model parameter counts
+    dataset_info['total_parameters'] = model.count_params()
+    trainable_params = sum([tf.keras.backend.count_params(w) for w in model.trainable_weights])
+    dataset_info['trainable_parameters'] = trainable_params
 
     # Evaluate model
     print("\n3. EVALUATING MODEL")
@@ -426,20 +558,39 @@ def main(config_path='config.yaml'):
     print(f"RMSE: {rmse:.2f}")
     print(f"R²: {r2:.4f}")
 
+    # Create model metrics dict
+    model_metrics = {
+        'mae': float(mae),
+        'mse': float(mse),
+        'rmse': float(rmse),
+        'r2_score': float(r2)
+    }
+
+    # Add MAPE if applicable
+    if y_test.min() > 0:
+        mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100
+        model_metrics['mape'] = float(mape)
+
     # Plot results
     print("\n4. PLOTTING RESULTS")
     print("-"*40)
-    plot_results(config, history, y_test, y_pred, X_test_scaled, scaler_X, feature_names)
+    plot_results(config, history, y_test, y_pred, X_test_scaled, scaler_X, feature_names, results_folder)
 
     # Save model and predictions
     print("\n5. SAVING MODEL AND PREDICTIONS")
     print("-"*40)
     save_model_and_predictions(config, model, scaler_X, scaler_y, y_test, y_pred,
-                             X_test_scaled, feature_names)
+                             X_test_scaled, feature_names, results_folder)
+
+    # Save comprehensive results summary
+    print("\n6. SAVING RESULTS SUMMARY")
+    print("-"*40)
+    save_results_summary(results_folder, config, config_path, dataset_info,
+                        model_metrics, history, feature_names)
 
     # Example predictions
     if config['evaluation']['show_sample_predictions']:
-        print("\n6. EXAMPLE PREDICTIONS")
+        print("\n7. EXAMPLE PREDICTIONS")
         print("-"*40)
 
         test_cases = config['evaluation']['test_cases']
@@ -457,6 +608,15 @@ def main(config_path='config.yaml'):
 
     print("\n" + "="*60)
     print("MODEL TRAINING COMPLETED SUCCESSFULLY!")
+    print("="*60)
+    print(f"All results saved to: {results_folder}")
+    print("Contents:")
+    print(f"  - config_used.yaml: Configuration file used for this run")
+    print(f"  - results_summary.json: Comprehensive results and metrics")
+    print(f"  - model_performance_plots.png: Training and evaluation plots")
+    print(f"  - model.keras: Trained model")
+    print(f"  - scaler_X.pkl, scaler_y.pkl: Feature and target scalers")
+    print(f"  - predictions.csv: Test set predictions vs actual values")
     print("="*60)
 
 if __name__ == "__main__":
