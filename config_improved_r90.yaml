@@ -57,7 +57,7 @@ training:
     learning_rate: 0.0005                    # Lower learning rate for stability
   loss: "mse"
   metrics: ["mae", "mse"]
-  epochs: 10000                                # More epochs for convergence
+  epochs: 500                                # More epochs for convergence
   batch_size: 16                             # Smaller batch size for small dataset
   verbose: 1
 
