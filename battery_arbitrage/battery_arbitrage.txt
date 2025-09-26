@@ -1,0 +1,1455 @@
+Maximizing Battery Storage Profits via High-Frequency Intraday Trading
+David Schaureckera
+, David Wozabalb
+, Nils L¨ohndorfc
+, Thorsten Staakea,d
+aETH Zurich, R¨amistrasse 101, 8092 Zurich, Switzerland
+bVrije Universiteit Amsterdam, De Boelelaan 1105, 1081 HV Amsterdam, Netherlands
+cUniversity of Luxembourg, 6 Rue Richard Coudenhove-Kalergi, L-1359, Luxembourg
+dUniversity of Bamberg, An der Weberei 5, 96047 Bamberg, Germany
+Abstract
+Maximizing revenue for grid-scale battery energy storage systems in continuous intraday electricity markets requires strategies that are able to seize trading opportunities as soon as new
+information arrives. This paper introduces and evaluates an automated high-frequency trading
+strategy for battery energy storage systems trading on the intraday market for power while explicitly considering the dynamics of the limit order book, market rules, and technical parameters.
+The standard rolling intrinsic strategy is adapted for continuous intraday electricity markets
+and solved using a dynamic programming approximation that is two to three orders of magnitude faster than an exact mixed-integer linear programming solution. A detailed backtest over
+a full year of German order book data demonstrates that the proposed dynamic programming
+formulation does not reduce trading profits and enables the policy to react to every relevant
+order book update, enabling realistic rapid backtesting. Our results show the significant revenue potential of high-frequency trading: our policy earns 58% more than when re-optimizing
+only once every hour and 14% more than when re-optimizing once per minute, highlighting that
+profits critically depend on trading speed. Furthermore, we leverage the speed of our algorithm
+to train a parametric extension of the rolling intrinsic, increasing yearly revenue by 8.4% out of
+sample.
+Keywords: OR in energy, asset-backed trading, short-term power markets, dynamic
+programming, limit order book
+Email address: dschaurecker@gmail.com (David Schaurecker)
+August 27, 2025
+arXiv:2504.06932v3 [q-fin.TR] 26 Aug 2025
+1. Introduction
+Grid-scale battery energy storage systems (BESS) have emerged as a promising solution to
+deal with some of the short-term variability in renewable energy production. Batteries store
+excess energy generated during periods of high production and release it when generation is low,
+providing much-needed flexibility and stabilizing the grid (Mart´ınez-Barbeito et al., 2023; Ullah
+et al., 2024). In addition, they can assist in managing peak demand, reducing the need for fossil
+fuel peaker plants (e.g., gas turbines) and enhance the overall efficiency of energy systems. The
+rapid increase in grid-scale storage installations underscores this potential (Saldarini et al., 2023;
+IRENA, 2017), with the projected adoption of BESS on the grid scale to increase significantly
+by 2030.
+In liberalized electricity markets, the evaluation of viable business models for BESS is crucial
+to this transformation. The economic feasibility and revenue streams of these systems depend on
+their ability to participate in various short-term energy markets, engaging in energy arbitrage,
+frequency regulation, and demand response. Understanding the potential of these business
+models helps investors and legislators make the right decisions for a sustainable energy future
+and increases the adoption of storage technologies. In particular, informed trading decisions
+for intraday (ID) trading become increasingly relevant, with ID trading volumes growing each
+year (Koch and Hirth, 2019) and market participants shifting their trading towards short-term
+markets.
+Finding good trading strategies requires extensive backtesting over long time horizons. However, accurately dealing with the fast pace of the continuous ID market, which operates at a
+millisecond frequency, while maintaining reasonable simulation times for long-term testing is
+challenging due to the resulting large number of required trading decisions.
+In this paper, we propose and evaluate a fast automated intraday trading strategy that explicitly takes into account detailed order book dynamics, market rules, and technical limitations
+of the battery. As we argue below, the literature on the subject is rather scarce, as most authors
+adopt a rather stylized view of the intraday market avoiding most of its complexity and thereby
+yielding suboptimal strategies and a biased picture of revenue potentials.
+Most relevant related literature on coordinated bidding in electricity spot markets focuses
+on the day-ahead market such as Fleten and Kristoffersen (2008) or treats the intraday market
+(IDM) as a single trading decision stage (Faria and Fleten, 2011; L¨ohndorf et al., 2013; Kongelf
+2
+et al., 2019; Kraft et al., 2023). Applications range from pure trading strategies to asset-focused
+approaches, such as for hydro plant or battery system operation. Some publications consider
+a small number of repeated trading decisions on intraday markets (Aid et al., 2016; L¨ohndorf
+and Wozabal, 2023; Wozabal and Rameseder, 2020; Kuppelwieser and Wozabal, 2023).
+Literature that exclusively focuses on (automated) trading strategies for the intraday market,
+while capturing its full complexity, is scarce. Some recent work presents approaches for single-,
+or multi-market trading strategies for storage. Jiang and Powell (2015) study short-term trading
+for a battery storage on real-time markets as a Markov Decision Process. Braeuer et al. (2019),
+and more recently, Seifert et al. (2024), present a European multi-market trading strategy
+for battery systems across three markets, trading at discrete time intervals and connecting
+the sequential reserve, day-ahead and intraday market decision stages. With a 4-hour time
+resolution, their ability to react to short-term changes in prices is very limited. Furthermore,
+the resulting smoothing of price spikes significantly reduces the profits a battery could extract
+from intraday markets.
+The myopic rolling intrinsic (RI) trading strategy is nearly optimal for gas storage operation (L¨ohndorf and Wozabal, 2021). The strategy naturally translates to other storage types,
+like batteries. Consequently, the RI is frequently used as a benchmark for more sophisticated
+strategies (e.g., Bertrand and Papavasiliou, 2020; Boukas et al., 2021).
+Recent work by Semmelmann et al. (2025) is most closely related to our work by presenting an evaluation of RI trading for a battery on the continuous intraday market. However, the
+authors do not take into account degradation cost in their optimization and solely rely on transaction data rather than the full order book and therefore miss critical information embedded in
+the full market data.
+Generally speaking, there are only a handful of papers that model the intraday market
+in its full complexity and implement trading strategies that take into account the complete
+information in the order book and at the same time do not artificially discretize time. The
+few examples of such papers known to the authors include Bertrand and Papavasiliou (2020);
+Boukas et al. (2021); Kuppelwieser and Wozabal (2023). However, all of these papers are based
+on trading rules that are simple to execute. To the best of our knowledge, there is no single
+study of the rolling intrinsic policy or any other policy requiring a complex optimization for
+every single change in the limit order book.
+3
+This paper contributes to closing this gap by making the following main contributions:
+1. We adapt the rolling intrinsic strategy to account for continuous trading on intraday
+markets for electricity, explicitly modeling every single order in the limit order book.
+The optimization is formulated as a mixed integer linear programming problem, taking
+into account all relevant aspects of the problem, including order placement costs, battery
+degradation, and detailed market rules.
+2. We approximate the exact MILP formulation using a dynamic programming approach
+that is several orders of magnitude faster and nearly exact in our simulation settings. As
+a result, our work enables the first high-frequency algorithmic trading strategy for storage
+assets, enabling realistic trading at every relevant update of the order book. Furthermore,
+we provide a detailed comparison, in terms of speed and profit, of our method against the
+MILP solution.
+3. In a numerical study, we conduct a detailed backtest of our strategy in the German
+intraday market over a full year using an order-by-order traversal of historical order book
+data. The results show the revenue potential of a BESS operating on the continuous
+intraday market.
+The computational speed of our proposed algorithm is essential for such a detailed analysis,
+and our findings demonstrate that the speed of trading is critical to maximize profits.
+Slower strategies, or generally less frequent trading, generate significantly lower profits
+by missing numerous trading opportunities due to their inability to make decisions at
+every relevant point in time. Our high-frequency strategy traverses the full year 2021 in
+around 86 minutes, solving the intrinsic optimization approximately 24 million times (4.6
+solves per millisecond), submitting around 30k orders at the exchange. Furthermore, we
+evaluate the robustness of our strategy under optimization and battery parameter settings,
+providing a deeper understanding of the method’s performance and generalizability.
+4. We parametrize the standard formulation of the RI, and show that our simulation speed
+can be used to easily find optimal parameters, generating additional profits of 8.5 %, by
+slightly nudging the RI’s trading behavior at no additional risk.
+5. Lastly, we publish an easy-to-use Python package to run RI simulations over extended
+periods of time, given a set of battery and dynamic programming parameters. This
+will allow other researchers or industry to realistically simulate high-frequency rolling
+4
+intrinsic trading scenarios for a battery on the intraday market, thereby creating a strong
+benchmark which can be evaluated with minimal effort.
+The remainder of this paper is organized as follows: Section 2 offers an overview of the
+European Power Market, setting the stage for our proposed trading strategy, detailed in Section
+3. We present our results in Section 4, and discuss the details and implications of our findings.
+Finally, Section 5 concludes the paper and outlines directions for future research.
+2. The European Power Market
+The European short-term electricity markets are served by two primary competing power
+exchanges, Nord Pool and EPEX SPOT. While Nord Pool originated in the Nordic region, both
+exchanges now operate across wide areas of Europe, including the Nordic and Central Western
+European (CWE) regions.
+The spot markets, which include day-ahead and intraday markets, are key components of the
+European Single Day-Ahead Coupling (SDAC) and Single Intraday Coupling (SIDC) initiatives.
+These initiatives have unified market operations across Europe, enabling bids submitted in one
+bidding zone to be seamlessly integrated into a shared order book and traded across other
+zones, provided there is sufficient cross-border transmission capacity. Price differences between
+bidding zones are thus primarily the result of constraints in interconnectors.
+In this paper, we mainly focus on the German market, which is the largest electricity market
+in Europe and where trading is conducted mainly through the EPEX exchange. However, due
+to the ongoing convergence of the European electricity market designs, the proposed methods
+directly carries over to most other European markets.
+The cascading range of future markets in Germany spans from long-term markets to dayahead and intraday markets trading hourly and subhourly contracts. In continuous intraday
+trading, 60, 30 and 15 minute products are trading up to 5 minutes before delivery.
+2.1. The Intraday Market for Power
+The primary objective of short-term power market designs is to minimize system imbalances.
+The intraday (ID) market plays a crucial role as the final opportunity for market participants to
+adjust their positions in response to unforeseen changes in production and demand, often driven
+by updated weather forecasts. Participants use the ID market to fine-tune their positions from
+5
+the day-ahead market, thereby minimizing deviations and reducing potential balancing costs
+charged by the transmission system operator (TSO). Significant price differences between the
+day-ahead and intraday markets create opportunities for participants to strategically hold back
+some positions from the day-ahead market and trade them on the intraday market for potential
+additional profits (L¨ohndorf and Wozabal, 2023; Seifert et al., 2024).
+Intraday market designs in Europe vary by country, although there has been significant
+progress toward a more unified ID market structure through the Single Intraday Coupling
+(SIDC) initiative, which includes both continuous and recently also auction-based trading products (Epex Spot SE, 2024). In this paper we focus on the former.
+In Germany, the intraday market opens in the afternoon following the clearing of the dayahead market. Trading begins at 3 p.m. on the day before delivery, allowing a maximum of 32
+hourly or 128 quarter-hourly products to be traded at any given time. For products listed in the
+shared SIDC order book, trading halts 60 minutes before delivery, while trading for products
+solely in the German order book continues until 30 minutes before delivery when it splits into
+the four German TSO regions, in each of which trading continues until 5 minutes before delivery.
+Limit orders submitted to the exchange are either immediately matched with corresponding
+buy or sell orders or, if unmatched, are stored in the limit order book (see Graf et al., 2024).
+A limit order is defined by its price, volume, validity, and order type (buy/sell). Figure 1
+visualizes the process of a typical submission of a new limit order to the limit order book (LOB)
+of a product, i.e., delivery hour.
+Continuous markets enable participants to continuously update and optimize their orders,
+allowing for real-time adjustments to evolving market conditions and reactions to forecastupdates. This flexibility makes them a crucial element in automated short-term trading strategies, where a rapid response to price changes is essential. In addition, continuous markets offer
+traders the opportunity to exploit short-lived market inefficiencies, enhancing their ability to
+capitalize on arbitrage opportunities throughout the trading day.
+A key challenge of trading in the continuous ID market is the lack of liquidity several hours
+before delivery. This results in wide bid-ask spreads and high price volatility. An example of
+this liquidity disparity is shown in Figure 2, which reveals that while a few hours before delivery
+typically thousands of orders are posted and cleared for a given product, this number drops to
+several hundred for products whose delivery is 10 hours or longer away and to a handful of
+6
+200 €
+MWh , 50 MWh
+80 €
+MWh , 2 MWh
+45 €
+MWh , 12 MWh
+37 €
+MWh , 22 MWh
+35 €
+MWh , 17 MWh
+32 €
+MWh , 97 MWh
+22 €
+MWh , 12 MWh
+-20 €
+MWh , 42 MWh
+...
+...
+Offer Stack
+Bid Stack
+Bid-Ask Spread
+T = 1
+Offer
+Bid
+T = 1
+200 €
+MWh , 50 MWh
+80 €
+MWh , 2 MWh
+45 €
+MWh , 12 MWh
+37 €
+MWh , 22 MWh
+35 €
+MWh , 17 MWh
+32 €
+MWh , 97 MWh
+22 €
+MWh , 12 MWh
+-20 €
+MWh , 42 MWh
+...
+...
+T = 2
+80 €
+MWh , 2 MWh
+50 €
+MWh , 30 MWh
+45 €
+MWh , 12 MWh
+37 €
+MWh , 22 MWh
+35 €
+MWh , 17 MWh
+32 €
+MWh , 97 MWh
+22 €
+MWh , 12 MWh
+-20 €
+MWh , 42 MWh
+...
+...
+New buy order
+T = 2
+80 €
+MWh , 2 MWh
+50 €
+MWh , 30 MWh
+45 €
+MWh , 12 MWh
+37 €
+MWh , 22 MWh
+35 €
+MWh , 17 MWh
+32 €
+MWh , 97 MWh
+22 €
+MWh , 12 MWh
+-20 €
+MWh , 42 MWh
+...
+...
+Matching
+T = 2
+999 €
+MWh , 72 MWh
+200 €
+MWh , 50 MWh
+80 €
+MWh , 2 MWh
+45 €
+MWh , 4 MWh
+35 €
+MWh , 17 MWh
+32 €
+MWh , 97 MWh
+22 €
+MWh , 12 MWh
+-20 €
+MWh , 42 MWh
+...
+...
+Updated book
+Figure 1: An exemplary state of the LOB at T = 1 presented in the left panel. The right panel depicts the
+clearing of a new hypothetical buy order: A new buy order with a price of 50 €/MWh, which is higher than
+the lowest ask price, is added to the book at T = 2. The quantity of this buy order (30 MWh) is then cleared
+against the cheapest possible offers until either the whole order is fulfilled (as is the case in the figure) or until
+there are no offers with lower prices left. In this example, 22 MWh out of 30 MWh are cleared against the sell
+order with price 37 €/MWh and the remaining 30 MWh − 22 MWh = 8 MWh are cleared against the sell order
+with price 45 €/MWh. The remaining quantity of 12 MWh − 8 MWh = 4 MW of the latter order stays in the
+order book. Note that the clearing is instantaneous, i.e., columns 2–4 in the right panel are purely illustrative
+and do not correspond to market states that can be observed by traders. Figure and caption adapted from Graf
+et al. (2024).
+orders at the start of trading.
+Low liquidity creates difficulties for automated trading strategies that aim to capitalize on
+price differences throughout the day. For instance, evening products traded during the morning
+hours often fail to reflect prevailing market prices accurately, as they are largely influenced
+by market makers rather than real supply and demand dynamics. This issue of liquidity is the
+main disadvantage of the continuous market, compared to its auction alternatives. It reduces the
+efficiency of price discovery and also increases trader’s risk as they may experience suboptimal
+pricing and reduced profitability when locking in positions early, as discussed more in-depth in
+e.g. (Graf et al., 2024).
+Finally, Table 1 provides a concise summary of key statistics for the Central-Western European (CWE) Spot Market over recent years. The continuous market stands out as the dominant
+intraday trading platform. Specifically, the German continuous intraday market in 2021, which
+serves as the data source for this study, recorded 240.4 million order submissions (including
+7
+5 min
+1 h
+2 h
+3 h
+4 h
+5 h
+6 h
+7 h
+8 h
+9 h
+10 h
+11 h
+12 h
+13 h
+14 h
+15 h
+16 h
+17 h
+18 h
+19 h
+20 h
+21 h
+22 h
+23 h
+24 h
+25 h
+26 h
+27 h
+28 h
+29 h
+30 h
+31 h
+32 h
+Time to Delivery
+10
+0
+10
+1
+10
+2
+Volumes [TWh]
+10
+5
+10
+6
+10
+7
+Order Count
+Figure 2: The binned distribution of time intervals between order submission and physical delivery for the German
+continuous intraday market in 2021. The teal bars illustrate the volume traded, while the red bars show the
+same data, counting the number of orders submitted. Both distributions exhibit an approximately exponential
+increase as the time to delivery shortens. Notably, there is a distinct gap between the 10-hour and 11-hour bins,
+where a significant increase in trading activity is observed.
+2023 2022 2021 2020 2019 2018 2017
+Day-Ahead (+16.9%) 419.3 (-8.6%) 358.8 (-4.5%) 392.7 (-8.4%) 411.1 (+3.1%) 448.8 (+5.3%) 435.2 413.2
+ID-Auction (+9.0%) 9.41 (-1.9%) 8.63 (+0.0%) 8.8 (+20.5%) 8.8 (+7.4%) 7.3 (+30.8%) 6.8 5.2
+ID-Continuous (+29.9%) 119.8 (+8.3%) 92.2 (+10.1%) 85.1 (+23.5%) 77.3 (+11.4%) 62.6 (+11.3%) 56.2 50.5
+Table 1: Combined EPEX Spot trading volumes in TWh for the CWE region (AT, BE, DE/LU, FR, NL) taken
+from the EPEX Spot annual reports (EPEX SPOT SE, 2017-2023). The percentage-change to the respective last
+year is given in brackets. Clearly, intraday trading is gaining relevance compared to DA auctions, while the ID
+auction market is slowly picking up in activity.
+order changes). This translates to an average of 7.6 orders placed per second. The sheer volume
+and frequency of transactions underscore the necessity of accurately modeling and responding
+to high-frequency market dynamics, to realistically simulate any trading strategy on this market. This calls for extremely fast and reactive trading. In the next section, we will propose an
+algorithm that can easily keep pace with the market’s speed.
+3. An Efficient Rolling Intrinsic Policy for Continuous Markets
+In this section, we will describe the intrinsic problem for continuous markets, discuss the
+rolling intrinsic policy as an improvement of the intrinsic strategy, and present an efficient
+implementation as a sequence of dynamic programming problems.
+8
+3.1. The Intrinsic Problem
+The intrinsic strategy is a simple policy to maximize the rewards of a storage system, which
+is widely used in the literature on gas storage and in the industry to optimize storage assets
+(e.g. Gray and Khandelwal, 2004b,a; Lai et al., 2010, 2011; L¨ohndorf and Wozabal, 2021). In
+the extant literature, the intrinsic problem is set in a perfectly liquid futures market, trading
+T ∈ N futures of a commodity that can be stored and which trade for prices Pt
+. In order not
+to overcomplicate notation, we assume here that future contracts are for delivery in consecutive
+time periods [0, 1), [1, 2), . . . , [T −1, T) and that there are no overlapping contracts. To fix ideas,
+one can imagine a battery storage system trading futures for delivery in the 24 hours of the
+next day.
+The storage operator decides about traded quantities qt of these contracts such that volumes
+bought are transferred into the storage, while sold volumes are physically fulfilled from the
+storage. In particular, in the simplest case, the intrinsic optimization boils down to the following
+linear problem of optimizing the storage level (st)
+T
+t=1 and the future positions (ft)
+T
+t=1 in the
+following way
+max
+qt
+P
+T
+t=1
+Pt(−qt)
+s.t. ft = f
+0
+t + qt
+, ∀t = 1, . . . , T
+ft ∈ [f,
+¯f], ∀t = 1, . . . , T
+st = st−1 + ft
+, ∀t = 1, . . . , T
+st ∈ [0, s¯], ∀t = 1, . . . , T,
+(1)
+where s0 and (f
+0
+t
+)
+T
+t=1 are the initial storage level and the initial future positions, respectively,
+which are data to the problem. In the above problem, positive qt represent buying decisions while
+negative ones represent sells. Furthermore, ¯s, f, and ¯f are physical bounds for the maximum
+storage level (MWh) as well as for withdrawal and injection (MW). The respective constraints
+ensure that the position is physical in the sense that traded quantities can be accommodated
+in the storage without violation of the limits on injection and withdrawal.
+The above linear problem is the simplest form of the intrinsic, which assumes a perfectly
+efficient storage, liquid markets, and no cost for operating the storage. Furthermore, the problem
+is myopic in the sense that the decision maker uses all the flexibility of the storage instantly
+without anticipating future changes in prices, which would make it more advantageous to wait
+9
+before trading immediately. The myopic nature of the intrinsic policy makes it suboptimal
+and motivates its name originating from the intrinsic value of a financial option contract, i.e.,
+the value an option has when it is immediately exercised, not taking into account the value of
+waiting (the extrinsic value). Problem (1) is the version of the intrinsic problem prevailing in
+the literature.
+Next we will extend (1) to a policy for a BESS trading on continuous intraday power markets,
+explicitly taking into account order book information, trading costs, and a simple linear model
+for efficiency and degradation losses of batteries. In order to do so, we introduce a set of
+future contracts Tt
+∗ at time t
+∗
+, for delivery of electricity in non-overlapping time periods in the
+future. The time when the earliest contract goes into delivery is denoted by t0. Note that the
+formulation could easily be extended to future contracts that overlap, such as quarter-hourly
+and hourly contracts. For simplicity, in the following we only focus on the intrinsic at a singular
+time t
+∗
+, denoting Tt
+∗ simply as T .
+For each contract t ∈ T , there is an order book Ot = O
++
+t ∪ O−
+t with O
++
+t
+containing all the
+currently active asks and O
+−
+t
+containing all the currently active bids for contract t. For each
+of these orders i ∈ Ot
+, we define a limit price Pi and a quantity Qi > 0. Furthermore, we
+introduce efficiency factors η
++, η
+− ∈ (0, 1] for charging and discharging, respectively, as well as
+a volume-based trading cost νtrade for matching orders on the market.
+Batteries have a limited life. Roughly speaking, there are two effects causing battery degradation: calendar age, i.e., the loss of capacity with time even without active use of the battery,
+and cycling, i.e., the wear and tear caused by injection and withdrawal of energy. Since we are
+looking at short-term planning, we focus on the latter and model a linear cycling (i.e. degradation) cost νdeg in €/MWh of withdrawn energy. The intuition behind this choice is that cells
+will have to be replaced after a certain number of cycles, which induces a replacement cost.
+With this information, we calculate a proportional per cycle and ultimately a per MWh cost for
+using the battery. We note that actual degradation depends not only on the amount of cycled
+energy but also on the depth of discharge, temperature, and several other factors (see e.g. Xu
+et al., 2017; Gr¨af et al., 2022). However, for the sake of simplicity, we focus on the amount of
+cycled energy which is the most important factor. Combining the cost of trading and the cost
+of degradation, we define ν = νtrade + νdeg as the combined variable cost in units of €/MWh.
+Until this point, all discussed extensions of (1) can still be modeled as a linear program (LP).
+10
+However, there are two aspects of intraday trading that introduce non-linearities. Firstly, trade
+quantities on electricity exchanges are not continuous variables but multiples of the minimum
+trading unit u, which implies that they are of the form qi = kiu with ki ∈ N0. Secondly,
+efficiencies smaller than 1 coupled with negative prices make it profitable to spend energy by
+simultaneously charging and discharging. More specifically, for a single product t and orders
+i ∈ O+
+t
+, j ∈ O−
+t
+, buying a quantity q using order i and immediately re-selling the power η
+−(η
++q)
+that remains after accounting for efficiency losses using order j yields a positive profit if
+−qPi + η
+−(η
++q)Pj > 0 ⇔ (η
+−η
++)Pj > Pi
+.
+Since Pi > Pj by definition, this only can happen if both prices are negative. However, because
+it is physically not possible to charge and discharge the battery at the same time, such trades
+have to be prevented.
+With these preparations, we can write the modified intrinsic as the following mixed integer
+linear problem (MILP):
+max
+ft,st,αt,qi,ki
+X
+t∈T
+
+
+X
+i∈O−
+t
+(Pi − ν)qi −
+X
+i∈O+
+t
+(Pi + ν)qi
+
+ (2)
+s.t. 0 ≤ qi ≤ Qi
+, ∀i ∈ Ot
+qi = kiu, ∀i ∈ Ot
+f
++
+t =
+X
+i∈O+
+t
+qi
+, ∀i ∈ O+
+t
+f
+−
+t =
+X
+i∈O−
+t
+qi
+, ∀i ∈ O−
+t
+ft = f
+0
+t + f
++
+t − f
+−
+t
+, ∀t ∈ T
+ft ∈ [f,
+¯f], ∀t ∈ T
+ft = it − wt
+, ∀t ∈ T
+it ∈ [0, αt
+¯f], ∀t ∈ T
+wt ∈ [0, −(1 − αt)f], ∀t ∈ T
+st = st−1 + η
++it −
+1
+η−
+wt
+, ∀t ∈ T
+st ∈ [0, s¯], ∀t ∈ T
+αt ∈ {0, 1}, kt ∈ N, ν ∈ R≥0 ∀t ∈ T
+11
+Algorithm 1 The rolling intrinsic
+Input: Initial storage s0, start-time tstart and stop-time of simulation tend, limit order book
+information Tt
+∗ ∀t
+∗ ∈ [tstart, tend], solve-frequency of intrinsic, other parameters ( ¯f, f, ν, . . .)
+Output: Final battery schedule during simulation runtime, cumulated trade profits
+for time instant t
+∗ ∈ [tstart, tend] do
+Solve the intrinsic according to equation (2)
+Update all positions ft
+, ∀t ∈ Tt
+∗
+Log profits/losses from trading
+end for
+where the αt are binary variables which are equal to 1 in case the decision for contract t is to
+buy and 0 if the decision is to sell.
+Note that, due to the above discussion, strictly speaking, the binary variables αt are only
+required for hours t where both O
++
+t
+and O
+−
+t
+contain orders with negative prices. Since u is
+usually rather small and negative prices do not occur too often, typically linear relaxations of
+the above problems are good and yield near-optimal solutions in the root node of the branchand-bound trees, making the problem a comparably easy MILP in most realistic cases.
+3.2. The Rolling Intrinsic
+The rolling intrinsic policy (RI), as outlined in Algorithm 1 was originally introduced in
+Gray and Khandelwal (2004b) and is a dynamic extension of the intrinsic value discussed in the
+last section. Starting from an initial storage state s0 and market positions (ft)t∈T acquired in
+previous periods, the RI repeatedly checks for chances of profitable rebalancing by re-running
+the intrinsic policy. Although the resulting decisions are still myopic, the RI clearly represents
+an improvement over the static intrinsic policy that does not adapt positions at all. Furthermore, the myopic nature of the decisions has the advantage that the RI does not speculate,
+but only enters immediately profitable positions and therefore does not run the risk of accumulating losses. For these reasons and because of its conceptual simplicity and relatively low
+computational cost, the RI has gained widespread industry adoption.
+3.3. A Dynamic Programming Formulation of the Rolling Intrinsic Policy
+In this section, we describe how to reformulate problem (2) to a dynamic programming
+formulation that can be solved by an efficient implementation of the dynamic programming
+12
+algorithm. The aim of the reformulation is to make faster decisions to keep up with the pace of
+the intraday market, where typically many orders arrive per second, requiring constant rapid
+reevaluation of one’s position.
+The main idea of the reformulation is to assign each product t ∈ T a stage in which the
+decisions to accept orders i ∈ Ot are taken while the storage level is the state variable that
+connects the stages. Hence, in the language of dynamic programming, the decisions qi
+, ki
+, αt
+,
+and ft are the actions, and the resulting storage state st
+is the argument of the value function
+of the next stage.
+We assume without loss of generality that Tt = {1, . . . , T} set VT +1 ≡ 0 and for t = 1, . . . , T
+define the value function as
+Vt(st−1) =
+
+
+
+max
+ft,st,αt,qi,ki
+P
+i∈O−
+t
+(Pi − ν)qi −
+P
+i∈O+
+t
+(Pi + ν)qi + Vt+1(st)
+s.t. 0 ≤ qi ≤ Qi
+, ∀i ∈ Ot
+qi = kiu, ∀i ∈ Ot
+f
++
+t =
+P
+i∈O+
+t
+qi
+, ∀i ∈ O+
+t
+f
+−
+t =
+P
+i∈O−
+t
+qi
+, ∀i ∈ O−
+t
+ft = f
+0
+t + f
++
+t − f
+−
+t
+ft ∈ [f,
+¯f]
+it ∈ [0, αt
+¯f]
+wt ∈ [0, −(1 − αt)
+¯f]
+st = st−1 + η
++it −
+1
+η− wt
+st ∈ [0, s¯]
+αt ∈ {0, 1}, kt ∈ N, ν ∈ R≥0.
+(3)
+This formulation might not seem very natural, since in reality the decisions in all stages of the
+above problem happen simultaneously instead of sequentially as usually is the case in dynamic
+programs. However, this perspective allows for a faster solution than solving the monolithic
+MILP or LP as we will argue below.
+We propose solving the problem by an application of the dynamic programming algorithm,
+discretizing the actions ft
+into steps κ·u (κ ∈ N) apart, where u is the minimal tradable quantity.
+Furthermore, we introduce a function πt that encodes the current order book information and
+returns the cost or revenue of buying or selling on the intraday market, taking into account
+13
+trading costs. Furthermore, we define a state transition function
+S(st−1, ft) =
+
+
+
+st−1 + η
++ft
+, if ft > 0
+st−1 +
+ft
+η− , otherwise.
+With these preparations, we can now re-write problem (3) as
+Vt(st−1) =
+
+
+
+max
+kt
+πt(f
+0
+t − ft) + Vt+1(S(st−1, ft))
+s.t. ft = f
+0
+t + ktu
+kt ∈
+h
+−
+η−st−1+f
+0
+t
+u
+,
+s¯−st−1
+η+u −
+f
+0
+t
+u
+i
+∩
+
+f−f
+0
+t
+u
+,
+f¯−f
+0
+t
+u
+
+∩ κZ,
+(4)
+where the bounds in the first constraint kt enforce the storage energy limits, while the second
+interval enforces the power limits. Given Vt+1, solving (4) boils down to evaluating the objective
+for all feasible kt
+, i.e., to a small number of arithmetic operations.
+Note that the above reformulation of (3) to (4) automatically takes care of the issue of
+simultaneously accepting buy and sell orders in the case of negative prices, and, by fixing the
+trading step-size u to a multiple of the minimum bid-size, naturally yields feasible position sizes.
+To solve (4), we need to know the value functions Vt+1. In line with the usual dynamic
+programming algorithm, we calculate Vt going backward in time: VT +1 is the known boundary
+condition, which makes it possible to calculate VT in any given state. However, due to efficiencies
+η
+± < 1, the trades that live on a finite grid translate to storage levels that do not sit on a regular
+grid, especially after several rounds of injections and withdrawals.
+Therefore, unlike classic applications of the dynamic programming algorithm, we do not
+define VT to have a finite domain, but instead on the whole interval of possible storage states
+[0, s¯]. In order to obtain the value function, we discretize the possible storage states [0, s¯] to a
+finite grid G ⊂ [0, s¯] and |G| = m. We then approximate the value function VT by evaluating it
+on the grid and linearly interpolating for points s /∈ G.
+In particular, we denote the resulting approximations by V˜
+t+1 and describe our linear approximation between the neighboring discretized gridpoints si
+, si+1 ∈ G as follows:
+V˜
+t+1(st) = m(si+1 − st)
+s¯
+Vt+1(si) + m(st − si)
+s¯
+Vt+1(si+1), (5)
+for si ≤ st ≤ si+1. More sophisticated interpolations, taking into account, for example, the
+curvature of the value function (given by the buy and sell price stacks), could potentially enhance
+14
+Algorithm 2 DP at runtime t
+∗
+Input: f
+0
+t
+, Ot for all tradable products t ∈ T , other parameters (κ, s0, ν, G, . . .)
+Output: Updated market positions ft
+Set VT +1 ≡ 0.
+Backwards Pass
+for t = T, . . . , t0 do
+for each state s ∈ G do
+Vt(s) ← maxkt∈Xt(s,f0
+t
+)
+n
+πt(ktu) + V˜
+t+1(S(s, ktu))o
+end for
+end for
+Forward Pass
+for t = t0, . . . , T do
+ˆft ← arg maxkt∈Xt(s,f0
+t
+)
+n
+π(ktu) + V˜
+t+1(S(st−1, ktu))o
+f
+0
+t ← ˆft
+st ← st−1 + ˆft
+end for
+the precision of our optimization. However, since such approaches would be computationally
+more costly and the obvious choices such as quadratic interpolations or cubic splines did not
+show any improvements in our numerical experiments, we remain with the linear approximation
+above.
+Once we have obtained V˜
+T , we can solve the problem that defines VT −1 with VT replaced
+by V˜
+T . We then repeat the process until we have obtained the approximations V˜
+t of all the
+value functions. Note that, in principle, G can be chosen independently for every t and can also
+change between various solutions of the intrinsic problem. For the sake of simplicity, we keep
+the grid constant, i.e. Gt
+∗,t ≡ G.
+Algorithm 2 displays an overview of one such dynamic program solution run of the intrinsic
+problem at time t
+∗
+, where Xt
+is the set of all possible actions kt as defined in equation (4).
+The approximation of the value functions V˜
+t
+introduces an error relative to the exact MILP
+15
+formulation of the problem. In the following proposition, we show that the domain of the true
+functions Vt
+is not actually continuous and that consequently there is a grid G, which makes
+the approximation and thereby the DP formulation of the problem exact.
+Proposition 1. For all t ∈ {1, . . . , T}, there is a finite grid Gt that contains all possible storage
+states at the beginning of period t. Choosing G to approximate the value functions alleviates
+the need for interpolation and makes the approximation exact.
+Proof. Suppose that the initial state of charge (SoC) is s0, we set κ = 1 and look at the simplest
+case of f
+0
+t = 0 for all t ∈ T . The possible storage states at the beginning of stage t0 + 1 are
+Gt0+1 =
+(
+s0 + uk+
+1
+η
++ −
+uk−
+1
+η−
+: k
+±
+1 ∈ K±
+1
+)
+and K
++
+1 =
+n
+k ∈ N0 : k ≤ u
+−1 min 
+s¯−s0
+η+ ,
+¯f
+o and K
+−
+1 =
+n
+k ∈ N0 : k ≤ u
+−1 min 
+s0η
+−, −f
+o.
+Defining the sets Gt and K
+±
+t
+going forward in time, for period t > t0 we thus have, given
+that K
+±
+t−1
+is already known,
+Gt =
+(
+st = s0 + uk+
+t
+η
++ −
+uk−
+t
+η−
+: k
+±
+t ∈ K±
+t
+, 0 ≤ st ≤ s¯
+)
+with
+K
++
+t =
+(
+k ∈ N0 : k ≤
+(¯s − s0) + u max(K
+−
+t−1
+)(η
+−)
+−1
+uη+
+)
+K
+−
+t =
+n
+k ∈ N0 : k ≤ u
+−1
+η
+−
+
+s0 + η
++u max(K
++
+t−1
+)
+o .
+Note that the way Gt and K
+±
+t
+are defined takes care of repeated charging and discharging in
+periods t0, . . . , t and therefore covers all possible storage states.
+Choosing the finite grids described above would ensure that the DP solution is exact and
+equivalent to the MILP formulation, as the value function only needs to be evaluated at points
+in the grid and there is no need for approximation. This comes at the cost of computational
+efficiency, as choosing G to be exact, would yield a very fine grid for cases where there are many
+tradable products T and η
+± < 1.
+4. Results
+In this section, we present the results of a numerical case study. In Section 4.1, we discuss
+the setting and implementation of the case study. In Section 4.2, measure the precision of our
+16
+DP solution and compare the runtimes with the exact MILP formulation, arguing that the DP
+leads to runtimes that are orders of magnitude faster. In Section 4.3, we present the results of
+our policy for a whole year of trading and measure the impact of trading speed on performance,
+while in Section 4.4, we examine how changes in storage and optimization parameters affect the
+results.
+4.1. Setting and Mode of Comparison
+Unless otherwise stated, for our case study, we use a BESS with an energy-to-power ratio
+(duration) of 1 hour, setting ¯f = −f = 10 MW and ¯s = 10 MWh. We assume efficiency losses
+of η
++ = η
+− = 0.95, i.e., a round trip efficiency of η
++η
+− ≈ 0.9 similar to Cole and Karmakar
+(2023); Regelleistung Online (2024).
+We use linear degradation costs of νdeg = 4 €/MWh, i.e., a round-trip degradation cost
+of 8 €/MWh for every MWh of electricity sold by the battery. We motivate this value by
+Goldman Sachs (2023) who project the cost of battery replacement in 2030 to be around 60k €/
+MWh, a 10-year battery warranty, and approximately 2 charging cycles per day. Dividing the
+replacement costs by cycles gives the cost of one full cycle, which allows us to infer the induced
+per MWh degradation cost.
+Furthermore, we choose νtrade = 0.09 €/MWh, reflecting the current EPEX volume-based
+trading fees per each matched order. In total, the variable cost ν = νtrade + νdeg thus takes the
+value of ν = 4.09 €/MWh. This variable cost ν is always present in the optimization, while
+νtrade is deducted from profits after each transaction. The degradation cost νdeg is subtracted
+only once, after each product’s final schedule is set at gate closure.
+All results are generated using historical 2021 order book data from the EPEX Spot continuous intraday market for Germany, focusing on hourly products. It is not possible ex post to
+simulate iceberg orders correctly given the EPEX dataset, so we omit them in our simulations.
+The exchange allows for price increments of 0.01 € and volume increments at 0.1 MWh, defining
+the minimum action size on the market as u = 0.1 MWh. The discretization of the dynamic
+programming action is defined at the most accurate minimum value of κ = 1 throughout.
+Clearly, in real-life trading, there will always be some delay between two consecutive optimizations. We explicitly model this delay ∆t and conceptually split it into two components: the
+solve-time and the technical delay. The solve time represents the time required to find an optimal solution for a given intrinsic problem. The technical delay accounts for various operational
+17
+latencies, such as communication delays with the exchange, delays caused by internal database
+and trading systems, and other post-solve delays before the submitted orders are matched on
+the exchange. If the combined delay exceeds 1 ms (the tick duration of the EPEX Spot market),
+t
+∗ t
+∗ + ∆t
+Solve Time Technical Delay
+Waiting Duration
+this has two effects on trading: Firstly, there is the risk that an order placed by our policy may
+not be matched since its intended counterpart either expired or was cleared against other market participants’ orders in the meantime. We deal with this by submitting all-or-none orders
+that expire if they are not immediately cleared, which might lead to non-physical positions, i.e.,
+market positions that cannot be matched by a feasible schedule of injections and withdrawals.
+In such a situation, further trades are required to correct the position so that the final battery
+schedule becomes physically feasible. However, in the way the intrinsic problem is set up, such
+positions would be corrected in the next call of the intrinsic problem, forcing the RI to return
+to a physical position as quickly as possible.
+The second issue arising from delays is that the policy might not be able to react to every
+single order book update. In particular, we assume that the next intrinsic is solved only at
+t
+∗ + ∆t observing the updated order book state at this time. Hence, if there are updates to the
+order book in the time interval (t
+∗
+, t∗ + ∆t), the policy will not be able to react immediately to
+it.
+Finally, we remark that when backtesting, we correctly account for changes in the order
+book caused by our actions. This in particular means that EPEX orders cleared against the
+orders of our policy are available shorter than in the actual history, and consequently that
+subsequent clearing of orders by other market participants changes. This introduces a strong
+path-dependency of varying trading policies.
+Although we take great care to model the market correctly, a limitation of the backtesting
+experiments is that, by the very nature of our analysis and the available data, we cannot take
+into account the effect that the orders placed by the strategy would have had on the behavior
+of other market participants. However, this drawback is inherent in the idea of backtesting and
+18
+cannot be easily corrected.
+All simulations were implemented in C++ and run on a single AMD EPYC 9654 CPU, with
+the MILP solved using Gurobi v11.0.3 for C++ (Gurobi Optimization, LLC, 2024). Due to the
+simple nature of each single intrinsic optimization, solving the MILP on multiple threads does
+not lead to faster simulation times. Additionally, to provide a fair comparison, we set our our
+MILP solver’s time-limit to 2 seconds (MIP gap 10%) and warmstart each optimization with
+the null-action, i.e. the solution of not changing the current battery schedule. We publish or
+code in the Python package BitePy, which allows users to easily run our DP simulations over a
+Python interface. See Appendix A for details.
+4.2. Comparison between MILP and DP Rolling Intrinsic
+To evaluate the effectiveness of solving the intrinsic rolling problem using the DP approach
+instead of the MILP approach, we start by comparing the two methods. The MILP consistently
+provides the exact solution to the optimization problem (2), while the DP solution generally
+slightly diverges. Note that, due to the RI’s myopic nature and the path dependence of differing
+solutions, following the exact solution does not necessarily guarantee larger profits. For this
+reason, although inexact in solving single intrinsic problems, the DP-based rolling intrinsic
+strategy can be more profitable than the MILP formulation, as evidenced by the February and
+April results in Table 2.
+We choose the most clinical setting for our comparison, by artificially fixing the solve time
+and technical delay to 0 ms for both approaches. This results in a policy that ignores technical
+delays and solves the intrinsic optimization for each relevant order book update in such a way
+that the resulting all-or-none limit orders are matched instantaneously with the exchange after
+each solve.
+Table 2 reports this comparison for the first week of February, April, July, and October 2021.
+All three DP methods use a constant equidistant grid G, with storage discretizations m = 101,
+m = 51 and m = 11. In summary, we can say that even without delays, the DP achieves
+comparable rewards to MILP and significantly outperforms it in terms of runtime by a factor of
+100-1000 for the coarser storage discretization m = 11. While the DP simulation times remain
+constant, MILP simulation times vary, even though the number of intrinsic solves is almost
+equal, as the complexity of the MILP problem is highly influenced by current market conditions.
+Interestingly, a finer storage discretization does not provide a clear advantage over coarser
+19
+discretizations in this experiment, but shows an increase in profits for our yearly simulation
+results, as evidenced by the following sections.
+Reward Sim-Time Cycles/Day Solves Traded Vol.
+[€] [h] [MWh]
+Feb
+01-14
+MILP 7895 6.77 2.3 959900 1901
+DP-101 7538 0.43 2.3 959900 1825
+DP-51 8051 0.22 2.2 959800 1905
+DP-11 7851 0.05 2.2 959500 1878
+Apr
+01-14
+MILP 9487 15.81 2.5 733000 1856
+DP-101 9434 0.34 2.5 733100 1817
+DP-51 9353 0.17 2.5 733000 1792
+DP-11 9543 0.04 2.5 733200 1872
+Jul
+01-14
+MILP 11565 17.07 2 901000 1948
+DP-101 11161 0.43 2 901000 1873
+DP-51 11158 0.22 2 900900 1884
+DP-11 11181 0.05 2 901000 1899
+Oct
+01-14
+MILP 28553 56.93 2.6 1012900 3350
+DP-101 28134 0.47 2.6 1012500 3231
+DP-51 27952 0.24 2.5 1012600 3190
+DP-11 28014 0.06 2.5 1012600 3236
+Table 2: Performance comparison for four representative weeks in 2021 between the rolling intrinsic solved
+using the benchmark MILP and three DP approaches with different approximations due to their value function
+granularities. All results are rounded to significance.
+4.3. Yearly High-Frequency Rolling Intrinsic Trading
+Leveraging the speed of our proposed DP method, we present full-year RI trading results
+under a standard battery and simulation setup for the year 2021 in Figure 3. This figure
+compares rewards, of RI settings outlined in Section 4.1 with a value function discretization
+setting of m = 11 and a technical delay of 200 ms plus measured actual solve times. We evaluate
+performance starting from the baseline with a solve-frequency of 60 minutes, i.e. solving the
+intrinsic optimization once every hour, resulting in a reward of €221k (8.7k orders submitted at
+the exchange) and a simulation runtime of 5.6 minutes, down to solving it with every relevant
+order book update (apart from the waiting durations introduced previously) with a reward
+of €349k (30k orders submitted at the exchange) and a simulation runtime 86 minutes. We
+define any order message submitted to the LOB as relevant, if it is placed at the head of its
+20
+Jan 2021 Mar 2021 May 2021 Jul 2021 Sep 2021 Nov 2021 Jan 2022
+Time
+0
+50000
+100000
+150000
+200000
+250000
+300000
+350000
+400000
+Cumulative Reward [ ]
+every LOB update
+every 6 seconds
+every minute
+every 15 minutes
+every 60 minutes
+00:00 12:00 00:00 12:00 00:00 12:00 00:00
+Time [h]
+10.0
+7.5
+5.0
+2.5
+0.0
+2.5
+5.0
+7.5
+10.0
+Energy [MWh]
+Storage [MWh]
+Buy/Sell [MWh] 3000
+2000
+1000
+0
+1000
+2000
+3000
+Reward [ ]
+Reward [ ]
+Figure 3: The cumulative reward of the intrinsic rolling over the entire year 2021 for various intrinsic-solve
+frequencies. The inset shows the battery operation over the span of two arbitrary selected days for the strategy
+which solves the intrinsic at every relevant LOB update (taking into account technical delays), with the final
+schedule determined by the RI.
+corresponding bid/ask stack. These results clearly demonstrate that solving the intrinsic at
+higher frequencies leads to progressively increasing profits as the trading frequency rises. In
+this case, a 58% increase between our slowest and quickest solve frequency. We observe a clear
+increase in the slope of the cumulative reward starting in October 2021. This originates most
+likely from higher and more volatile gas prices in Europe during this time, which subsequently
+translates to more extreme intraday electricity prices, which increases the revenue potential of
+storage.
+Figures 4 and 5 illustrate RI decisions, using the same settings and our quickest strategy,
+solving the intrinsic at every relevant LOB update. Figure 4 provides an overview of the annual
+battery state-of-charge (SoC) schedule shaped by the RI’s trading decisions, along with the
+daily trading volumes. We observe a distinct average SoC pattern, suggesting a strong daily
+periodicity of arbitrage opportunities, with higher charge levels during the early morning and
+21
+afternoon hours. This can be seen by looking at the trading decisions in the central heat map
+of trading decisions as well as the mean SoC profile.
+The lower plot shows the frequency of different SoC levels throughout the year. Given that
+our storage has duration of one hour, one would expect the storage to be either completely full or
+completely empty most of the time. However, the SoC occupies levels in between these extremes
+surprisingly often. This is most likely caused mainly by complex trading trading behavior
+induced by nonlinearies in order book-based trading, which makes simple bang-bang strategies
+suboptimal. This highlights the difference between a naive price taking implementation of the
+rolling intrinsic and our more realistic approach.
+Lastly, when looking at the daily traded energy over the year on the top of the figure, we
+see an increased trading activity towards the end of the year, which fits the increased slope of
+cumulative profits for this time period observed in Figure 3.
+Figure 5 shows the number of orders executed by the RI, classified by their proximity to
+physical delivery. Comparing this to Figure 2 showing the number of orders placed in the
+market, we see that the pattern is much more uniform. This is likely due to the fact that the
+rolling intrinsic tries to capitalize on time spreads which often induces trading pairs of products
+with large differences in the time to delivery, e.g., when buying cheap in the early morning to
+sell expensive in the evening. This induces the RI to frequently trade products that are not yet
+liquid, which is one of the biggest weaknesses induced by the myopic nature of the policy.
+4.4. Parameter Evaluation
+The DP rolling intrinsic optimization relies on numerous parameters, each influencing trading behavior and solution accuracy in different ways. This section compares key storage and
+optimization parameters, demonstrating that our year-long trading results remain robust and
+that the parameters’ effects align with expectations.
+To achieve this, we compare the effects of varying injection-efficiencies (assuming η
++ =
+η
+−), linear degradation costs νdeg and maximum storage capacities ¯s, each for three different
+equidistant DP value function grids G with granularity |G| = m. Table 3 provides a shortened
+overview of yearly rewards for each of the optimizations. Two clear trends can be observed as
+expected: A finer grid G (larger m) results in more profitable trading as the solution is more
+accurate, and more penalizing injection efficiencies η and linear degradation costs ν result in
+lower rewards because fewer trading opportunities become profitable. Both parameters have a
+22
+Jan '21 Feb '21 Mar '21 Apr '21 May '21 Jun '21 Jul '21 Aug '21 Sep '21 Oct '21 Nov '21 Dec '21
+Date
+00
+03
+06
+09
+12
+15
+18
+21
+00
+Hour
+0
+200
+400
+600
+Daily Traded
+Energy [MWh]
+0 5 10
+Mean SoC
+Profile [MWh]
+0 10 20
+Daily Peak Traded
+Volume [MWh]
+0 2 4 6 8 10
+SoC [MWh]
+10
+0
+10
+1
+10
+2
+10
+3
+SoC Occurences
+Figure 4: Yearly heatmap of the final battery schedule for the year 2021 determined by the RI. The upper plot
+shows the final state of charge (SoC) of the battery for each hour of the year, with the color gradient defined in
+the lower plot. The gray areas show the total traded energy per day and the yearly mean SoC profile, while the
+dots in the upper inset represent the largest trade per day submitted by the RI. We observe a clear preference for
+charging the battery in the early morning and afternoon hours. The lower plot shows the logarithmic distribution
+of SoC states of the battery, as determined by the RI’s schedule. Figure adapted from (Brudermueller and Kreft,
+2023).
+significant effect on profits, with the most favorable settings nearly doubling the profits of the
+least favorable setting. This is especially interesting for the case of degradation cost, which are
+likely to decrease significantly in the near future, thereby greatly increasing the profitability of
+short-term trading on intraday markets.
+Additionally, batteries with a smaller maximum storage capacity produce larger profits per
+23
+30 min
+1 h
+2 h
+3 h
+4 h
+5 h
+6 h
+7 h
+8 h
+9 h
+10 h
+11 h
+12 h
+13 h
+14 h
+15 h
+16 h
+17 h
+18 h
+19 h
+20 h
+21 h
+22 h
+23 h
+24 h
+25 h
+26 h
+27 h
+28 h
+29 h
+30 h
+31 h
+32 h
+Time to Delivery
+10
+1
+10
+2
+10
+3
+10
+4
+Volumes [MWh]
+10
+1
+10
+2
+10
+3
+Order Count
+Figure 5: Order submission-time analysis of the RI simulated over the entire year 2021.
+η
++ = η
+−
+Reward [€] 0.9 0.95 0.99 1.0
+DP-11 277000 349000 441000 478000
+DP-51 278000 351000 444000 482000
+DP-101 279000 352000 442000 483000
+νdeg [€/MWh]
+Reward [€] 8 4 2 0
+DP-11 263000 349000 416000 434000
+DP-51 264000 351000 419000 439000
+DP-101 265000 352000 419000 441000
+s¯ [MWh] 1h-battery
+Reward/¯s [
+€
+MWh ] 5 10 20 40
+DP-11 36600 34900 32600 29700
+DP-51 36900 35100 33200 30400
+DP-101 36900 35200 33400 30600
+s¯ [MWh] 2h-battery
+Reward/¯s [
+€
+MWh ] 5 10 20 40
+DP-11 27300 27000 25700 23900
+DP-51 27100 27400 26200 24600
+DP-101 27700 27300 26400 24700
+Table 3: A reward comparison of simulation results for the full year 2021, using four different storage parameter
+settings. All simulation base-settings are equal to the setting defined in 4.1, setting the ping-delay to 200 ms
+and using actual measured solve-times at execution. Varying storage parameters has the expected effect on
+yearly rewards, where a finer DP storage discretization generally leads to marginally higher rewards, increasing
+degradation costs and losses reduces the rewards, and operating a larger storage yields lower rewards per storage
+capacity. All results are rounded to significance, and the specific battery reward on the right table is given in
+units of €/MWh.
+MW storage capacity, as the increased trading flexibility of larger batteries profits from the same
+most profitable trading opportunities as with a smaller battery, and only adds less profitable
+trades on top. For similar reasons, a battery with a duration of 2h yields lower profits, but
+more than half of the profits observed for our standard setup with a duration of 1h.
+24
+4.5. Parametrization of the Rolling Intrinsic
+The rolling intrinsic strategy is suboptimal due to its myopic nature. In particular, the lack
+of foresight leads to impatient trading decisions which use flexibility early on, thereby foregoing
+parts of the storage’s revenue potential. This happens in particular when the RI trades products
+with limited liquidity, typically long before gate closure, and for rather disadvantageous prices.
+This opens the door for parametric variations of the rolling intrinsic policy that aim to
+improve on these issues by adjusting the trading behavior. However, finding optimal parameters
+requires extensive tuning efforts and, therefore, only works in combination with an efficient
+implementation of the policy. Our method therefore opens the door to optimized variations of
+the rolling intrinsic, which can be trained within a realistic timeframe.
+To illustrate this point, we introduce an empirically motivated unitless linear parameter ϕ
+to the intrinsic optimization. It acts as a penalty for products with a large bid-ask spread.
+We then adapt the optimization (4) by extending πt to ˆπt = πt − (ϕ · δt
+∗,t) | f
+0
+t − ft
+|, with
+δt
+∗,t defined as the big-ask spread of product t at time t
+∗
+. Intuitively, it becomes clear that ϕ
+incentivizes the rolling intrinsic to trade at times of higher market liquidity, i.e. at times closer
+to delivery, to reduce the chance of trading less profitably too early.
+The increased speed of our DP solution method allows us to quickly search for optimal
+parameters ϕ. For the sake of simplicity and just to show a proof of concept, we fix the
+parameters ϕ at constant values for each trading month, and use the previous month m − 1
+to train ϕ for a given month m. When evaluating this strategy over the entire year 2021,
+this sliding window parameter training results in 12 separate training windows. We train the
+parameters on the highest intrinsic-solve frequency (see section 4.3) using DP and simulation
+settings outlined in Section 4.1, which represents the most realistic training scenario. We treat
+our monthly simulation rewards as a black box function f(ϕ) and, given its simple dependence
+on a singular parameter, use Brent’s method to find its maximum.
+The resulting optimal parameters for the year 2021 have an average penalty of ϕ¯ = 2.1±1.6.
+Comparing year-long out-of-sample results of the newly trained policy yields an increase of 8.4%
+in trading reward over the entire year 2021, accumulating €376k, compared to the €347k reward
+of the standard policy with the penalty set to 0, i.e., ϕ ≡ 0.
+25
+5. Conclusion
+In this paper, we present a novel method to compute the rolling intrinsic policy for trading
+with a battery on continuous intraday markets. Our method achieves a solution speed improvement of up to three orders of magnitude while maintaining a sufficient level of accuracy. Our
+work lays the foundation for extensive future research through the extension and adaptation of
+our rolling intrinsic formulation and implementation, both for researchers and industry.
+Our findings demonstrate the importance of strategies that take into account the exact
+workings of the continuous intraday market and at the same time can be executed fast enough
+to keep up with the millisecond pace of the market. We show in a realistic backtesting that
+a solution frequency of at least every second increases rolling intrinsic profits substantially
+compared to solving the intrinsic only every few minutes or even every hour.
+Furthermore, our efficient implementation enables us to backtest the profitability of the
+rolling intrinsic policy over extended time periods, which requires a substantial number of intrinsic solves across the simulation period, making traditional MILP or LP methods impractical
+due to their comparatively slow solution time. This also makes it possible to train parametric
+extensions of the rolling intrinsic that correct some of its shortcomings, as we demonstrate by
+optimizing a penalty for trading illiquid products, which substantially increases trading profits.
+An important future extension of our work lies in more sophisticated parametrizations of the
+rolling intrinsic. Our naive method could easily be adapted to multiple additional parameters
+like trading delays, affecting various aspects of the RI’s trading behavior, further utilizing the
+speed of our optimization method. Furthermore, future work could naturally extend the trading
+to a multi-market scenario, where additional decision variables expand the scope of optimization
+to multiple subsequent electricity markets, e.g. the reserve or day-ahead markets. Finally,
+extending our intrinsic optimization with dynamic price forecasts would greatly improve the
+RI’s profitability, as the optimization would be able to anticipate future price changes. Finetuning forecasts to BESS applications would then be a logical utilization of the speed of our
+method.
+Declaration of generative AI and AI-assisted technologies in the writing process
+During the preparation of this work the authors used Gemini 2.5 and ChatGPT in order to
+improve language and readability. After using this tool/service, the author reviewed and edited
+26
+the content as needed and take full responsibility for the content of the published article.
+References
+Aid, R., Gruet, P., Pham, H., 2016. An optimal trading problem in intraday electricity markets.
+Mathematics and Financial Economics 10, 49–85.
+Bertrand, G., Papavasiliou, A., 2020. Adaptive Trading in Continuous Intraday Electricity
+Markets for a Storage Unit. IEEE Transactions on Power Systems 35, 2339–2350. doi:10.
+1109/TPWRS.2019.2957246.
+Boukas, I., Ernst, D., Th´eate, T., Bolland, A., Huynen, A., Buchwald, M., Wynants, C.,
+Corn´elusse, B., 2021. A deep reinforcement learning framework for continuous intraday market bidding. Machine Learning 110, 2335–2387. doi:10.1007/s10994-021-06020-8.
+Braeuer, F., Rominger, J., McKenna, R., Fichtner, W., 2019. Battery storage systems: An economic model-based analysis of parallel revenue streams and general implications for industry.
+Applied Energy 239, 1424–1440. doi:https://doi.org/10.1016/j.apenergy.2019.01.050.
+Brudermueller, T., Kreft, M., 2023. Smart meter data analytics: Practical use-cases and best
+practices of machine learning applications for energy data in the residential sector, in: ICLR
+2023 Workshop on Tackling Climate Change with Machine Learning. URL: https://www.
+climatechange.ai/papers/iclr2023/3.
+Cole, W., Karmakar, A., 2023. Cost Projections for Utility-Scale Battery Storage: 2023 Update.
+Technical Report NREL/TP-6A40-85332. National Renewable Energy Laboratory. Golden,
+CO. URL: https://www.nrel.gov/docs/fy23osti/85332.pdf.
+EPEX SPOT SE, 2017-2023. Epex spot annual reports. URL: https://www.epexspot.com/.
+accessed: 2024-06-17.
+Epex Spot SE, 2024. Press release: Intraday auctions (idas) were implemented across europe on 13 june 2024. https://www.epexspot.com/en/news/
+intraday-auctions-idas-were-implemented-across-europe-13-june-2024.
+Faria, E., Fleten, S.E., 2011. Day-ahead market bidding for a nordic hydropower producer:
+taking the elbas market into account. Computational Management Science 8, 75–101.
+27
+Fleten, S.E., Kristoffersen, T.K., 2008. Short-term hydropower production planning by stochastic programming. Computers & Operations Research 35, 2656–2671.
+Goldman Sachs, 2023. Electric vehicle battery prices are expected to fall almost 50% by 2026. URL: https://www.goldmansachs.com/insights/articles/
+electric-vehicle-battery-prices-are-expected-to-fall-almost-50-percent-by-2025.
+accessed: 2024-12-21.
+Graf, C., Kuppelwieser, T., Wozabal, D., 2024. Frequent auctions for intraday electricity markets. The Energy Journal 45, 231–256. doi:10.5547/01956574.45.1.cgra.
+Gray, J., Khandelwal, P., 2004a. Realistic gas storge models II: Trading strategies. Commodities
+Now September, 1–5.
+Gray, J., Khandelwal, P., 2004b. Towards a realistic gas storage model. Commodities Now 7,
+1–4.
+Gr¨af, D., Marschewski, J., Ibing, L., Huckebrink, D., Fiebrandt, M., Hanau, G., Bertsch, V.,
+2022. What drives capacity degradation in utility-scale battery energy storage systems? the
+impact of operating strategy and temperature in different grid applications. Journal of Energy
+Storage 47, 103533. doi:https://doi.org/10.1016/j.est.2021.103533.
+Gurobi Optimization, LLC, 2024. Gurobi Optimizer Reference Manual.
+IRENA, 2017. Electricity storage and renewables: Costs and markets to 2030. URL: https://www.irena.org/publications/2017/Oct/
+Electricity-storage-and-renewables-costs-and-markets. accessed: 2024-12-16.
+Jiang, D., Powell, W., 2015. Optimal hour-ahead bidding in the real-time electricity market with
+battery storage using approximate dynamic programming. INFORMS Journal on Computing
+27, 525–543.
+Koch, C., Hirth, L., 2019. Short-term electricity trading for system balancing: An empirical
+analysis of the role of intraday trading in balancing germany’s electricity system. Renewable
+and Sustainable Energy Reviews 113, 109275. doi:https://doi.org/10.1016/j.rser.2019.
+109275.
+28
+Kongelf, H., Overrein, K., Klæboe, G., Fleten, S.E., 2019. Portfolio size’s effects on gains from
+coordinated bidding in electricity markets: A case study of a norwegian hydropower producer.
+Energy Systems 10, 567–591.
+Kraft, E., Russo, M., Keles, D., Bertsch, V., 2023. Stochastic optimization of trading strategies
+in sequential electricity markets. European Journal of Operational Research 308, 400–421.
+doi:https://doi.org/10.1016/j.ejor.2022.10.040.
+Kuppelwieser, T., Wozabal, D., 2023. Intraday power trading: toward an arms race in weather
+forecasting? OR Spectrum 45, 57–83.
+Lai, G., Margot, F., Secomandi, N., 2010. An approximate dynamic programming approach to
+benchmark practice-based heuristics for natural gas storage valuation. Operations Research
+58, 564–582.
+Lai, G., Wang, M., Kekre, S., Scheller-Wolf, A., Secomandi, N., 2011. Valuation of storage at
+a liquefied natural gas terminal. Operations Research 59, 603–616.
+L¨ohndorf, N., Wozabal, D., 2021. Gas storage valuation in incomplete markets. European
+Journal of Operational Research 288, 318–330.
+L¨ohndorf, N., Wozabal, D., Minner, S., 2013. Optimizing trading decisions for hydro storage
+systems using approximate dual dynamic programming. Operations Research 61, 810–823.
+L¨ohndorf, N., Wozabal, D., 2023. The Value of Coordination in Multimarket Bidding of Grid
+Energy Storage. Operations Research 71, 1–22. doi:10.1287/opre.2021.2247.
+Mart´ınez-Barbeito, M., Gomila, D., Colet, P., 2023. Dynamical model for power grid frequency
+fluctuations: Application to islands with high penetration of wind generation. IEEE Transactions on Sustainable Energy 14, 1436–1445. doi:10.1109/TSTE.2022.3231975.
+Regelleistung Online, 2024. Bess revenue index 1h. URL: https://
+www.regelleistung-online.de/german-energy-storage-revenue-index/
+bess-revenue-index-1h/. accessed: 2024-12-22.
+Saldarini, A., Longo, M., Brenna, M., Zaninelli, D., 2023. Battery electric storage systems:
+Advances, challenges, and market trends. Energies 16.
+29
+Seifert, P.E., Kraft, E., Bakker, S., Fleten, S.E., 2024. Coordinated trading strategies for battery
+storage in reserve and spot markets. arXiv:2406.08390.
+Semmelmann, L., Dresselhaus, J., Miskiw, K.K., Ludwig, J., Weinhardt, C., 2025. An algorithm for modelling rolling intrinsic battery trading on the continuous intraday market.
+SIGENERGY Energy Inform. Rev. 4, 163–174. URL: https://doi.org/10.1145/3717413.
+3717428, doi:10.1145/3717413.3717428.
+Ullah, F., Zhang, X., Khan, M., Mastoi, M.S., Munir, H.M., Flah, A., Said, Y., 2024. A
+comprehensive review of wind power integration and energy storage technologies for modern
+grid frequency regulation. Heliyon 10, e30466. doi:https://doi.org/10.1016/j.heliyon.
+2024.e30466.
+Wozabal, D., Rameseder, G., 2020. Optimal bidding of a virtual power plant on the spanish
+day-ahead and intraday market for electricity. European Journal of Operational Research
+280, 639–655.
+Xu, B., Zhao, J., Zheng, T., Litvinov, E., Kirschen, D.S., 2017. Factoring the Cycle Aging
+Cost of Batteries Participating in Electricity Markets. doi:10.48550/arXiv.1707.04567.
+arXiv:1707.04567 [math].
+Appendix A. Code Publication
+We publish our method as a Python package BitePy (Battery Intraday Trading Engine),
+where users can preprocess their intraday market data, set battery and DP parameters, run
+simulations and analyze results. It is hosted on PyPi and can be easily installed via pip install
+bitepy. Detailed documentation and tutorials on the package can be found on GitHub.
+Appendix B. Acknowledgements
+The authors thank Markus Kreft and Patrick Langer for the helpful methodological discussions and for support with some of the figures. In addition, we thank Simon Hirsch for the
+factual checks, general feedback and for the support in wrapping the Package to Python and
+setting up the documentation.
+30

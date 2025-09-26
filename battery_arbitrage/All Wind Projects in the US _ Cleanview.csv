@@ -1,0 +1,1579 @@
+Plant Name,Developer Name,Capacity (MW),Date of Operation,County,State,Balancing Authority
+Tehachapi Wind Resource II,CalWind,15.5,01/07/2025,Kern,CA,CISO
+Hart Wind,NextEra Energy,166.4,01/07/2025,Castro,TX,ERCO
+Wheatridge East Wind,NextEra Energy,200,01/06/2025,Morrow,OR,BPAT
+Moscow,Greenbacker,58.8,01/06/2025,Somerset,ME,ISNE
+Crossover Wind,Steelhead Americas,144,01/06/2025,Cross,AR,MISO
+Flat Ridge 4,Invenergy,134,01/06/2025,Kingsman,KS,SWPP
+Prairie Switch Wind LLC,Fengate Capital Management,163.2,01/05/2025,Wharton,TX,ERCO
+Dans Mountain,Unable to find,54.9,01/05/2025,Allegany,MD,PJM
+Peyton Creek Wind Farm II,RWE,243,01/04/2025,Matagorda,TX,ERCO
+AM Wind Repower LLC,Brookfield,27,01/03/2025,Riverside,CA,CISO
+Panther Creek Wind Project,Greenbacker,54.4,01/02/2025,Pike,IL,MISO
+WPWP,NextEra Energy,307.2,01/02/2025,Sumner,KS,SWPP
+"El Sauz Ranch Wind, LLC",JERA Renewables,301,01/01/2025,Willacy,TX,ERCO
+"Montgomery Ranch Wind Farm, LLC",RWE,202.5,01/01/2025,Foard,TX,ERCO
+Cedar Springs Wind IV,NextEra Energy,390.4,01/01/2025,Converse,WY,WACM
+Downeast Wind,Apex Clean Energy,126,01/01/2025,Washington,ME,ISNE
+Prosperity Wind,Apex Clean Energy,300,01/01/2025,Piatt,IL,MISO
+Boswell Wind,Alterra Power,329.8,01/12/2024,Albany,WY,PACE
+Ponderosa Wind II,NextEra Energy,100,01/12/2024,Beaver,OK,SWPP
+Indiana Crossroads Wind Farm II,EDP Renewables,201.6,01/12/2024,White,IN,MISO
+Anticline Wind,Enyo Renewable Energy,124.3,01/12/2024,Natrona,WY,WACM
+Oliver Wind IV,NextEra Energy,198.8,01/12/2024,Oliver,ND,SWPP
+Diversion Wind Energy LLC,Invenergy,98.6,01/12/2024,Baylor,TX,SWPP
+Diversion Wind Energy LLC,Invenergy,102,01/12/2024,Baylor,TX,SWPP
+"Timbermill Wind, LLC",Apex Clean Energy,189,01/12/2024,Chowan,NC,PJM
+Foote Creek Rim,PacifiCorp,134.8,01/12/2024,Carbon,WY,PACE
+CalPortland Company Mojave Wind,CalPortland Company,23.5,01/11/2024,Kern,CA,CISO
+Clearwater Wind III,NextEra Energy,100,01/09/2024,Rosebud,MT,AVA
+Prescott Wind Farm,RPM Access,38.7,01/09/2024,Adams,IA,MISO
+"Azure Sky Wind Project, LLC Hybrid",Enel,350.2,01/08/2024,Throckmorton,TX,ERCO
+South Fork Wind,Orsted,130,01/07/2024,Suffolk,NY,NYIS
+Babbitt Ranch Energy Center,NextEra Energy,163,01/07/2024,Coconino,AZ,SRP
+Roadrunner Wind Farm,NextEra Energy,256,01/07/2024,Eastland,TX,ERCO
+"Century Oak Wind Project, LLC",Engie,151.5,01/07/2024,Eastland,TX,ERCO
+Mesa Wind Repower,Brookfield,30,01/06/2024,Riverside,CA,CISO
+Solano Wind,Sacramento Municipal Utility District,85.5,01/05/2024,Solano,CA,CISO
+Goodnight,Omega Energia,265.5,01/04/2024,Armstrong,TX,ERCO
+Ranchland Wind Project II,Enel,148,01/04/2024,Callahan,TX,ERCO
+Ranchland Wind Project I,Enel,114.9,01/04/2024,Callahan,TX,ERCO
+Delta Wind Farm (MS),AES Clean Energy,184.5,01/04/2024,Coahoma,MS,MISO
+Heartland Farms,CMS Energy,200,01/04/2024,Gratiot,MI,MISO
+Chevelon Butte Phase 2,AES Clean Energy,216,01/04/2024,Coconino,AZ,AZPS
+"Cedar Creek Wind, LLC",Clearway,160,01/03/2024,Bingham,ID,PACE
+Horizon Hill Wind Project,TransAlta,201.5,01/02/2024,Logan,OK,SWPP
+"Canyon Wind Project, LLC",NextEra Energy,308.8,01/01/2024,Scurry,TX,ERCO
+White Rock East Wind Project,TransAlta,201.5,01/01/2024,Caddo,OK,SWPP
+Clearwater Wind East,NextEra Energy,207.9,01/01/2024,Custer,MT,NWMT
+Pioneer Hutt Wind Energy,NextEra Energy,140,01/01/2024,Midland,TX,ERCO
+Strauss Wind Farm,null,95.3,01/12/2023,Santa Barbara,CA,CISO
+Midland Wind,null,105.5,01/12/2023,Henry,IL,PJM
+White Rock West Wind Project,null,99.5,01/12/2023,Caddo,OK,SWPP
+"Ball Hill Wind Energy, LLC",null,107.5,01/12/2023,Chautauqua,NY,NYIS
+"Bronco Plains Wind II, LLC",null,200,01/12/2023,Kit Carson,CO,PSCO
+Moraine Sands Wind Power,null,171,01/12/2023,Mason,IL,MISO
+High Banks Wind,null,643.4,01/12/2023,Republic,KS,SWPP
+Clearwater Wind II,null,102.8,01/12/2023,Rosebud,MT,NWMT
+Martin Marietta Wind Project,null,1.5,01/12/2023,Sandusky,OH,PJM
+Martin Marietta Wind Project,null,1.5,01/12/2023,Sandusky,OH,PJM
+Martin Marietta Wind Project,null,1.5,01/12/2023,Sandusky,OH,PJM
+Shamrock Wind,null,223.9,01/12/2023,Crockett,TX,ERCO
+Chickasaw Wind Farm,null,202.4,01/12/2023,Chickasaw,IA,MISO
+"North Bend Wind Project, LLC",null,200,01/12/2023,Hyde,SD,SWPP
+Roundhouse Renewable Energy II,null,105.7,01/12/2023,Laramie,WY,WACM
+"Bluestone Wind, LLC",null,111.8,01/10/2023,Broome,NY,NYIS
+"Sunflower Energy Center, LLC",null,200.6,01/10/2023,Marion,KS,SWPP
+Castle Gap Wind,null,196.8,01/10/2023,Mills,TX,ERCO
+"Sweetland Wind Farm, LLC",null,200,01/10/2023,Hand,SD,SWPP
+Shady Oaks Wind 2,null,108.3,01/10/2023,Lee,IL,PJM
+"Sandy Ridge Wind 2, LLC",null,87.6,01/09/2023,Blair,PA,PJM
+Fowler Ridge Wind Farm LLC,null,88,01/08/2023,Benton,IN,PJM
+"High Lonesome Wind Power, LLC Hybrid",null,449.5,01/07/2023,Upton,TX,ERCO
+"High Lonesome Wind Power, LLC Hybrid",null,50,01/07/2023,Upton,TX,ERCO
+Blackjack Creek Wind Farm,null,239.6,01/05/2023,Bee,TX,ERCO
+"Alta Farms II Wind Project, LLC",null,200.5,01/05/2023,DeWitt,IL,PJM
+Number Three Wind Project,null,106,01/05/2023,Lewis,NY,NYIS
+Chevelon Butte Wind Farm,null,238.2,01/05/2023,Coconino,AZ,AZPS
+Red Barn Energy,null,91.6,01/04/2023,Grant,WI,MISO
+Meridian Wind Park,null,225,01/04/2023,Gratiot,MI,MISO
+Deerfield Wind Energy 2,null,112.1,01/03/2023,Huron,MI,MISO
+"Seven Cowboy Wind Project, LLC",null,301.7,01/03/2023,Washita,OK,SWPP
+Baron Winds Farm,null,130,01/02/2023,Steuben,NY,NYIS
+Sapphire Sky Wind Energy LLC,null,259.8,01/02/2023,DeWitt,IL,MISO
+Great Pathfinder Wind,null,224.4,01/02/2023,Hamilton,IA,MISO
+Eight Point Wind,null,101.2,01/02/2023,Steuben,NY,NYIS
+25 Mile Creek,null,250,01/01/2023,Ellis,OK,SWPP
+Inertia Wind Project,null,301,01/01/2023,Haskell,TX,ERCO
+Northern Wind,null,100,01/01/2023,Murray,MN,MISO
+Lacy Creek Wind Energy Center,null,301.3,01/12/2022,Sterling,TX,ERCO
+Limestone Wind Project,null,299.2,01/12/2022,Navarro,TX,ERCO
+Appaloosa Run Wind,null,171.8,01/12/2022,Upton,TX,ERCO
+"Ledyard Windpower, LLC",null,207,01/12/2022,Kossuth,IA,MISO
+Rock Aetna Power Partners,null,20,01/12/2022,Murray,MN,MISO
+Kossuth County Wind,null,70,01/12/2022,Kossuth,IA,MISO
+Buffalo Ridge Wind,null,106,01/12/2022,Lincoln,MN,MISO
+Young Wind,null,500,01/12/2022,Young,TX,ERCO
+Walleye Wind,null,110,01/12/2022,Rock,MN,MISO
+Thunderhead Wind Energy LLC,null,300,01/11/2022,Antelope,NE,SWPP
+Great Prairie Wind,null,"1,027",01/11/2022,Hansford,TX,SWPP
+Clearwater Wind I,null,365.5,01/11/2022,Rosebud,MT,PSEI
+Schumann Wind Farm,null,8,01/11/2022,Umatilla,OR,PACW
+Silver Maple,null,20,01/10/2022,Penobscot,ME,ISNE
+Foundation Dole Fresh Vegetables,null,2.8,01/08/2022,Monterey,CA,CISO
+Foundation Dole Fresh Vegetables,null,2.8,01/08/2022,Monterey,CA,CISO
+"SPPW1, LLC",null,2.8,01/07/2022,Franklin,NE,SWPP
+"SPPW1, LLC",null,2.8,01/07/2022,Franklin,NE,SWPP
+Helena Wind,null,268.2,01/06/2022,Bee,TX,ERCO
+"Panorama Wind, LLC",null,145,01/06/2022,Weld,CO,WACM
+"El Algodon Alto Wind Farm, LLC",null,200.2,01/05/2022,San Patricio,TX,ERCO
+"Traverse Wind Project, LLC",null,999,01/04/2022,Custer,OK,SWPP
+Golden Hill Wind,null,201.3,01/04/2022,Sherman,OR,AVRN
+"Western Trail Wind, LLC",null,366.6,01/04/2022,Wilbarger,TX,ERCO
+CED Manchester Wind,null,7.9,01/04/2022,Delaware,IA,MISO
+TG East,null,336,01/04/2022,Knox,TX,ERCO
+"King Creek Wind Farm 1, LLC",null,184,01/04/2022,Haskell,TX,ERCO
+"King Creek Wind Farm 2, LLC",null,209,01/04/2022,Throckmorton,TX,ERCO
+Maverick Creek Wind,null,491.6,01/03/2022,Concho,TX,ERCO
+"Haystack Wind Project, LLC",null,298,01/03/2022,Wayne,NE,SWPP
+Heartland Divide II,null,200,01/03/2022,Audubon,IA,MISO
+Ford County Wind Farm LLC,null,121.3,01/03/2022,Ford,IL,MISO
+Mountain View I & II,null,70.9,01/02/2022,Riverside,CA,CISO
+Aragonne Wind LLC,null,145,01/02/2022,Guadalupe,NM,PNM
+Black Rock Wind,null,115,01/02/2022,Mineral,WV,PJM
+Cranell Wind Farm LLC,null,220,01/01/2022,Refugio,TX,ERCO
+Fairbanks Wind Park,null,72.8,01/01/2022,Delta,MI,MISO
+Caddo Wind,null,303.2,01/01/2022,Caddo,OK,SWPP
+Priddy Wind Project,null,302.4,01/01/2022,Mills,TX,ERCO
+Plymouth Wind,null,202.7,01/01/2022,Plymouth,IA,MISO
+Jayhawk Wind Energy Center,null,197.4,01/01/2022,Crawford,KS,SWPP
+Dakota Range Wind,null,304,01/01/2022,Grant,SD,MISO
+BMP Wind (TX),null,340,01/12/2021,Callahan,TX,ERCO
+Red Cloud Wind LLC,null,350,01/12/2021,Lincoln,NM,PNM
+Iron Star Wind Project,null,297.6,01/12/2021,Ford,KS,SWPP
+Clines Corners Wind Farm LLC,null,325,01/12/2021,Torrance,NM,PNM
+Duran Mesa LLC,null,105,01/12/2021,Lincoln,NM,PNM
+Tecolote Wind LLC,null,272,01/12/2021,Lincoln,NM,PNM
+Irish Creek Wind,null,300.6,01/12/2021,Marshall,KS,SWPP
+"Rockhaven Wind Project, LLC",null,140,01/12/2021,Murray,OK,SWPP
+CED Centerville Wind,null,7.9,01/12/2021,Appanoose,IA,MISO
+Independence Wind Farm,null,55.4,01/12/2021,Delaware,IA,MISO
+Indiana Crossroads Wind Farm LLC,null,302.4,01/12/2021,White,IN,MISO
+"Little Blue Wind Project, LLC",null,250.7,01/12/2021,Webster,NE,SWPP
+Flat Ridge 3,null,128,01/12/2021,Kingman,KS,SWPP
+"Borderlands Wind, LLC",null,100,01/12/2021,Catron,NM,TEPC
+"Sac County Wind, LLC",null,80,01/12/2021,Sac,IA,MISO
+"Green Providence Wind I, LLC",null,1.5,01/12/2021,Providence,RI,ISNE
+"Green Providence Wind II, LLC",null,3,01/12/2021,Providence,RI,ISNE
+Lincoln Land Wind,null,302,01/11/2021,Sangamon,IL,MISO
+RoxWind,null,15.3,01/11/2021,Oxford,ME,ISNE
+"Glacier Sands Wind Power, LLC",null,185,01/11/2021,Mason,IL,MISO
+Glass Sands Wind Facility,null,117,01/11/2021,Murray,OK,SWPP
+Hubbard Wind,null,300,01/11/2021,Limestone,TX,ERCO
+"Niyol Wind, LLC",null,205.6,01/11/2021,Logan,CO,WACM
+"Roaring Brook, LLC",null,79.7,01/10/2021,Lewis,NY,NYIS
+TB Flats,null,503.2,01/10/2021,Carbon,WY,PACE
+West Raymond Wind Farm LLC,null,239.8,01/10/2021,Willacy,TX,ERCO
+Bennington Wind,null,93,01/10/2021,Marshall,IL,MISO
+White Mesa Wind,null,500.6,01/10/2021,Crockett,TX,ERCO
+Western Plains Wind,null,2.7,01/10/2021,Gove,KS,SWPP
+Sky River Wind Energy Center,null,60.2,01/09/2021,Kern,CA,CISO
+"Maverick Wind Project, LLC",null,288,01/09/2021,Major,OK,SWPP
+Sage Draw Wind,null,338.4,01/08/2021,Lynn,TX,ERCO
+Cassadaga Wind Farm,null,124,01/07/2021,Chautauqua,NY,NYIS
+Griffin Trail Wind,null,225.6,01/07/2021,Knox,TX,ERCO
+Wildcat Creek Wind Farm LLC,null,175.3,01/07/2021,Cooke,TX,ERCO
+Maryneal Windpower,null,182.4,01/07/2021,Nolan,TX,ERCO
+Summit Winds,null,47.5,01/07/2021,Alameda,CA,CISO
+Summit Winds,null,10,01/07/2021,Alameda,CA,CISO
+La Joya NM,null,141.2,01/06/2021,Torrance,NM,PNM
+Headwaters Wind Farm II LLC,null,200,01/06/2021,Randolph,IN,PJM
+"Raymond Wind Farm, LLC",null,200.2,01/06/2021,Willacy,TX,ERCO
+Aviator Wind,null,525,01/06/2021,Coke,TX,ERCO
+Isabella Wind Park,null,383.5,01/06/2021,Isabella,MI,MISO
+"La Chalupa, LLC",null,198.5,01/06/2021,Cameron,TX,ERCO
+Scioto Ridge Wind Farm,null,249.8,01/05/2021,Logan,OH,PJM
+Reloj del Sol Wind Farm,null,209.4,01/05/2021,Zapata,TX,ERCO
+Neosho Ridge Wind Energy Center,null,301,01/05/2021,Neosho,KS,SWPP
+Dakota Range III Wind Project,null,153.6,01/05/2021,Grant,SD,SWPP
+Oso Grande Wind Farm,null,33.8,01/05/2021,Lea,NM,TEPC
+Oso Grande Wind Farm,null,216,01/05/2021,Lea,NM,TEPC
+Freeborn Wind Farm,null,218,01/05/2021,Freeborn,MN,MISO
+Painted Hills Wind Park,null,46.8,01/04/2021,Riverside,CA,CISO
+Pryor Mountain Wind,null,239.8,01/04/2021,Carbon,MT,PACE
+Kings Point Wind Energy Center,null,149.4,01/04/2021,Lawrence,MO,SWPP
+Crossing Trails Wind Power Project LLC.,null,104,01/04/2021,Kit Carson,CO,WACM
+GE-Lubbock,null,3.4,01/04/2021,Lubbock,TX,SWPP
+"Sundance Wind Project, LLC",null,199,01/04/2021,Woods,OK,SWPP
+Oasis Alta,null,14.4,01/04/2021,Kern,CA,CISO
+85 A,null,21.3,01/03/2021,Kern,CA,CISO
+85 B,null,25.2,01/03/2021,Kern,CA,CISO
+Point Wind,null,64.5,01/03/2021,Kern,CA,CISO
+Atchison County Wind,null,299,01/03/2021,Atchison,MO,SWPP
+Southern Hills Wind Farm,null,254.1,01/03/2021,Union,IA,MISO
+Las Majadas Wind Farm,null,272.6,01/03/2021,Willacy,TX,ERCO
+Coachella Hills Wind,null,61.2,01/03/2021,Riverside,CA,CISO
+Milligan 1 Wind Farm,null,135,01/03/2021,Saline,NE,SWPP
+La Joya NM,null,165,01/02/2021,Torrance,NM,PNM
+Frontier Windpower II,null,351.8,01/02/2021,Kay,OK,SWPP
+Deuel Harvest Wind Energy LLC,null,300,01/02/2021,Deuel,SD,MISO
+Crescent Wind Park,null,150,01/02/2021,Hillsdale,MI,MISO
+Coastal Virginia Offshore Wind (CVOW) Pi,null,12,01/01/2021,Virginia Beach,VA,PJM
+Tatanka Ridge,null,154,01/01/2021,Deuel,SD,MISO
+Blazing Star 2 Wind Farm,null,200,01/01/2021,Lincoln,MN,MISO
+Aurora Wind Project,null,298.8,01/01/2021,Williams,ND,SWPP
+Coyote Wind LLC,null,242.5,01/01/2021,Scurry,TX,ERCO
+Merricourt Wind Energy Center,null,150,01/12/2020,McIntosh,ND,MISO
+Na Pua Makani Wind Project,null,27.6,01/12/2020,Honolulu,HI,null
+"Burke Wind, LLC",null,199.4,01/12/2020,Burke,ND,SWPP
+Amadeus Wind Farm,null,250,01/12/2020,Fisher,TX,ERCO
+Nobles 2 Wind Project,null,250,01/12/2020,Nobles,MN,MISO
+North Fork Ridge Wind Energy Center,null,149.4,01/12/2020,Barton,MO,SWPP
+High Prairie Wind Farm,null,400,01/12/2020,Schuyler,MO,MISO
+Ekola Flats,null,250.9,01/12/2020,Carbon,WY,PACE
+"White Cloud Wind Project, LLC",null,236.5,01/12/2020,Nodaway,MO,AECI
+El Campo Wind,null,242.8,01/12/2020,Knox,TX,ERCO
+Boiling Springs Wind Farm,null,148.4,01/12/2020,Woodward,OK,SWPP
+Rosewater Wind Farm,null,102,01/12/2020,White,IN,MISO
+"Orchard Windfarm 1, LLC",null,10,01/12/2020,Morrow,OR,PACW
+Rattlesnake Flat,null,144,01/12/2020,Adams,WA,AVA
+Palo Alto Wind Farm,null,90,01/12/2020,Palo Alto,IA,MISO
+Prairie Hill Wind Project,null,300,01/12/2020,Limestone,TX,ERCO
+Las Lomas Wind Project,null,201.6,01/12/2020,Zapata,TX,ERCO
+Mohave County Wind Farm,null,350,01/12/2020,Mohave,AZ,WALC
+Weaver Wind,null,72.6,01/12/2020,Hancock,ME,ISNE
+"Lone Tree Wind, LLC",null,79,01/12/2020,Bureau,IL,PJM
+Crowned Ridge Wind II Energy Center,null,200.6,01/12/2020,Codington,SD,MISO
+"Diamond Spring, LLC",null,303.5,01/12/2020,Johnston,OK,SWPP
+"Jordan Creek Wind Farm, LLC",null,398.6,01/12/2020,Warren,IN,MISO
+Sagamore Wind,null,522,01/12/2020,Roosevelt,NM,SWPP
+Contrail Wind Farm,null,112.4,01/12/2020,Taylor,IA,MISO
+Diamond Trail Wind Farm,null,252.5,01/12/2020,Iowa,IA,MISO
+Gratiot Farms Wind Project,null,150,01/12/2020,Montcalm,MI,MISO
+Red Lake Falls Community Hybrid,null,4.6,01/12/2020,Red Lake,MN,MISO
+Cedar Springs I,null,200,01/12/2020,Converse,WY,PACE
+Cedar Springs II,null,200,01/12/2020,Converse,WY,PACE
+Cedar Springs III,null,133,01/12/2020,Converse,WY,PACE
+Blooming Grove Wind Energy Center,null,250,01/12/2020,Livingston,IL,PJM
+"Orchard Windfarm 2, LLC",null,10,01/12/2020,Morrow,OR,BPAT
+"Orchard Windfarm 3, LLC",null,10,01/12/2020,Morrow,OR,BPAT
+"Orchard Windfarm 4, LLC",null,10,01/12/2020,Morrow,OR,PACW
+Wheatridge 1,null,100,01/12/2020,Morrow,OR,BPAT
+Cimarron Bend III,null,198.8,01/12/2020,Clark,KS,SWPP
+"REG Juhl Glenville Wind, LLC",null,2.5,01/12/2020,Freeborn,MN,MISO
+Milligan 1 Wind Farm,null,99,01/12/2020,Saline,NE,SWPP
+Milligan 1 Wind Farm,null,66,01/12/2020,Saline,NE,SWPP
+Skeleton Creek Energy Center Hybrid,NextEra Energy,250,01/12/2020,Garfield,OK,SWPP
+Sugar Creek Wind One LLC,null,202,01/11/2020,Logan,IL,MISO
+"Palmas Wind, LLC",null,144.9,01/11/2020,Cameron,TX,ERCO
+Wheatridge Hybrid,null,200,01/11/2020,Morrow,OR,BPAT
+Triple H Wind Project,null,250.2,01/11/2020,Hyde,SD,SWPP
+King Plains Wind Project,null,248.2,01/11/2020,Garfield,OK,SWPP
+Skookumchuck Wind Facility,null,136,01/11/2020,Thurston,WA,PSEI
+Corriedale Wind Energy,null,52.5,01/11/2020,Laramie,WY,WACM
+Ponderosa Wind Energy Center,null,200,01/11/2020,Beaver,OK,SWPP
+Soldier Creek Wind,null,300,01/11/2020,Nemaha,KS,SWPP
+Kossuth,null,152.2,01/10/2020,Kossuth,IA,MISO
+"Mountain Breeze Wind, LLC",null,171.7,01/10/2020,Weld,CO,PSCO
+Pegasus Wind,null,130,01/09/2020,Tuscola,MI,MISO
+Richland,null,130.9,01/09/2020,Sac,IA,MISO
+Willow Creek Wind Power LLC,null,105,01/09/2020,Butte,SD,SWPP
+"Bitter Ridge Wind Farm, LLC",null,130,01/09/2020,Jay,IN,PJM
+"Bronco Plains Wind, LLC",null,300,01/09/2020,Kit Carson,CO,PSCO
+Allendorf,null,2,01/08/2020,Osceola,IA,MISO
+Zephyr Wind Project - 2.0,null,1.5,01/08/2020,Hancock,OH,PJM
+Zephyr Wind Project - 2.0,null,1.5,01/08/2020,Hancock,OH,PJM
+Zephyr Wind Project - 2.0,null,1.5,01/08/2020,Hancock,OH,PJM
+LafargeHolcim - Paulding Wind Project,null,1.5,01/08/2020,Paulding,OH,PJM
+LafargeHolcim - Paulding Wind Project,null,1.5,01/08/2020,Paulding,OH,PJM
+LafargeHolcim - Paulding Wind Project,null,1.5,01/08/2020,Paulding,OH,PJM
+Cheyenne Ridge Wind Farm,null,498.4,01/08/2020,Cheyenne,CO,PSCO
+Cerro Gordo Wind Farm,null,42,01/08/2020,Cerro Gordo,IA,MISO
+Harvest Ridge Wind Farm,null,202,01/07/2020,Douglas,IL,MISO
+Peyton Creek Wind Farm LLC,null,151.2,01/06/2020,Matagorda,TX,ERCO
+Plum Creek Wind Project (NE),null,230,01/06/2020,Wayne,NE,SWPP
+Roundhouse Wind Energy Project,null,124,01/06/2020,Laramie,WY,WACM
+Roundhouse Wind Energy Project,null,79,01/06/2020,Laramie,WY,WACM
+Roundhouse Wind Energy Project,null,23,01/06/2020,Laramie,WY,WACM
+Reading Wind Project,null,200.1,01/05/2020,Lyon,KS,SWPP
+Heart of Texas Wind Project,null,180,01/05/2020,McCulloch,TX,ERCO
+Polaris Wind Park,null,168.6,01/05/2020,Gratiot,MI,MISO
+Beech Ridge II Wind Energy Center,null,56.2,01/05/2020,Greenbrier,WV,PJM
+Clear Creek Wind,null,22,01/05/2020,Nodaway,MO,AECI
+Clear Creek Wind,null,220,01/05/2020,Nodaway,MO,AECI
+"Rock County Wind Fuel, LLC",null,5,01/05/2020,Rock,MN,MISO
+CED Mason City Wind,null,7.5,01/05/2020,Cerro Gordo,IA,MISO
+Blazing Star Wind Farm 1,null,200,01/04/2020,Lincoln,MN,MISO
+South Peak Wind,null,80,01/04/2020,Judith Basin,MT,NWMT
+Cardinal Point Wind,null,150,01/03/2020,McDonough,IL,MISO
+Otter Creek Wind Farm LLC,null,150,01/03/2020,LaSalle,IL,PJM
+Golden Plains,null,199.8,01/03/2020,Winnebago,IA,MISO
+"East Fork Wind Project, LLC",null,195.8,01/03/2020,Thomas,KS,SWPP
+Prevailing Wind Park,null,220,01/03/2020,Yankton,SD,SWPP
+Mesquite Star,null,418.9,01/03/2020,Nolan,TX,ERCO
+Whitney Hill Wind Power LLC,null,65,01/03/2020,Logan,IL,PJM
+Jumbo Hill Wind Project,null,160.7,01/03/2020,Andrews,TX,ERCO
+Arbor Hill Wind Farm,null,60,01/02/2020,Adair,IA,MISO
+Hidalgo Wind Farm II,null,50.4,01/02/2020,Hidalgo,TX,ERCO
+"Foxtail Wind, LLC",null,150,01/01/2020,Dickey,ND,MISO
+Whispering Willow North,null,201.3,01/01/2020,Franklin,IA,MISO
+Timber Road IV,null,125.1,01/01/2020,Paulding,OH,PJM
+Palo Alto Wind Farm,null,250,01/01/2020,Palo Alto,IA,MISO
+Bright Stalk Wind Farm I,null,205.2,01/12/2019,McLean,IL,PJM
+Cross Winds Energy Park,null,75.9,01/12/2019,Tuscola,MI,MISO
+Antrim Wind,null,28.8,01/12/2019,Hillsborough,NH,ISNE
+Crowned Ridge Wind Energy Center,null,200.1,01/12/2019,Codington,SD,MISO
+Big Level Wind,null,90,01/12/2019,Potter,PA,PJM
+Voyager Wind I,null,131.1,01/12/2019,Kern,CA,CISO
+Coyote Ridge,null,97.4,01/12/2019,Brookings,SD,WACM
+Orient Wind Farm,null,398.8,01/12/2019,Adair,IA,MISO
+Wildhorse Mountain Wind Facility,null,100,01/12/2019,Pushmataha,OK,SWPP
+Pegasus Wind,null,48,01/12/2019,Tuscola,MI,MISO
+Glaciers Edge Wind Project,null,211.7,01/12/2019,Cherokee,IA,MISO
+North English,null,140,01/12/2019,Poweshiek,IA,MISO
+Mesteno,null,201.6,01/12/2019,Starr,TX,ERCO
+"Emmons-Logan Wind, LLC",null,200,01/12/2019,Emmons,ND,MISO
+Blue Summit III Wind,null,200.2,01/12/2019,Hardeman,TX,ERCO
+Ida Grove II,null,201,01/12/2019,Ida,IA,MISO
+Holiday Hill Community Wind,null,5,01/12/2019,Hampden,MA,ISNE
+Glen Ullin Energy Center,null,106.7,01/12/2019,Morton,ND,MISO
+"Canadian Breaks, LLC",null,210.1,01/12/2019,Deaf Smith,TX,ERCO
+"Cuming County Renewables, LLC",null,2.5,01/12/2019,Cuming,NE,SWPP
+Montague Wind Power Facility LLC,null,200,01/11/2019,Gilliam,OR,AVRN
+Green River Wind Farm,null,194.3,01/11/2019,Lee,IL,PJM
+Crocker Wind Farm,null,200,01/11/2019,Clark,SD,MISO
+Karankawa Wind LLC,null,307.1,01/11/2019,San Patricio,TX,ERCO
+Sholes Wind Energy Center,null,160,01/11/2019,Wayne,NE,SWPP
+Busch Ranch II Wind Farm,null,59.4,01/11/2019,Huerfano,CO,PSCO
+Berkshire Wind Power Project,null,2.3,01/09/2019,Berkshire,MA,ISNE
+Berkshire Wind Power Project,null,2.3,01/09/2019,Berkshire,MA,ISNE
+Foard City Wind,null,352.8,01/09/2019,Foard,TX,ERCO
+Gopher Creek Wind Farm,null,158,01/09/2019,Borden,TX,ERCO
+Ranchero Wind Farm LLC,null,300,01/09/2019,Crockett,TX,ERCO
+Lockett Windfarm,null,183.8,01/09/2019,Wilbarger,TX,ERCO
+"Grady Wind Energy Center, LLC",null,220.5,01/08/2019,Curry,NM,PNM
+"Midway Wind, LLC",null,162.9,01/08/2019,San Patricio,TX,ERCO
+"Solomon Forks Wind Project, LLC",null,275.6,01/07/2019,Thomas,KS,SWPP
+Patriot Wind Farm,null,226.1,01/06/2019,Nueces,TX,ERCO
+Hale Community Wind Farm,null,478,01/06/2019,Hale,TX,SWPP
+"Rio Bravo Windpower, LLC",null,237.6,01/06/2019,Starr,TX,ERCO
+Santa Rita East,null,302.4,01/06/2019,Irion,TX,ERCO
+"Seymour Hills Wind Project, LLC",null,30.2,01/05/2019,Baylor,TX,ERCO
+Prairie Queen Wind Farm,null,199.3,01/05/2019,Allen,KS,SWPP
+Foundation Mann Packing,null,1.8,01/04/2019,Monterey,CA,CISO
+Pine River Wind Park,null,161.3,01/03/2019,Isabella,MI,MISO
+Upland Prairie,null,299.3,01/03/2019,Clay,IA,MISO
+English Farms,null,171.5,01/03/2019,Poweshiek,IA,MISO
+Live Oak Wind Project,null,199.5,01/03/2019,Schleicher,TX,ERCO
+Saratoga Wind Farm,null,66,01/02/2019,Howard,IA,MISO
+"Torrecillas Wind Energy, LLC",null,300,01/02/2019,Webb,TX,ERCO
+"Stoneray Power Partners, LLC",null,100,01/02/2019,Pipestone,MN,MISO
+Blue Summit II Wind,null,99.4,01/01/2019,Wilbarger,TX,ERCO
+"WED Green Hill, LLC",null,3,01/01/2019,Providence,RI,ISNE
+"WED Plainfield II, LLC",null,3,01/01/2019,Providence,RI,ISNE
+"WED Plainfield III, LLC",null,3,01/01/2019,Providence,RI,ISNE
+"WED Plainfield, LLC",null,3,01/01/2019,Providence,RI,ISNE
+"WED Shun I, LLC",null,3,01/01/2019,Providence,RI,ISNE
+"WED Shun II, LLC",null,3,01/01/2019,Providence,RI,ISNE
+"WED Shun III, LLC",null,3,01/01/2019,Providence,RI,ISNE
+Gordon Butte Wind LLC,null,2.7,01/12/2018,Meagher,MT,NWMT
+Gordon Butte Wind LLC,null,2.7,01/12/2018,Meagher,MT,NWMT
+Gordon Butte Wind LLC,null,2.7,01/12/2018,Meagher,MT,NWMT
+Walnut Ridge Wind Farm,null,212,01/12/2018,Bureau,IL,PJM
+Copenhagen Wind Farm,null,79.9,01/12/2018,Lewis,NY,NYIS
+Stella Wind Farm,null,201,01/12/2018,Kenedy,TX,ERCO
+Lorenzo Wind,null,80,01/12/2018,Crosby,TX,SWPP
+Rattlesnake Creek Wind Project,null,318.1,01/12/2018,Dixon,NE,SWPP
+New Frontier Wind,null,100,01/12/2018,McHenry,ND,MISO
+Blue Cloud Wind Energy LLC,null,148.4,01/12/2018,Bailey,TX,SWPP
+Rush Creek Wind,null,600,01/12/2018,Elbert,CO,PSCO
+Orient Wind Farm,null,102,01/12/2018,Adair,IA,MISO
+Voyager Wind II,null,128.7,01/12/2018,Kern,CA,CISO
+Voyager Wind III,null,43.2,01/12/2018,Kern,CA,CISO
+Voyager Wind IV,null,21.6,01/12/2018,Kern,CA,CISO
+"Heartland Divide Wind Project, LLC",null,103.5,01/12/2018,Audubon,IA,MISO
+Turtle Creek Wind Farm LLC,null,199.2,01/12/2018,Mitchell,IA,MISO
+Wildcat Ranch Wind Project,null,150,01/12/2018,Cochran,TX,SWPP
+Hilltopper Wind Project,null,185,01/12/2018,Logan,IL,PJM
+Upstream Wind Energy LLC,null,202.5,01/12/2018,Antelope,NE,SWPP
+"Diamond Vista Wind Project, LLC",null,299.3,01/12/2018,Marion,KS,SWPP
+"Minco Wind IV, LLC",null,130,01/12/2018,Canadian,OK,SWPP
+Ivester Wind Farm,null,90.8,01/12/2018,Grundy,IA,MISO
+Tahoka Wind,null,300,01/12/2018,Lynn,TX,ERCO
+"Armadillo Flats Wind Project, LLC",null,247.3,01/12/2018,Garfield,OK,SWPP
+"Pratt Wind, LLC",null,243.5,01/12/2018,Pratt,KS,SWPP
+Arbor Hill Wind Farm,null,250,01/12/2018,Adair,IA,MISO
+North English,null,200,01/12/2018,Poweshiek,IA,MISO
+"Palmer's Creek Wind Farm, LLC",null,44.6,01/12/2018,Chippewa,MN,SWPP
+"Polk County Renewables, LLC",null,2.5,01/12/2018,Polk,NE,SWPP
+"Lake Region Community Hybrid, LLC",null,2,01/12/2018,Otter Tail,MN,MISO
+Meadow Lake Wind Farm VI LLC,null,200.4,01/11/2018,Benton,IN,MISO
+Casa Mesa Wind Energy Center Hybrid,null,50.9,01/11/2018,Quay,NM,PNM
+"Thunder Spirit Wind, LLC",null,48,01/10/2018,Adams,ND,MISO
+Beaver Creek Wind,null,170,01/10/2018,Boone,IA,MISO
+Aurora County Wind,null,20,01/10/2018,Aurora,SD,SWPP
+Brule County Wind,null,20,01/10/2018,Brule,SD,SWPP
+"Stillwater Wind, LLC",null,79.7,01/10/2018,Stillwater,MT,NWMT
+Two Dot Wind Broadview East LLC,null,1.8,01/10/2018,Yellowstone,MT,NWMT
+Foundation NWNA,null,1.9,01/09/2018,Riverside,CA,CISO
+Northwest Ohio Wind,null,105,01/09/2018,Paulding,OH,PJM
+"Rattlesnake Power, LLC",null,160,01/09/2018,McCulloch,TX,ERCO
+Valfilm Wind Project,null,1.5,01/09/2018,Hancock,OH,PJM
+Valfilm Wind Project,null,1.5,01/09/2018,Hancock,OH,PJM
+Whirlpool Corp-Greenville Wind Farm,null,1.5,01/09/2018,Darke,OH,PJM
+Whirlpool Corp-Greenville Wind Farm,null,1.5,01/09/2018,Darke,OH,PJM
+Whirlpool Corp-Greenville Wind Farm,null,1.5,01/09/2018,Darke,OH,PJM
+"Persimmon Creek Wind Farm 1, LLC",null,198.6,01/09/2018,Woodward,OK,SWPP
+Foundation California Training Facility,null,1.8,01/08/2018,Monterey,CA,CISO
+Foundation SaIinas Valley State Prison,null,1.8,01/08/2018,Monterey,CA,CISO
+Arkwright Summit Wind Farm LLC,null,78.4,01/08/2018,Chautauqua,NY,NYIS
+Cactus Flats Wind Energy Project,null,148.4,01/07/2018,Concho,TX,ERCO
+UL Advanced Wind Turbine Test Facility,null,3.4,01/07/2018,Randall,TX,SWPP
+Perennial Windfarm,null,2.3,01/07/2018,Fillmore,NE,SWPP
+Perennial Windfarm,null,2.3,01/07/2018,Fillmore,NE,SWPP
+Perennial Windfarm,null,2.3,01/07/2018,Fillmore,NE,SWPP
+Kimball Wind,null,30,01/06/2018,Kimball,NE,WACM
+Bishop Hill III,null,119,01/06/2018,Henry,IL,MISO
+Santa Rita Wind Energy,null,300,01/04/2018,Reagan,TX,ERCO
+Town of Otis Wind Energy Project,null,1.5,01/03/2018,Berkshire,MA,ISNE
+Bearkat,null,196.7,01/02/2018,Glasscock,TX,ERCO
+Big Timber Wind Farm,null,25,01/02/2018,Sweet Grass,MT,NWMT
+Cross Winds Energy Park,null,44,01/01/2018,Tuscola,MI,MISO
+Prairie Wind Farm,null,168,01/01/2018,Mahaska,IA,MISO
+Whirlpool Corporation - Ottawa Wind Farm,null,1.5,01/01/2018,Putnam,OH,PJM
+Flat Top Wind I,null,200,01/01/2018,Mills,TX,ERCO
+Tule Wind LLC,null,143,01/12/2017,San Diego,CA,CISO
+El Cabo Wind,null,298,01/12/2017,Torrance,NM,PNM
+Radfords Run Wind Farm,null,278,01/12/2017,Dewitt,IL,PJM
+Bruennings Breeze Wind Farm,null,228,01/12/2017,Willacy,TX,ERCO
+Buckthorn Wind,null,100.5,01/12/2017,Erath,TX,ERCO
+Deerfield Wind LLC,null,30,01/12/2017,Bennington,VT,ISNE
+Twin Buttes II Wind,null,75,01/12/2017,Prowers,CO,WACM
+Seward Wind Farm,null,1.7,01/12/2017,Seward,NE,SWPP
+Foundation CDCR LAC,null,1.9,01/12/2017,Los Angeles,CA,CISO
+Beaver Creek Wind,null,170,01/12/2017,Boone,IA,MISO
+Rock Falls Wind Farm LLC,null,154.5,01/12/2017,Kay,OK,SWPP
+Thunder Ranch Wind Project,null,297.8,01/12/2017,Noble,OK,SWPP
+Red Dirt Wind Project,null,299.3,01/12/2017,Kingfisher,OK,SWPP
+Bluff Point Wind Facility,null,119.7,01/12/2017,Jay,IN,PJM
+Hog Creek Wind Project,null,66,01/12/2017,Hardin,OH,PJM
+Red Pine Wind Project,null,200,01/12/2017,Lincoln,MN,MISO
+Canton Mountain Wind,null,22.8,01/11/2017,Oxford,ME,ISNE
+Apple Blossom Wind Farm,null,100,01/11/2017,Huron,MI,MISO
+Fluvanna,null,155.4,01/11/2017,Scurry,TX,ERCO
+Rock Creek Wind Project,null,300,01/11/2017,Atchison,MO,SWPP
+Willow Springs Wind Farm,null,250,01/11/2017,Haskell,TX,ERCO
+Golden Hills North Wind Energy Center,null,46,01/11/2017,Alameda,CA,CISO
+Cottonwood Wind Energy Center,null,89.7,01/11/2017,Webster,NE,SWPP
+Chapman Ranch Wind I,null,236,01/10/2017,Nueces,TX,ERCO
+Whirlpool Corporation - Marion Wind Farm,null,1.5,01/10/2017,Marion,OH,PJM
+Whirlpool Corporation - Marion Wind Farm,null,1.5,01/10/2017,Marion,OH,PJM
+Whirlpool Corporation - Marion Wind Farm,null,1.5,01/10/2017,Marion,OH,PJM
+Quilt Block Wind Farm LLC,null,98,01/09/2017,Lafayette,WI,MISO
+Rocksprings,null,149.3,01/09/2017,Val Verde,TX,ERCO
+Foundation Scheid Vineyards,null,1.9,01/09/2017,Monterey,CA,CISO
+Meadow Lake Wind Farm V LLC,null,100,01/07/2017,White,IN,PJM
+Dermott Wind,null,253,01/07/2017,Scurry,TX,ERCO
+Sterling I Wind Farm,null,29.9,01/07/2017,Lea,NM,SWPP
+Redbed Plains Wind Farm,null,99.1,01/07/2017,Grady,OK,SWPP
+Bloom Wind,null,178.2,01/06/2017,Ford,KS,SWPP
+"Creston Ridge II, LLC",null,2.3,01/06/2017,Platte,NE,SWPP
+"Creston Ridge II, LLC",null,2.3,01/06/2017,Platte,NE,SWPP
+"Creston Ridge II, LLC",null,2.3,01/06/2017,Platte,NE,SWPP
+Astra Wind Farm,null,163,01/05/2017,Randall,TX,ERCO
+Old Settler Wind,null,151.2,01/04/2017,Floyd,TX,ERCO
+Optimum Wind 5 LLC,null,3,01/03/2017,Story,IA,MISO
+Optimum Wind 6 LLC,null,3,01/03/2017,Story,IA,MISO
+Optimum Wind 7 LLC,null,3,01/03/2017,Story,IA,MISO
+Optimum Wind 4 LLC,null,3,01/03/2017,Story,IA,MISO
+Optimum Wind 3 LLC,null,3,01/03/2017,Story,IA,MISO
+Venus Wind 3 LLC,null,3,01/03/2017,Poweshiek,IA,MISO
+Michelangelo Wind 1 LLC,null,3,01/03/2017,Story,IA,MISO
+WED Coventry 5,null,1.5,01/03/2017,Kent,RI,ISNE
+Jett Creek Windfarm (Burnt River),null,10,01/03/2017,Baker,OR,IPCO
+Benson Creek Windfarm (Burnt River),null,10,01/03/2017,Baker,OR,IPCO
+Durbin Creek Windfarm (Burnt River),null,10,01/03/2017,Baker,OR,IPCO
+Prospector Windfarm (Burnt River),null,10,01/03/2017,Baker,OR,IPCO
+Willow Spring Windfarm (Burnt River),null,10,01/03/2017,Baker,OR,IPCO
+"Lindahl Wind Project, LLC",null,150,01/03/2017,Williams,ND,SWPP
+"Broadview Energy JN, LLC",null,181.7,01/03/2017,Curry,NM,GRIS
+"Broadview Energy KW, LLC",null,142.6,01/03/2017,Curry,NM,GRIS
+Cotton Plains Wind Farm,null,50.4,01/03/2017,Floyd,TX,ERCO
+"Cimarron Bend Wind Project II, LLC",null,200,01/03/2017,Clark,KS,SWPP
+Western Plains Wind Farm,null,280.6,01/03/2017,Ford,KS,SWPP
+Seneca Nation Cattaraugus Wind Turbine,null,1.5,01/03/2017,Erie,NY,NYIS
+TAC-Distributed Energy Resource Hybrid,null,0.1,01/03/2017,Champaign,IL,MISO
+Michelangelo Wind 3 LLC,null,3,01/02/2017,Story,IA,MISO
+"San Roman Wind I, LLC",null,95.3,01/02/2017,Cameron,TX,ERCO
+"Deerfield Wind Energy, LLC",null,41.6,01/02/2017,Huron,MI,MISO
+"Deerfield Wind Energy, LLC",null,74.5,01/02/2017,Huron,MI,MISO
+"Deerfield Wind Energy, LLC",null,32.9,01/02/2017,Huron,MI,MISO
+August Wind Farm,null,1.8,01/02/2017,Taylor,IA,MISO
+Roseman,null,1.8,01/02/2017,Cass,IA,MISO
+Birch,null,1.8,01/02/2017,Taylor,IA,MISO
+Bethel Wind Farm LLC,null,276,01/01/2017,Castro,TX,SWPP
+"Oliver Wind III, LLC",null,99.3,01/01/2017,Morton,ND,MISO
+Bingham Wind,null,186,01/12/2016,Piscataquis,ME,ISNE
+Hidalgo Wind Farm LLC,null,250,01/12/2016,Hidalgo,TX,ERCO
+Block Island Wind Farm,null,30,01/12/2016,Washington,RI,ISNE
+Chisholm View Wind Project,null,64.8,01/12/2016,Garfield,OK,SWPP
+Echo Wind Park,null,50,01/12/2016,Huron,MI,MISO
+Courtenay Wind Farm,null,200,01/12/2016,Stutsman,ND,MISO
+Hancock Wind Plant,null,51,01/12/2016,Hancock,ME,ISNE
+South Fork Wind Farm,null,13.8,01/12/2016,Jackson,MN,MISO
+Black Oak Wind Farm,null,78,01/12/2016,Stearns,MN,MISO
+Grande Prairie Wind Farm,null,400,01/12/2016,Holt,NE,SWPP
+Drift Sand Wind Project LLC,null,108,01/12/2016,Grady,OK,SWPP
+Leonardo Wind 1 LLC,null,3,01/12/2016,Hardin,IA,MISO
+Michelangelo Wind 4 LLC,null,3,01/12/2016,Boone,IA,MISO
+Jericho Rise Wind Farm LLC,null,77.7,01/12/2016,Franklin,NY,NYIS
+"Desert Wind Farm, LLC",null,208,01/12/2016,Perquimans,NC,PJM
+Sunflower Wind Project,null,104,01/12/2016,Morton,ND,WACM
+New Creek Wind,null,103,01/12/2016,Grant,WV,PJM
+Frontier Windpower,null,200,01/12/2016,Kay,OK,SPA
+Bluestem,null,198,01/12/2016,Beaver,OK,SWPP
+O'Brien Wind,null,108.7,01/12/2016,O'Brien,IA,MISO
+O'Brien Wind,null,79.7,01/12/2016,O'Brien,IA,MISO
+"Ringer Hill Wind Farm, LLC",null,39.9,01/12/2016,Somerset,PA,PJM
+Ida Grove Wind,null,119.6,01/12/2016,Ida,IA,MISO
+Ida Grove Wind,null,92.8,01/12/2016,Ida,IA,MISO
+Brady II Wind Energy Center,null,150,01/12/2016,Stark,ND,SWPP
+Pisgah Mountain Wind,null,9.1,01/12/2016,Penobscot,ME,ISNE
+Paulding Wind Farm III,null,100.8,01/12/2016,Paulding,OH,PJM
+"Tyler Bluff Wind Project, LLC",null,125.6,01/12/2016,Cooke,TX,ERCO
+"Grant Plains Wind, LLC",null,147.2,01/12/2016,Grant,OK,SWPP
+"Great Western Wind Energy, LLC",null,225,01/12/2016,Ellis,OK,SWPP
+Kelly Creek Wind Project,null,184,01/12/2016,Ford,IL,PJM
+Rush Springs Wind,null,249.9,01/12/2016,Stephens,OK,SWPP
+"Ninnescah Wind Energy, LLC",null,208.3,01/12/2016,Pratt,KS,SWPP
+Kingman Wind,null,107.4,01/12/2016,Pratt,KS,SWPP
+Kingman Wind,null,107.4,01/12/2016,Pratt,KS,SWPP
+"Salt Fork Wind Project, LLC",null,174,01/12/2016,Donley,TX,ERCO
+Osborn Wind Energy,null,200.9,01/12/2016,DeKalb,MO,SWPP
+"Cimarron Bend Wind Project I, LLC",null,200,01/12/2016,Clark,KS,SWPP
+CCC Hastings Wind Turbine,null,1.7,01/12/2016,Adams,NE,SWPP
+Mariah del Norte,null,230.4,01/11/2016,Parmer,TX,ERCO
+Peak View Wind Farm,null,60.8,01/11/2016,Huerfano,CO,PSCO
+Electra Wind Farm,null,230,01/11/2016,Wilbarger,TX,ERCO
+Ida Grove Wind,null,27.6,01/11/2016,Ida,IA,MISO
+Brady Wind Energy Center,null,150,01/11/2016,Stark,ND,SWPP
+"Javelina Wind Energy II, LLC",null,200,01/11/2016,Webb,TX,ERCO
+Wake Wind Energy Center,null,257.3,01/10/2016,Crosby,TX,ERCO
+Chopin Wind LLC,null,10,01/10/2016,Umatilla,OR,PACW
+WED Coventry 1,null,1.5,01/10/2016,Kent,RI,ISNE
+"Pioneer Wind Park, LLC",null,80,01/10/2016,Converse,WY,PACE
+Horse Creek Wind Farm,null,230,01/10/2016,Haskell,TX,ERCO
+Greenfield Wind - MT,null,25,01/10/2016,Teton,MT,NWMT
+Big Turtle Wind Farm 2,null,29.4,01/10/2016,Huron,MI,MISO
+O'Brien Wind,null,61.9,01/09/2016,O'Brien,IA,MISO
+Ida Grove Wind,null,61.1,01/09/2016,Ida,IA,MISO
+WED Coventry 2,null,1.5,01/08/2016,Kent,RI,ISNE
+WED Coventry 2,null,1.5,01/08/2016,Kent,RI,ISNE
+WED Coventry 2,null,1.5,01/08/2016,Kent,RI,ISNE
+WED Coventry 3,null,1.5,01/08/2016,Kent,RI,ISNE
+WED Coventry 4,null,1.5,01/08/2016,Kent,RI,ISNE
+WED Coventry 6,null,1.5,01/08/2016,Kent,RI,ISNE
+WED Coventry 6,null,1.5,01/08/2016,Kent,RI,ISNE
+WED Coventry 6,null,1.5,01/08/2016,Kent,RI,ISNE
+Future Generation Wind,null,8,01/08/2016,Plymouth,MA,ISNE
+"WED Portsmouth One, LLC",null,1.5,01/08/2016,Newport,RI,ISNE
+Odell Wind Farm,null,200,01/07/2016,Cottonwood,MN,MISO
+Passadumkeag Windpark LLC,null,42.9,01/07/2016,Penobscot,ME,ISNE
+Los Vientos Windpower IV,null,200,01/07/2016,Starr,TX,ERCO
+Tooele Army Depot(CSG),Unable to find,1.7,01/07/2016,Tooele,UT,PACE
+Gunsight Mountain Wind Energy LLC,null,120,01/06/2016,Howard,TX,ERCO
+South Plains II,null,300,01/06/2016,Floyd,TX,ERCO
+Green Energy Machine,null,1.7,01/06/2016,Cass,IA,MISO
+"Colbeck's Corner, LLC",null,200,01/05/2016,Carson,TX,ERCO
+Marshall Wind Farm,null,73.8,01/05/2016,Marshall,KS,SWPP
+"Grant Wind, LLC",null,151.8,01/04/2016,Grant,OK,SWPP
+Prairie Breeze III,null,35.8,01/04/2016,Antelope,NE,SWPP
+Kingfisher Wind LLC,null,298,01/03/2016,Kingfisher,OK,SWPP
+Latigo Wind Park,null,62.1,01/03/2016,San Juan,UT,PACE
+Waverly Wind Farm LLC,null,199,01/01/2016,Coffey,KS,SWPP
+Jericho Power,null,14.3,01/01/2016,Coos,NH,ISNE
+Fowler Ridge IV Wind Farm LLC,null,150,01/01/2016,Benton,IN,PJM
+Adams Wind,null,48.3,01/01/2016,Adams,IA,MISO
+Milo Wind Project LLC,null,50,01/01/2016,Roosevelt,NM,SWPP
+Harpster Wind,null,1.5,01/01/2016,Wyandot,OH,PJM
+UL Advanced Wind Turbine Test Facility,null,0.1,01/01/2016,Randall,TX,SWPP
+Alexander Wind Farm LLC,null,50.7,01/12/2015,Rush,KS,SWPP
+Roosevelt County,null,250,01/12/2015,Roosevelt,NM,SWPP
+Highland Wind Project (IA),null,4.7,01/12/2015,O'Brien,IA,MISO
+"Thunder Spirit Wind, LLC",null,107.5,01/12/2015,Adams,ND,MISO
+Goodwell Wind Project LLC,null,200,01/12/2015,Texas,OK,SWPP
+Little Elk Wind Project LLC,null,74,01/12/2015,Washita,OK,SWPP
+Shannon Wind,null,204,01/12/2015,Clay,TX,ERCO
+"Kay Wind, LLC",null,299,01/12/2015,Kay,OK,SPA
+Adams Wind,null,58,01/12/2015,Adams,IA,MISO
+Sendero,null,78,01/12/2015,Jim Hogg,TX,ERCO
+Campbell County Wind Farm,null,94.3,01/12/2015,Campbell,SD,SWPP
+Slate Creek Wind Project LLC,null,150,01/12/2015,Sumner,KS,SWPP
+Findlay Wind Farm,null,3,01/12/2015,Hancock,OH,PJM
+Golden Hills Wind,null,85.9,01/12/2015,Alameda,CA,CISO
+Los Vientos V Wind Power,null,110,01/12/2015,Starr,TX,ERCO
+"Cedar Bluff Wind, LLC",null,198.6,01/12/2015,Ness,KS,SWPP
+"Javelina Wind Energy, LLC",null,249.7,01/12/2015,Webb,TX,ERCO
+Zephyr Wind,null,1.5,01/12/2015,Hancock,OH,PJM
+Zephyr Wind,null,1.5,01/12/2015,Hancock,OH,PJM
+Zephyr Wind,null,1.5,01/12/2015,Hancock,OH,PJM
+Creston Ridge Wind Farm,null,6.8,01/12/2015,Platte,NE,SWPP
+Cameron Wind 1 LLC,Apex Clean Energy,165,01/12/2015,Cameron,TX,ERCO
+Highland Wind Project (IA),null,86.8,01/11/2015,O'Brien,IA,MISO
+Fair Wind,null,30,01/11/2015,Garrett,MD,PJM
+Arbuckle Mountain Wind Farm LLC,null,100,01/11/2015,Murray,OK,SWPP
+South Plains Wind Phase I,null,200,01/11/2015,Floyd,TX,ERCO
+Adams Wind,null,43.3,01/11/2015,Adams,IA,MISO
+Carousel Wind Farm LLC,null,150,01/11/2015,Kit Carson,CO,PSCO
+Wind Colebrook South,null,5,01/11/2015,Litchfield,CT,ISNE
+Oakfield Wind Project,null,148,01/10/2015,Aroostook,ME,ISNE
+Highland Wind Project (IA),null,115,01/10/2015,O'Brien,IA,MISO
+Pleasant Hill Wind Energy Project,null,20,01/10/2015,Crosby,TX,SWPP
+Adams Wind,null,4.7,01/10/2015,Adams,IA,MISO
+Green Pastures Wind II,null,150,01/10/2015,Knox,TX,ERCO
+Briscoe Wind Farm,null,150,01/10/2015,Briscoe,TX,ERCO
+Golden West Power Partners LLC,null,250,01/10/2015,El Paso,CO,PSCO
+Prairie Breeze II,null,73.4,01/10/2015,Antelope,NE,SWPP
+Saddleback Ridge Wind Farm,null,25.7,01/09/2015,Franklin,ME,ISNE
+Spinning Spur Wind III,null,194,01/09/2015,Oldham,TX,ERCO
+Highland Wind Project (IA),null,89.2,01/09/2015,O'Brien,IA,MISO
+Wind GEM,null,1.9,01/09/2015,Adair,IA,MISO
+Route 66 Wind Plant,null,150,01/08/2015,Carson,TX,ERCO
+Buckeye Wind Energy Center,null,200.5,01/08/2015,Ellis,KS,SWPP
+Red Horse 2,null,30,01/08/2015,Cochise,AZ,TEPC
+Highland Wind Project (IA),null,89.1,01/08/2015,O'Brien,IA,MISO
+Pilot Hill Wind Farm,null,175,01/08/2015,Kankakee,IL,PJM
+Balko Wind LLC,null,299.7,01/08/2015,Beaver,OK,SWPP
+Breckinridge Wind Project LLC,null,98.8,01/08/2015,Garfield,OK,SWPP
+Border Winds Wind Farm,null,150,01/08/2015,Rolette,ND,MISO
+Pleasant Valley Wind Farm,null,200,01/08/2015,Mower,MN,MISO
+Logans Gap Wind LLC,null,200.1,01/08/2015,Comanche,TX,ERCO
+Highland Wind Project (IA),null,100.8,01/07/2015,O'Brien,IA,MISO
+Rattlesnake Den,null,207.2,01/07/2015,Glasscock,TX,ERCO
+"Osage Wind, LLC",null,150.4,01/06/2015,Osage,OK,AECI
+Highland Wind Project (IA),null,16.4,01/06/2015,O'Brien,IA,MISO
+Rising Tree Wind Farm III,null,99,01/06/2015,Kern,CA,CISO
+Longhorn Wind,null,200,01/05/2015,Briscoe,TX,ERCO
+Beethoven Wind,null,80,01/05/2015,Bon Homme,SD,SWPP
+Stephens Ranch Wind Energy LLC,null,165,01/04/2015,Borden,TX,ERCO
+Los Vientos Windpower III,null,200,01/04/2015,Starr,TX,ERCO
+Mesquite Creek Wind,null,211.2,01/04/2015,Dawson,TX,ERCO
+TX Jumbo Road Wind,null,299.7,01/04/2015,Deaf Smith,TX,ERCO
+Green Pastures Wind I,null,150,01/04/2015,Baylor,TX,ERCO
+Hoopeston Wind LLC,null,98,01/03/2015,Vermilion,IL,MISO
+GE-Lubbock,null,2.8,01/02/2015,Lubbock,TX,SWPP
+Rising Tree Wind Farm,null,79.2,01/01/2015,Kern,CA,CISO
+Keechi Wind,null,110,01/01/2015,Jack,TX,ERCO
+Bison 4 Wind Energy Center,null,205,01/01/2015,Morton,ND,MISO
+Carroll Area Wind Farm,null,20.7,01/01/2015,Carroll,IA,MISO
+Rising Tree Wind Farm II,null,19.8,01/01/2015,Kern,CA,CISO
+Baffin Wind,null,188,01/12/2014,Kenedy,TX,ERCO
+Stephens Ranch Wind Energy LLC,null,211,01/12/2014,Borden,TX,ERCO
+Echo Wind Park,null,62.4,01/12/2014,Huron,MI,MISO
+Headwaters Wind Farm LLC,null,200,01/12/2014,Randolph,IN,PJM
+Tucannon River Wind Farm,null,266.8,01/12/2014,Columbia,WA,PGE
+"Grandview Wind Farm, LLC",null,211.2,01/12/2014,Carson,TX,ERCO
+Saddleback Ridge Wind Farm,null,8.5,01/12/2014,Franklin,ME,ISNE
+Spring Canyon Expansion Wind Energy Ctr,null,28.6,01/12/2014,Logan,CO,PSCO
+TX Hereford Wind,null,200,01/12/2014,Deaf Smith,TX,ERCO
+Cross Winds Energy Park,null,111,01/12/2014,Tuscola,MI,MISO
+Macksburg Wind Project,null,119.6,01/12/2014,Madison,IA,MISO
+Wellsburg Wind Project,null,140.8,01/12/2014,Grundy,IA,MISO
+"Big Turtle Wind Farm, LLC",null,20,01/12/2014,Huron,MI,MISO
+Fourmile Ridge,null,40,01/12/2014,Garrett,MD,PJM
+Beebe 1B,null,50.4,01/12/2014,Gratiot,MI,MISO
+Anderson Wind I,null,5,01/12/2014,Chaves,NM,SWPP
+Anderson Wind II,null,10,01/12/2014,Chaves,NM,SWPP
+Mammoth Plains,null,226.1,01/12/2014,Dewey,OK,SWPP
+Seiling Wind I,null,199,01/12/2014,Dewey,OK,SWPP
+Seiling Wind II,null,98.6,01/12/2014,Dewey,OK,SWPP
+Oak Tree Energy,null,19.5,01/12/2014,Clark,SD,SWPP
+Palo Duro Wind,null,282.3,01/12/2014,Ochiltree,TX,SWPP
+Pattern Panhandle Wind 2 LLC,null,181.7,01/11/2014,Carson,TX,ERCO
+Marsh Hill Wind Farm,null,16.2,01/11/2014,Steuben,NY,NYIS
+Origin Wind,null,150,01/11/2014,Murray,OK,SWPP
+City of Soledad Water Reclamation,null,1,01/11/2014,Monterey,CA,CISO
+Taylor Farms,null,1,01/11/2014,Monterey,CA,CISO
+Anheuser-Busch #2,null,1.6,01/11/2014,Solano,CA,CISO
+Spring Canyon Expansion Wind Energy Ctr,null,34,01/10/2014,Logan,CO,PSCO
+"Broken Bow Wind II, LLC",null,73.1,01/10/2014,Custer,NE,SWPP
+Windthorst-2,null,67.6,01/09/2014,Archer,TX,ERCO
+"Valentine Wind, LLC",null,1.9,01/09/2014,Cherry,NE,SWPP
+Miami Wind Energy Center,null,288.6,01/08/2014,Roberts,TX,ERCO
+Lundgren Wind Project,null,251,01/08/2014,Webster,IA,MISO
+Limon III Wind LLC,null,200.6,01/08/2014,Lincoln,CO,PSCO
+Pattern Panhandle Wind LLC,null,218,01/07/2014,Carson,TX,ERCO
+Spinning Spur Wind II,null,161,01/07/2014,Oldham,TX,ERCO
+Golden Acorn Casino,null,1,01/07/2014,San Diego,CA,CISO
+Pantex,null,11.5,01/06/2014,Carson,TX,SWPP
+Two Dot Wind Farm,null,9.7,01/06/2014,Wheatland,MT,NWMT
+Prairie Breeze,null,206.5,01/05/2014,Antelope,NE,SWPP
+Fairfield Wind,null,10,01/05/2014,Teton,MT,NWMT
+GE-Lubbock,null,2.5,01/04/2014,Lubbock,TX,SWPP
+Lakeswind Power Partners,null,51.8,01/03/2014,Clay,MN,MISO
+Broadview Energy Prime LLC,null,9.9,01/02/2014,Curry,NM,SWPP
+Broadview Energy Prime 2 LLC,null,9.9,01/02/2014,Curry,NM,SWPP
+Brookfield,null,74.8,01/02/2014,Huron,MI,MISO
+Echo Wind Park,null,49.6,01/01/2014,Huron,MI,MISO
+Alta Wind X,null,138,01/01/2014,Kern,CA,CISO
+Alta Wind XI,null,90,01/01/2014,Kern,CA,CISO
+Cape Cod Air Force Station - 6 SWS,null,1.7,01/01/2014,Barnstable,MA,ISNE
+Cape Cod Air Force Station - 6 SWS,null,1.7,01/01/2014,Barnstable,MA,ISNE
+Vienna Wind Farm,null,44.6,01/12/2013,Marshall,IA,MISO
+Goldthwaite Wind Energy Facility,null,150,01/12/2013,Mills,TX,ERCO
+Buffalo Dunes Wind Project,null,249.8,01/12/2013,Haskell,KS,SWPP
+Pheasant Run Wind LLC,null,74.8,01/12/2013,Huron,MI,MISO
+RP Wind,null,3.4,01/12/2013,Logan,OH,PJM
+Stony Creek Wind Farm NY,null,94.4,01/11/2013,Wyoming,NY,NYIS
+Tuscola Wind II LLC,null,100.3,01/11/2013,Tuscola,MI,MISO
+Dept of Corrections NCCI Wind,null,1.7,01/11/2013,Worcester,MA,ISNE
+Dept of Corrections NCCI Wind,null,1.7,01/11/2013,Worcester,MA,ISNE
+Fort Hays State University Wind Farm,null,2,01/11/2013,Ellis,KS,SWPP
+Fort Hays State University Wind Farm,null,2,01/11/2013,Ellis,KS,SWPP
+Huerfano River Wind,null,2,01/10/2013,Huerfano,CO,WACM
+Huerfano River Wind,null,2,01/10/2013,Huerfano,CO,WACM
+Huerfano River Wind,null,2,01/10/2013,Huerfano,CO,WACM
+Huerfano River Wind,null,2,01/10/2013,Huerfano,CO,WACM
+Steele Flats Wind Project LLC,null,74.8,01/10/2013,Jefferson,NE,SWPP
+Colorado Highlands Wind,null,25.1,01/09/2013,Logan,CO,WACM
+Delta Wind Farm,null,0.9,01/09/2013,Southeast Fairbanks,AK,null
+Snake River,null,0.9,01/07/2013,Nome,AK,null
+Snake River,null,0.9,01/07/2013,Nome,AK,null
+Haviland Plastic Products,null,1.5,01/06/2013,Paulding,OH,PJM
+Haviland Plastic Products,null,1.5,01/05/2013,Paulding,OH,PJM
+Haviland Plastic Products,null,1.5,01/05/2013,Paulding,OH,PJM
+Eva Creek Wind,null,24.6,01/01/2013,Denali,AK,null
+Colorado Highlands Wind,null,71,01/12/2012,Logan,CO,WACM
+Big Blue,null,36,01/12/2012,Faribault,MN,MISO
+New England Wind LLC,null,28.5,01/12/2012,Berkshire,MA,ISNE
+Ryegrass Windfarm,null,23,01/12/2012,Elmore,ID,IPCO
+Hammett Hill Windfarm,null,23,01/12/2012,Elmore,ID,IPCO
+Mainline Windfarm,null,23,01/12/2012,Elmore,ID,IPCO
+Desert Meadow Windfarm,null,23,01/12/2012,Elmore,ID,IPCO
+Cold Springs Windfarm,null,23,01/12/2012,Elmore,ID,IPCO
+Two Ponds Windfarm,null,23,01/12/2012,Elmore,ID,IPCO
+Manzana Wind LLC,null,189,01/12/2012,Kern,CA,CISO
+Ocotillo Express LLC,null,265.4,01/12/2012,Imperial,CA,CISO
+Palouse,null,105.3,01/12/2012,Whitman,WA,AVA
+Broken Bow Wind LLC,null,79.9,01/12/2012,Custer,NE,SWPP
+Prairie Rose Wind Farm,null,200,01/12/2012,Rock,MN,MISO
+Shiloh IV Wind Project LLC,null,102.5,01/12/2012,Solano,CA,CISO
+Los Vientos Wind 1A,null,200,01/12/2012,Cameron,TX,ERCO
+Los Vientos Wind 1B,null,201.6,01/12/2012,Cameron,TX,ERCO
+Mehoopany Wind Energy LLC,null,140.8,01/12/2012,Wyoming,PA,PJM
+Bison 2 Wind Energy Center,null,105,01/12/2012,Morton,ND,MISO
+Bison 3 Wind Energy Center,null,105,01/12/2012,Morton,ND,MISO
+Franklin County Wind Farm,null,99,01/12/2012,Franklin,IA,MISO
+Sigel Wind Park,null,64,01/12/2012,Huron,MI,MISO
+Minden Wind Park,null,32,01/12/2012,Sanilac,MI,MISO
+McKinley Wind Park,null,14.4,01/12/2012,Huron,MI,MISO
+"Wildcat Wind Farm I, LLC",null,200,01/12/2012,Tipton,IN,PJM
+Howard Wind Farm,null,4.1,01/12/2012,Steuben,NY,NYIS
+Musselshell Wind Project,null,10,01/12/2012,Wheatland,MT,NWMT
+Musselshell Wind Project Two LLC,null,10,01/12/2012,Wheatland,MT,NWMT
+Bobcat Bluff Wind Project LLC,null,161,01/12/2012,Archer,TX,ERCO
+Senate Wind LLC,null,150,01/12/2012,Jack,TX,ERCO
+Canadian Hills Wind,null,293.7,01/12/2012,Canadian,OK,SWPP
+NaturEner Rim Rock Energy,null,189,01/12/2012,Toole,MT,WWA
+Auwahi Wind Energy Hybrid,null,24,01/12/2012,Maui,HI,null
+Twin Ridges Wind Farm,null,139.4,01/12/2012,Somerset,PA,PJM
+Patton Wind Farm,null,30,01/12/2012,Cambria,PA,PJM
+"Anacacho Wind Farm, LLC",null,99.8,01/12/2012,Kinney,TX,ERCO
+California Ridge Wind Energy LLC,null,217,01/12/2012,Vermilion,IL,MISO
+High Mesa,null,40,01/12/2012,Twin Falls,ID,IPCO
+Beebe 1A,null,81.6,01/12/2012,Gratiot,MI,MISO
+Whitetail,null,92,01/12/2012,Webb,TX,ERCO
+Chisholm View Wind Project,null,235.2,01/12/2012,Garfield,OK,SWPP
+Community Wind South,null,30,01/12/2012,Nobles,MN,MISO
+BayWa r.e Mozart LLC,null,30,01/12/2012,Kent,TX,ERCO
+Foundation Cemex River Plant,null,1.6,01/12/2012,San Bernardino,CA,CISO
+Foundation Cemex River Plant,null,1.6,01/12/2012,San Bernardino,CA,CISO
+Foundation Cemex BMQ,null,1.5,01/12/2012,San Bernardino,CA,CISO
+Foundation Cemex BMQ,null,1.5,01/12/2012,San Bernardino,CA,CISO
+Foundation Superior Farms,null,1,01/12/2012,Solano,CA,CISO
+Meadow Creek Project Company,null,119.7,01/12/2012,Bonneville,ID,PACE
+Foundation RRM,null,1,01/12/2012,Riverside,CA,CISO
+Foundation RRM,null,1,01/12/2012,Riverside,CA,CISO
+Foundation NWNA,null,1.6,01/12/2012,Riverside,CA,CISO
+Foundation NWNA,null,1.6,01/12/2012,Riverside,CA,CISO
+Groton Wind LLC,null,48,01/12/2012,Grafton,NH,ISNE
+North Sky River Energy LLC,null,162,01/12/2012,Kern,CA,CISO
+Cirrus Wind 1 LLC,null,61.2,01/12/2012,Lynn,TX,SWPP
+"Minco Wind III, LLC",null,100.8,01/12/2012,Caddo,OK,SWPP
+"NextEra-Blackwell Wind, LLC",null,59.8,01/12/2012,Kay,OK,SWPP
+Spion Kop Wind Farm,null,40,01/12/2012,Judith Basin,MT,NWMT
+Wagner Wind LLC,null,6,01/12/2012,Riverside,CA,CISO
+Georgia Mountain Community Wind Farm,null,10,01/12/2012,Chittenden,VT,ISNE
+Tuscola Bay Wind,null,120,01/12/2012,Tuscola,MI,MISO
+Blue Summit Wind LLC,null,135.4,01/12/2012,Wilbarger,TX,ERCO
+Swauk Wind LLC,null,4.3,01/12/2012,Kittitas,WA,PSEI
+Equity Industrial Turbines,null,4,01/12/2012,Essex,MA,ISNE
+Galactic Wind,null,9.9,01/12/2012,Dane,WI,MISO
+Waxdale,SC Johnson,1.5,01/12/2012,Racine,WI,MISO
+Waxdale,SC Johnson,1.5,01/12/2012,Racine,WI,MISO
+Marble River Wind Farm,null,215.3,01/11/2012,Clinton,NY,NYIS
+Crofton Bluffs Wind LLC,null,40,01/11/2012,Knox,NE,SWPP
+Minonk Wind Farm,null,200,01/11/2012,Woodford,IL,PJM
+Kawailoa Wind,null,69,01/11/2012,Honolulu,HI,null
+Cimarron Wind Energy LLC,null,165.6,01/11/2012,Gray,KS,SWPP
+Pinyon Pine I,null,168,01/11/2012,Kern,CA,CISO
+Pinyon Pine II,null,132,01/11/2012,Kern,CA,CISO
+Vienna Wind Farm,null,105.6,01/11/2012,Marshall,IA,MISO
+Harvest 2,null,59.4,01/11/2012,Huron,MI,MISO
+Spinning Spur Wind LLC,null,161,01/11/2012,Oldham,TX,SWPP
+Kingdom Community Wind,null,65,01/11/2012,Orleans,VT,ISNE
+Lake Winds Energy Park,null,100.8,01/11/2012,Mason,MI,MISO
+Limon Wind I,null,200,01/11/2012,Lincoln,CO,PSCO
+Limon Wind II,null,200,01/11/2012,Lincoln,CO,PSCO
+Ensign Wind LLC,null,98.9,01/11/2012,Gray,KS,SWPP
+Bull Hill Wind Project,null,34.5,01/10/2012,Hancock,ME,ISNE
+Flat Ridge 2 Wind Energy LLC,null,470.4,01/10/2012,Kingman,KS,SWPP
+Hawkeye Wind Farm,null,35,01/10/2012,Bremer,IA,MISO
+Morning Light Wind Farm,null,110.9,01/10/2012,Adair,IA,MISO
+Spearville 3 LLC,null,108,01/10/2012,Ford,KS,SWPP
+Busch Ranch Wind Energy,null,29,01/10/2012,Huerfano,CO,PSCO
+Bishop Hill II Wind Farm,null,81,01/10/2012,Henry,IL,MISO
+Camelot Wind LLC,null,1.5,01/10/2012,Plymouth,MA,ISNE
+"Euclid Farm, Stamco N-54",null,1,01/10/2012,Cuyahoga,OH,PJM
+NBC Field's Point Wind Farm,null,4.5,01/10/2012,Providence,RI,ISNE
+Pillar Mountain Wind Project Microgrid,null,4.5,01/09/2012,Kodiak Island,AK,null
+Waverly Community Wind Project,null,0.9,01/09/2012,Bremer,IA,MISO
+"Post Rock Wind Power Project, LLC",null,201,01/09/2012,Ellsworth,KS,SWPP
+Laurel Hill Wind,null,69,01/09/2012,Lycoming,PA,PJM
+Magic Valley Wind Farm I LLC,null,203,01/09/2012,Willacy,TX,ERCO
+Eclipse Wind Farm,null,207.1,01/09/2012,Guthrie,IA,MISO
+Shooting Star,null,104,01/09/2012,Kiowa,KS,SWPP
+Heritage Garden Wind Farm I LLC,null,28,01/09/2012,Delta,MI,MISO
+Foundation Wal-Mart Red Bluff,null,1,01/09/2012,Tehama,CA,CISO
+Fire Island Wind,null,18,01/09/2012,Anchorage,AK,null
+Spring Valley Wind Project,null,150,01/08/2012,White Pine,NV,NEVP
+Ironwood Wind,null,167.9,01/08/2012,Ford,KS,SWPP
+Pacific Wind LLC,null,151.7,01/08/2012,Kern,CA,CISO
+Rippey Wind Farm,null,50,01/08/2012,Greene,IA,MISO
+Fontanelle,null,1.6,01/08/2012,Adair,IA,MISO
+"Horse Butte Wind I, LLC",null,57.6,01/08/2012,Bonneville,ID,BPAT
+Rocky Ridge Wind Project,null,148.8,01/08/2012,Kiowa,OK,SWPP
+Foundation Cemex Madison,null,1,01/08/2012,Yolo,CA,CISO
+Majestic II Wind,null,79.6,01/08/2012,Carson,TX,SWPP
+Cumberland Rose,null,1.6,01/08/2012,Adair,IA,MISO
+Greenfield Wind,null,1.6,01/08/2012,Adair,IA,MISO
+Sky Volt,null,1.6,01/08/2012,Adair,IA,MISO
+South Hurlburt Wind LLC,null,290,01/07/2012,Gilliam,OR,BPAT
+Horseshoe Bend Wind LLC,null,290,01/07/2012,Gilliam,OR,BPAT
+Wildcat Wind,null,27.3,01/07/2012,Lea,NM,SWPP
+Meadow Ridge,null,1.6,01/07/2012,Adair,IA,MISO
+Bayonne MUA- Leitner-Poma Wind Turbine,null,1.5,01/07/2012,Hudson,NJ,PJM
+Kaheawa Wind Power II LLC,null,21,01/06/2012,Maui,HI,null
+Bishop Hill Energy LLC,null,200,01/06/2012,Henry,IL,PJM
+Cimarron Windpower II,null,131,01/06/2012,Gray,KS,SWPP
+Heartland Community College,Unable to find,1.7,01/06/2012,McLean,IL,MISO
+Kotzebue Hybrid,null,0.9,01/05/2012,NORTHWEST ARCTIC,AK,null
+Kotzebue Hybrid,null,0.9,01/05/2012,NORTHWEST ARCTIC,AK,null
+Dempsey Ridge Wind Farm,null,132,01/05/2012,Roger Mills,OK,SWPP
+Mustang Hills LLC,null,150,01/05/2012,Kern,CA,CISO
+Shady Oaks Wind Farm,null,109.5,01/05/2012,Lee,IL,PJM
+Cashton Greens Wind Farm,null,5,01/05/2012,Monroe,WI,MISO
+Wiota,null,1.6,01/05/2012,Cass,IA,MISO
+Gratiot County Wind LLC,null,110.4,01/05/2012,Gratiot,MI,MISO
+South Chestnut LLC,null,50.4,01/04/2012,Fayette,PA,PJM
+Fairhaven Wind,null,3,01/04/2012,Bristol,MA,ISNE
+Solano Wind,Sacramento Municipal Utility District,128,01/04/2012,Solano,CA,CISO
+Cooper Farms VW Project,null,4.5,01/03/2012,Van Wert,OH,PJM
+Brookfield Tehachapi 1,null,102,01/03/2012,Kern,CA,CISO
+Highland North Wind Farm,null,75,01/03/2012,Cambria,PA,PJM
+Junction Hilltop Wind Farm,null,8,01/03/2012,Greene,IA,MISO
+WED NK Green,null,1.5,01/03/2012,Washington,RI,ISNE
+Scituate Wind,null,1.5,01/03/2012,Plymouth,MA,ISNE
+Lower Snake River Wind Energy Project,null,342.7,01/02/2012,Garfield,WA,BPAT
+Sandy Ridge Wind Farm,null,50,01/02/2012,Blair,PA,PJM
+Mountain View IV,null,49,01/02/2012,Riverside,CA,CISO
+DeWind Frisco,null,20,01/02/2012,Hansford,TX,SWPP
+North Hurlburt Wind LLC,null,265,01/02/2012,Gilliam,OR,BPAT
+Windstar 1,null,120,01/02/2012,Kern,CA,CISO
+Pocahontas Prairie Wind Farm,null,80,01/02/2012,Pocahontas,IA,MISO
+Granite Reliable Power,null,99,01/02/2012,Coos,NH,ISNE
+"631-56 Airport Owner, LLC",null,2,01/02/2012,Bristol,MA,ISNE
+Bison I Wind Energy Center,null,45,01/01/2012,Morton,ND,MISO
+Steel Winds II,null,15,01/01/2012,Erie,NY,NYIS
+Crossroads Wind Farm,null,227.5,01/01/2012,Dewey,OK,SWPP
+Record Hill Wind,null,50.6,01/01/2012,Oxford,ME,ISNE
+Henkel U.S. Operations Corporation,null,1.7,01/01/2012,Ontario,NY,NYIS
+Henkel U.S. Operations Corporation,null,1.7,01/01/2012,Ontario,NY,NYIS
+Montezuma Wind II,null,78.2,01/01/2012,Solano,CA,CISO
+Gordon Butte Wind LLC,null,9.6,01/01/2012,Meagher,MT,NWMT
+Alta Wind VIII,null,150,01/01/2012,Kern,CA,CISO
+Caney River Wind Project,null,200,01/01/2012,Elk,KS,SWPP
+Perrin Ranch Wind LLC,null,99.2,01/01/2012,Coconino,AZ,AZPS
+San Gorgonio Windplant WPP1993,null,49.5,01/12/2011,Riverside,CA,CISO
+Michigan Wind 2,null,90,01/12/2011,Sanilac,MI,MISO
+Glacier Hills,null,162,01/12/2011,Columbia,WI,MISO
+Chestnut Flats Wind Farm,null,38,01/12/2011,Blair,PA,PJM
+Elk Wind Farm,null,40.8,01/12/2011,Delaware,IA,MISO
+Blue Creek Wind Project,null,302,01/12/2011,Van Wert,OH,PJM
+Laurel Wind Farm,null,123.4,01/12/2011,Marshall,IA,MISO
+Rolling Hills Wind Farm,null,484.2,01/12/2011,Cass,IA,MISO
+Trinity Hills,null,198,01/12/2011,Young,TX,ERCO
+Shiloh III Wind Project LLC,null,102.5,01/12/2011,Solano,CA,CISO
+Pinnacle Wind Force LLC,null,53.7,01/12/2011,Mineral,WV,PJM
+New Harvest Wind Project LLC,null,100,01/12/2011,Crawford,IA,MISO
+Blue Canyon Windpower VI LLC,null,99.8,01/12/2011,Caddo,OK,SWPP
+"Pioneer Trail Wind Farm, LLC",null,150.4,01/12/2011,Iroquois,IL,MISO
+Vasco Winds,null,78.2,01/12/2011,Contra Costa,CA,CISO
+Power County Wind Park South,null,22.5,01/12/2011,Power,ID,PACE
+Power County Wind Park North,null,22.5,01/12/2011,Power,ID,PACE
+Rockland Wind Farm,null,79.2,01/12/2011,Power,ID,IPCO
+Foundation IE,null,1,01/12/2011,San Bernardino,CA,CISO
+Lime Wind,null,3,01/12/2011,Baker,OR,IPCO
+GL Wind,null,2.5,01/12/2011,Winona,MN,MISO
+GL Wind,null,2.5,01/12/2011,Winona,MN,MISO
+Howard Wind Farm,null,51.3,01/12/2011,Steuben,NY,NYIS
+Spruce Mountain WInd,null,20,01/12/2011,Oxford,ME,ISNE
+Harbec Energy,null,0.9,01/12/2011,Wayne,NY,NYIS
+MA Military Reservation Wind Project,null,1.5,01/11/2011,Barnstable,MA,ISNE
+MA Military Reservation Wind Project,null,1.5,01/11/2011,Barnstable,MA,ISNE
+Sherbino II,null,132,01/11/2011,Pecos,TX,ERCO
+Gratiot Wind Park,null,102,01/11/2011,Gratiot,MI,MISO
+Oak Glen Wind Farm,null,44,01/11/2011,Steele,MN,MISO
+TPW Petersburg,null,40.5,01/11/2011,Boone,NE,SWPP
+Foundation AB,null,1.5,01/11/2011,Solano,CA,CISO
+Macho Springs Power I,null,50.4,01/11/2011,Luna,NM,EPE
+"Minco Wind II, LLC",null,100.8,01/11/2011,Grady,OK,SWPP
+Buffalo Center Wind LLC,null,1.5,01/11/2011,Mitchell,IA,MISO
+NLMU Wind,null,1.5,01/11/2011,Henry,IA,MISO
+Sand Point,null,0.5,01/10/2011,Aleutians East,AK,null
+Sand Point,null,0.5,01/10/2011,Aleutians East,AK,null
+Sheffield Wind,null,40,01/10/2011,Caledonia,VT,ISNE
+Carleton College,null,1.6,01/10/2011,Rice,MN,MISO
+Lakefield Wind Project LLC,null,205.5,01/10/2011,Jackson,MN,MISO
+Settlers Trail Wind Farm LLC,null,150.4,01/10/2011,Iroquois,IL,MISO
+Winona County Wind LLC,null,1.5,01/10/2011,Winona,MN,MISO
+Sawtooth Wind Project,null,22.4,01/10/2011,Elmore,ID,IPCO
+Eolos Wind Energy Research Field Station,null,2.5,01/10/2011,Dakota,MN,MISO
+Charlestown Wind Turbine,null,1.5,01/10/2011,Suffolk,MA,ISNE
+Luther College Wind Project,null,1.6,01/10/2011,Winneshiek,IA,MISO
+Brown County Wind Turbine,null,1.5,01/09/2011,Brown,IL,MISO
+Kingman 1,null,10,01/09/2011,Mohave,AZ,AZPS
+Golden Spread Panhandle Wnd Rch,null,78.2,01/09/2011,Oldham,TX,SWPP
+Windwalkers LLC,null,1.6,01/09/2011,Worth,IA,MISO
+Roeder Family Wind Farm LLC,null,1.6,01/09/2011,Worth,IA,MISO
+Pomeroy Wind Farm,null,29.9,01/08/2011,Pocahontas,IA,MISO
+Roth Rock Wind Farm LLC,null,40,01/08/2011,Garrett,MD,PJM
+"Roth Rock North Wind Farm, LLC",null,10,01/08/2011,Garrett,MD,PJM
+Laurel Mountain Hybrid,null,97.6,01/08/2011,Barbour,WV,PJM
+Rollins Wind Project,null,60,01/07/2011,Penobscot,ME,ISNE
+Taloga Wind LLC,null,130,01/07/2011,Dewey,OK,SWPP
+Valley View Transmission LLC,null,10,01/07/2011,Murray,MN,MISO
+Ralls Wind Farm,null,10,01/07/2011,Crosby,TX,SWPP
+LE Wind Turbine 1,null,2.5,01/07/2011,Cuyahoga,OH,PJM
+Paulding Wind Farm II,null,99,01/07/2011,Paulding,OH,PJM
+Springview,null,1.5,01/06/2011,Keya Paha,NE,SWPP
+Springview,null,1.5,01/06/2011,Keya Paha,NE,SWPP
+White Oak Energy LLC,null,150,01/06/2011,McLean,IL,MISO
+Foundation ST,null,2,01/06/2011,San Joaquin,CA,CISO
+UMM Wind Turbine,null,1.7,01/06/2011,Stevens,MN,MISO
+Milford Wind Corridor Stage II LLC,null,102,01/05/2011,Beaver,UT,LDWP
+Cedar Point Wind,null,252,01/05/2011,Lincoln,CO,PSCO
+Community Wind North LLC,null,30,01/05/2011,Lincoln,MN,MISO
+Berkshire Wind Power Project,null,15,01/05/2011,Berkshire,MA,ISNE
+Ipswich Wind Turbine,null,1.6,01/05/2011,Essex,MA,ISNE
+Salmon Falls Wind Park,null,21,01/04/2011,Twin Falls,ID,IPCO
+Alta Wind Energy Center IV,null,102,01/04/2011,Kern,CA,CISO
+Alta Wind Energy Center V,null,168,01/04/2011,Kern,CA,CISO
+Kahuku Wind Power LLC,null,30,01/03/2011,Honolulu,HI,null
+Cedar Creek II,null,248.3,01/03/2011,Weld,CO,PSCO
+Juniper Canyon I Wind Project,null,151.2,01/03/2011,Klickitat,WA,AVRN
+Leaning Juniper Wind Power II,null,199.2,01/03/2011,Gilliam,OR,AVRN
+Adams Wind Generations LLC,null,20,01/03/2011,Meeker,MN,MISO
+Danielson Wind Farms LLC,null,20,01/03/2011,Meeker,MN,MISO
+Mt Wachusett Community College,null,1.7,01/03/2011,Worcester,MA,ISNE
+Mt Wachusett Community College,null,1.7,01/03/2011,Worcester,MA,ISNE
+Burley Butte Windpark,null,21.3,01/02/2011,Cassia,ID,IPCO
+Milner Dam Wind Park LLC,null,19.5,01/02/2011,Cassia,ID,IPCO
+Prairie Winds SD1,null,150,01/02/2011,Jerauld,SD,SWPP
+Prairie Winds SD1,null,10.5,01/02/2011,Jerauld,SD,SWPP
+Prairie Winds SD1,null,1.5,01/02/2011,Jerauld,SD,SWPP
+Big Sky Wind LLC,null,239.4,01/02/2011,Bureau,IL,PJM
+Bent Tree Wind Farm Phase 1,null,201.3,01/02/2011,Freeborn,MN,MISO
+Laredo Ridge Wind LLC,null,79.9,01/02/2011,Boone,NE,SWPP
+Alta Wind Energy Center III,null,150,01/02/2011,Kern,CA,CISO
+Golden Valley Wind Park LLC,null,12,01/01/2011,Cassia,ID,IPCO
+Oregon Trail Wind Park,null,13.5,01/01/2011,Twin Falls,ID,IPCO
+Pilgrim Stage Wind Park,null,10.5,01/01/2011,Twin Falls,ID,IPCO
+Thousand Springs Wind Park,null,12,01/01/2011,Twin Falls,ID,IPCO
+Tuana Gulch Wind Park,null,10.5,01/01/2011,Twin Falls,ID,IPCO
+PPL Frey Farm Landfill Wind,null,3.2,01/01/2011,Lancaster,PA,PJM
+Alta Wind Energy Center I,null,150,01/01/2011,Kern,CA,CISO
+Hardscrabble Wind Power LLC,null,74,01/01/2011,Herkimer,NY,NYIS
+Alta Wind Energy Center II,null,150,01/01/2011,Kern,CA,CISO
+Big Horn Wind II,null,50,01/01/2011,Klickitat,WA,AVRN
+Ridgewind,null,25.3,01/01/2011,Pipestone,MN,MISO
+Criterion,null,70,01/12/2010,GARRETT,MD,PJM
+Spearville,null,48,01/12/2010,Ford,KS,SWPP
+Hatchet Ridge Wind Project,null,101.2,01/12/2010,Shasta,CA,CISO
+Bison I Wind Energy Center,null,36.8,01/12/2010,Morton,ND,MISO
+Nobles Wind Project,null,201,01/12/2010,Nobles,MN,MISO
+Payne's Ferry,null,21,01/12/2010,Twin Falls,ID,IPCO
+Camp Reed,null,22.5,01/12/2010,Elmore,ID,IPCO
+Yahoo Creek,null,21,01/12/2010,Twin Falls,ID,IPCO
+Papalote Creek II LLC,null,200.1,01/12/2010,San Patricio,TX,ERCO
+Cedro Hill Wind LLC,null,150,01/12/2010,Webb,TX,ERCO
+Cedro Hill Wind LLC,null,150,01/12/2010,Webb,TX,ERCO
+Flat Water Wind Farm LLC,null,60,01/12/2010,Richardson,NE,SWPP
+Elk City LLC,null,99.2,01/12/2010,Roger Mills,OK,SWPP
+Baldwin Wind LLC,null,102.4,01/12/2010,Burleigh,ND,MISO
+Red Mesa Wind LLC,null,102.4,01/12/2010,Sandoval,NM,PNM
+Keenan II Renewable Energy Co LLC,null,151.8,01/12/2010,Woodward,OK,SWPP
+"Poseidon Wind, LLC",null,65.1,01/12/2010,Navajo,AZ,AZPS
+Ashtabula Wind III LLC,null,62.4,01/12/2010,Barnes,ND,MISO
+Buffalo Ridge II LLC,null,210,01/12/2010,Brookings,SD,MISO
+PaTu Wind Farm LLC,null,9,01/12/2010,Sherman,OR,BPAT
+"Minco Wind I, LLC",null,99.2,01/12/2010,Grady,OK,SWPP
+Elm Creek Wind II LLC,null,148.8,01/12/2010,Martin,MN,MISO
+Sagebrush Power Partners,null,100.7,01/11/2010,Kittitas,WA,BPAT
+FPL Energy Montezuma Winds LLC,null,36.8,01/11/2010,Solano,CA,CISO
+Kit Carson Windpower,null,51,01/11/2010,Kit Carson,CO,WACM
+Shirley Wind,null,20,01/11/2010,Brown,WI,MISO
+Dunlap,null,129.5,01/10/2010,Carbon,WY,PACE
+Kibby Wind Facility,null,66,01/10/2010,Franklin,ME,ISNE
+Meadow Lake Wind Farm IV,null,105.7,01/10/2010,White,IN,PJM
+Vantage Wind Energy LLC,null,90,01/10/2010,Kittitas,WA,PSEI
+Little Pringle I Wind Farm,null,10,01/10/2010,Hutchinson,TX,SWPP
+Little Pringle II Wind Farm,null,10,01/10/2010,Hutchinson,TX,SWPP
+Top of the World Windpower Project,null,200,01/10/2010,Converse,WY,PACE
+Teichert Materials-Teichert Vernalis,null,1,01/10/2010,San Joaquin,CA,CISO
+Wolverine,null,1.5,01/10/2010,Adair,IA,MISO
+Bulldog,null,1.5,01/10/2010,Adair,IA,MISO
+Story City Wind Project,null,1.5,01/10/2010,Story,IA,MISO
+Traer Wind Project,null,1.5,01/10/2010,Tama,IA,MISO
+Meadow Lake Wind Farm III LLC,null,103.5,01/09/2010,White,IN,PJM
+Goshen Phase II,null,124.5,01/09/2010,Bonneville,ID,PACE
+Biglow Canyon Wind Farm,null,161,01/08/2010,Sherman,OR,PGE
+Meadow Lake Wind Farm II LLC,null,102.3,01/08/2010,White,IN,PJM
+Blackstone Wind Farm II LLC,null,200,01/08/2010,Livingston,IL,PJM
+Grant County Wind LLC,null,21,01/08/2010,Grant,MN,MISO
+University of Delaware Wind Turbine,null,2,01/07/2010,Sussex,DE,PJM
+Notus Wind 1,null,1.7,01/07/2010,Barnstable,MA,ISNE
+Tooele Army Depot(CSG),Unable to find,1.5,01/07/2010,Tooele,UT,PACE
+Cedar Hills Wind Farm,null,19.5,01/06/2010,Bowman,ND,MISO
+Linden Wind Energy Project,null,50,01/06/2010,Klickitat,WA,BPAT
+Coastal Energy Project,null,6,01/06/2010,Grays Harbor,WA,BPAT
+Tuana Springs,null,16.8,01/05/2010,Twin Falls,ID,IPCO
+Lost Creek Wind Energy Facility,null,168,01/05/2010,DeKalb,MO,AECI
+Day County Wind LLC,null,99,01/04/2010,Day,SD,SWPP
+"Vestas Towers America, Inc.",null,1.8,01/04/2010,Pueblo,CO,WACM
+Stetson Wind II,null,25.5,01/03/2010,Washington,ME,ISNE
+Streator Cayuga Ridge South,null,300,01/03/2010,Livingston,IL,PJM
+Penascal II Wind Project LLC,null,201.6,01/03/2010,Kenedy,TX,ERCO
+Star Point Wind Project LLC,null,98.7,01/02/2010,Sherman,OR,AVRN
+Greensburg,null,12.5,01/02/2010,Kiowa,KS,SWPP
+Princeton Wind Farm,null,3,01/01/2010,Worcester,MA,ISNE
+Eurus Combine Hills Turbine Ranch 2,null,66.1,01/01/2010,Umatilla,OR,BPAT
+Beech Ridge Energy LLC,null,100.5,01/01/2010,Greenbrier,WV,PJM
+Uilk Wind LLC,null,1.5,01/01/2010,Pipestone,MN,MISO
+Uilk Wind LLC,null,1.5,01/01/2010,Pipestone,MN,MISO
+Uilk Wind LLC,null,1.5,01/01/2010,Pipestone,MN,MISO
+Osage (IA),null,1.6,01/12/2009,Mitchell,IA,MISO
+Minot Wind Project,null,4.5,01/12/2009,Ward,ND,SWPP
+Whispering Willow Wind Farm - East,null,199.7,01/12/2009,Franklin,IA,MISO
+Prairie Winds ND1,null,115.5,01/12/2009,Ward,ND,SWPP
+Fowler Ridge Wind Farm LLC,null,200,01/12/2009,Benton,IN,PJM
+Crane Creek Wind Energy Center,null,99,01/12/2009,Howard,IA,MISO
+Grand Ridge Wind Energy Center,null,51,01/12/2009,LaSalle,IL,PJM
+Grand Ridge Wind Energy Center,null,49.5,01/12/2009,LaSalle,IL,PJM
+Grand Ridge Wind Energy Center,null,10.5,01/12/2009,LaSalle,IL,PJM
+Armenia Mountain Wind Farm,null,100.5,01/12/2009,Tioga,PA,PJM
+Campbell Hill Windpower,null,99,01/12/2009,Converse,WY,PACE
+Casper Wind Farm,null,17,01/12/2009,Natrona,WY,PACE
+Rugby Wind Power Project,null,149,01/12/2009,Pierce,ND,MISO
+Lost Lakes Wind Farm LLC,null,100,01/12/2009,Dickinson,IA,MISO
+Stoney Corners Wind Farm,null,60,01/12/2009,Missaukee,MI,MISO
+Harvest Wind Project,null,98.9,01/12/2009,Klickitat,WA,BPAT
+Langford Wind Power,null,150,01/12/2009,Tom Green,TX,ERCO
+MA Military Reservation Wind Project,null,1.5,01/12/2009,Barnstable,MA,ISNE
+OU Spirit Wind Farm,null,101.2,01/12/2009,Woodward,OK,SWPP
+FPL Energy Illinois Wind LLC Hybrid,null,217.5,01/12/2009,DeKalb,IL,PJM
+Elk City LLC,null,98.9,01/12/2009,Roger Mills,OK,SWPP
+Crystal Lake 3 LLC,null,66,01/12/2009,Winnebago,IA,MISO
+Garden Wind LLC,null,150,01/12/2009,Hardin,IA,MISO
+Vansycle II Wind Energy Center,null,102.3,01/12/2009,Umatilla,OR,PACW
+Deer Island Treatment Plant,null,0.6,01/11/2009,Suffolk,MA,ISNE
+Deer Island Treatment Plant,null,0.6,01/11/2009,Suffolk,MA,ISNE
+Wild Horse,null,44,01/11/2009,Kittitas,WA,PSEI
+Hoosier Wind Project LLC,null,106,01/11/2009,Benton,IN,MISO
+Stony Creek Wind Farm LLC,null,52.5,01/11/2009,Somerset,PA,PJM
+Rolling Thunder Wind Farm Hybrid,null,25,01/11/2009,Hand,SD,SWPP
+NaturEner Glacier Wind Energy 2,null,103.5,01/11/2009,Toole,MT,GWA
+Wilton Wind II LLC,null,49.5,01/11/2009,Burleigh,ND,MISO
+Fox Island Wind LLC,null,4.5,01/11/2009,Knox,ME,ISNE
+Geneseo,null,1.5,01/10/2009,Henry,IL,MISO
+Kibby Wind Facility,null,66,01/10/2009,Franklin,ME,ISNE
+McFadden Ridge,null,35.2,01/10/2009,Albany,WY,PACE
+Silver Sage Windpower,null,42,01/10/2009,Laramie,WY,WAUW
+Blue Canyon Windpower V LLC,null,99,01/10/2009,Caddo,OK,SWPP
+Meadow Lake Wind Farm LLC,null,199.7,01/10/2009,White,IN,PJM
+Blackstone Wind Farm LLC,null,106,01/10/2009,Livingston,IL,PJM
+Ashtabula Wind II LLC,null,120,01/10/2009,Steele,ND,MISO
+Windy Flats Wind Project,null,262.2,01/10/2009,Klickitat,WA,BPAT
+Loraine Windpark Project LLC,null,75,01/10/2009,Mitchell,TX,ERCO
+Loraine Windpark Project LLC,null,75,01/10/2009,Mitchell,TX,ERCO
+Delta Wind Farm,null,0.9,01/10/2009,Southeast Fairbanks,AK,null
+Geneseo,null,1.5,01/09/2009,Henry,IL,MISO
+Biglow Canyon Wind Farm,null,163.3,01/09/2009,Sherman,OR,PGE
+North Allegheny Windpower Project,null,75,01/09/2009,Blair,PA,PJM
+Papalote Creek I LLC,null,180,01/09/2009,San Patricio,TX,ERCO
+Inadale Wind Farm LLC Hybrid,null,197,01/09/2009,Nolan,TX,ERCO
+Luverne Wind Energy Center,null,49.5,01/09/2009,Steele,ND,MISO
+High Plains,null,122.1,01/09/2009,Albany,WY,PACE
+Milford Wind Corridor I LLC,null,203.5,01/09/2009,Beaver,UT,LDWP
+Dry Lake Wind LLC,null,63,01/09/2009,Navajo,AZ,SRP
+Sunray Wind I,null,49.5,01/09/2009,Moore,TX,SWPP
+Willmar,null,2,01/08/2009,Kandiyohi,MN,MISO
+Willmar,null,2,01/08/2009,Kandiyohi,MN,MISO
+Rail Splitter Wind Farm,null,100.5,01/08/2009,Tazewell,IL,MISO
+Panther Creek Wind Farm Three,null,215.5,01/08/2009,Sterling,TX,ERCO
+Cambria Wind LLC,null,62.5,01/08/2009,Cambria,PA,PJM
+Northern Colorado Wind LLC,null,22.5,01/08/2009,Logan,CO,PSCO
+Northern Colorado Wind LLC,null,151.8,01/08/2009,Logan,CO,PSCO
+EcoGrove Wind LLC,null,100.5,01/07/2009,Stephenson,IL,PJM
+Threemile Canyon,null,9.9,01/07/2009,Morrow,OR,PACW
+High Lonesome Mesa LLC,null,100,01/07/2009,Torrance,NM,PNM
+Pine Tree Wind Power Project,null,135,01/06/2009,Kern,CA,LDWP
+Goat Wind LP,null,69.6,01/06/2009,Sterling,TX,ERCO
+Barton Windpower LLC,null,80,01/06/2009,Worth,IA,MISO
+Barton Windpower LLC,null,78,01/06/2009,Worth,IA,MISO
+Butter Creek Power LLC,null,5,01/06/2009,Umatilla,OR,PACW
+Big Top LLC,null,1.7,01/06/2009,Morrow,OR,PACW
+Four Corners Windfarm LLC,null,8,01/06/2009,Umatilla,OR,PACW
+Four Mile Canyon Windfarm LLC,null,10,01/06/2009,Morrow,OR,PACW
+Oregon Trail Windfarm LLC,null,9.9,01/06/2009,Umatilla,OR,PACW
+Pacific Canyon Windfarm LLC,null,8.3,01/06/2009,Morrow,OR,PACW
+Sand Ranch Windfarm LLC,null,9.9,01/06/2009,Morrow,OR,PACW
+Wagon Trail LLC,null,3.3,01/06/2009,Morrow,OR,PACW
+Ward Butte Windfarm LLC,null,6.6,01/06/2009,Umatilla,OR,PACW
+Pillar Mountain Wind Project Microgrid,null,4.5,01/06/2009,Kodiak Island,AK,null
+Garnet Wind Energy Center,null,6.5,01/06/2009,Riverside,CA,CISO
+Tuolumne Wind Project,null,136.3,01/05/2009,Klickitat,WA,BPAT
+Locust Ridge II LLC,null,102,01/05/2009,Schuylkill,PA,PJM
+Forward Wind Energy Center,null,30,01/05/2009,Dodge,WI,MISO
+Farmers City Wind LLC,null,146,01/04/2009,Atchison,MO,MISO
+Buffalo Ridge I LLC,null,50.4,01/04/2009,Brookings,SD,MISO
+Penascal Wind Power LLC,null,201.6,01/04/2009,Kenedy,TX,ERCO
+Altona,null,97.5,01/04/2009,Clinton,NY,NYIS
+Wethersfield,null,126,01/04/2009,Wyoming,NY,NYIS
+Chateaugay,null,106.5,01/04/2009,Franklin,NY,NYIS
+Notrees Windpower Hybrid,null,60,01/04/2009,Ector,TX,ERCO
+Notrees Windpower Hybrid,null,92.5,01/04/2009,Ector,TX,ERCO
+Iowa Lakes Superior Wind Farm,null,10.5,01/04/2009,Dickinson,IA,SWPP
+Fowler Ridge Wind Farm LLC,null,101.3,01/03/2009,Benton,IN,PJM
+Fowler Ridge Wind Farm LLC,null,100,01/03/2009,Benton,IN,PJM
+Central Plains Wind Farm,null,99,01/03/2009,Wichita,KS,SWPP
+Flat Ridge Wind Energy LLC,null,44,01/03/2009,Barber,KS,SWPP
+Cassia Wind,null,8.4,01/03/2009,Twin Falls,ID,IPCO
+Cassia Gulch,null,18.9,01/03/2009,Twin Falls,ID,IPCO
+Elkhorn Ridge Wind LLC,null,81,01/03/2009,Knox,NE,SWPP
+Waverly Community Wind Project,null,0.9,01/03/2009,Bremer,IA,MISO
+Lakota Wind Wind Farm,null,10.5,01/03/2009,Kossuth,IA,SWPP
+Butler Ridge,null,54,01/02/2009,Dodge,WI,MISO
+Wessington Springs,null,51,01/02/2009,Jerauld,SD,SWPP
+Fowler Ridge Wind Farm LLC,null,99,01/02/2009,Benton,IN,PJM
+Hay Canyon Wind Power LLC,null,100.8,01/02/2009,Sherman,OR,AVRN
+Moraine II Wind LLC,null,49.5,01/02/2009,Pipestone,MN,MISO
+Flat Ridge Wind Farm,null,50,01/02/2009,Barber,KS,SWPP
+Wheat Field Wind Power Project,null,102.9,01/02/2009,Gilliam,OR,BPAT
+Wapsipinicon Wind Project,null,100.5,01/02/2009,Mower,MN,MISO
+High Sheldon Wind Farm,null,112.5,01/02/2009,Wyoming,NY,NYIS
+Pyron Wind Farm LLC Hybrid,null,249,01/02/2009,Fisher,TX,ERCO
+Dutch Hill Wind Project,null,37.5,01/01/2009,Steuben,NY,NYIS
+Cohocton Wind Project,null,87.5,01/01/2009,Steuben,NY,NYIS
+Majestic 1 Wind Farm,null,79.5,01/01/2009,Carson,TX,SWPP
+South Trent Wind Farm,null,101.2,01/01/2009,Nolan,TX,ERCO
+Pebble Springs Wind LLC,null,98.7,01/01/2009,Gilliam,OR,AVRN
+Glenrock,null,46,01/01/2009,Converse,WY,PACE
+Rolling Hills,null,115.8,01/01/2009,Converse,WY,PACE
+Shiloh Wind Project 2 LLC,null,150,01/01/2009,Solano,CA,CISO
+Great Plains Windpark LLC,null,114,01/01/2009,Hansford,TX,SWPP
+FPL Energy Crystal Lake Wind II LLC,null,200,01/01/2009,Hancock,IA,MISO
+Willow Creek Energy Center,null,72,01/01/2009,Morrow,OR,BPAT
+Smoky Hills Wind Project Phase II,null,148.5,01/01/2009,Lincoln,KS,SWPP
+Stetson Wind I,null,57,01/01/2009,Washington,ME,ISNE
+Barton Chapel Wind Farm,null,120,01/01/2009,Jack,TX,ERCO
+Buffalo Bear LLC,null,18.9,01/12/2008,Harper,OK,SWPP
+Cedar Ridge,null,67.7,01/12/2008,Fond Du Lac,WI,MISO
+Lempster Wind LLC,null,24,01/12/2008,Sullivan,NH,ISNE
+Michigan Wind 1,null,69,01/12/2008,Huron,MI,MISO
+Smoky Hills Wind Project Phase I,null,100.8,01/12/2008,Lincoln,KS,SWPP
+NedPower Mount Storm,null,100,01/12/2008,Grant,WV,PJM
+Pomeroy Wind Farm,null,58.5,01/12/2008,Pocahontas,IA,MISO
+Pattern Gulf Wind,null,283.2,01/12/2008,Kenedy,TX,ERCO
+Elbow Creek Wind Project LLC,null,121.9,01/12/2008,Howard,TX,ERCO
+Cloud County Wind Farm,null,105,01/12/2008,Cloud,KS,SWPP
+Cloud County Wind Farm,null,96,01/12/2008,Cloud,KS,SWPP
+Elm Creek Wind LLC,null,99,01/12/2008,Jackson,MN,MISO
+Red Hills Wind Project LLC,null,123,01/12/2008,Roger Mills,OK,SWPP
+Carroll Wind Farm,null,159.1,01/12/2008,Carroll,IA,MISO
+Adair Wind Farm,null,174.8,01/12/2008,Adair,IA,MISO
+Walnut Wind Farm,null,165.2,01/12/2008,Pottawattamie,IA,MISO
+Hackberry Wind Farm,null,165.6,01/12/2008,Shackelford,TX,ERCO
+Glenrock,null,119.6,01/12/2008,Converse,WY,PACE
+Seven Mile Hill,null,122.1,01/12/2008,Carbon,WY,PACE
+Seven Mile Hill,null,24.1,01/12/2008,Carbon,WY,PACE
+Arlington Wind Power Project,null,102.9,01/12/2008,Gilliam,OR,BPAT
+FPL Energy Ashtabula Wind LLC,null,148.5,01/12/2008,Barnes,ND,MISO
+Panther Creek Wind Farm II,null,115.5,01/12/2008,Glasscock,TX,ERCO
+FPL Energy Crystal Lake Wind LLC,null,150,01/12/2008,Hancock,IA,MISO
+FPL Energy Story Wind LLC,null,150,01/12/2008,Story,IA,MISO
+Bull Creek Wind,null,180,01/12/2008,Borden,TX,ERCO
+Grand Meadow,null,100.5,01/12/2008,Mower,MN,MISO
+Mesalands Comm College Wind Turbine,null,1.5,01/12/2008,Quay,NM,SWPP
+Hilltop Power,null,2,01/12/2008,Pipestone,MN,MISO
+Turkey Track Wind Energy LLC,null,169.5,01/11/2008,Nolan,TX,ERCO
+Beaver Ridge Wind,null,4.5,01/11/2008,Waldo,ME,ISNE
+Lookout Windpower LLC,null,37.8,01/10/2008,Somerset,PA,PJM
+Jeffers Wind 20 LLC,null,50,01/10/2008,Cottonwood,MN,MISO
+Pioneer Prairie Wind Farm,null,300,01/10/2008,Mitchell,IA,MISO
+Grand Ridge Wind Energy Center,null,99,01/10/2008,LaSalle,IL,PJM
+Ashtabula Wind Energy Center,null,48,01/10/2008,Barnes,ND,MISO
+NaturEner Glacier Wind Energy 1,null,106.5,01/10/2008,Toole,MT,GWA
+Edom Hills Project 1 LLC,null,20,01/09/2008,Riverside,CA,CISO
+Mountain Wind Power II LLC,null,80,01/09/2008,Uinta,WY,PACE
+Winnebago Wind Power Project,null,20,01/09/2008,Winnebago,IA,MISO
+Silver Star I Wind Power Project,null,52.8,01/09/2008,Erath,TX,ERCO
+McAdoo Wind Energy LLC,null,150,01/09/2008,Dickens,TX,ERCO
+Langdon Wind II LLC,null,40.5,01/09/2008,Cavalier,ND,MISO
+Osceola Windpower II,null,49.6,01/09/2008,Osceola,IA,MISO
+Ocotillo Windpower,null,58.8,01/09/2008,Howard,TX,ERCO
+Delta Wind Farm,null,0.1,01/09/2008,Southeast Fairbanks,AK,null
+Hopkins Ridge Wind,null,7.2,01/08/2008,Columbia,WA,BPAT
+Providence Heights Wind LLC,null,72,01/08/2008,Bureau,IL,PJM
+Buffalo Gap 3 Wind Farm,null,170.2,01/08/2008,Nolan,TX,ERCO
+Happy Jack Windpower Project,null,29.4,01/08/2008,Laramie,WY,WAUW
+Wolf Ridge Wind,null,112.5,01/08/2008,Cooke,TX,ERCO
+Klondike Windpower III,null,76.5,01/07/2008,Sherman,OR,AVRN
+Bennett Creek Windfarm LLC - Mountain Home,null,21,01/07/2008,Elmore,ID,IPCO
+Osceola Windpower LLC,null,98.2,01/07/2008,Osceola,IA,SWPP
+Spanish Fork Wind Park 2 LLC,null,18.9,01/07/2008,Utah,UT,PACE
+Mountain Wind Power LLC,null,61,01/07/2008,Uinta,WY,PACE
+Panther Creek Wind Farm I,null,142.5,01/07/2008,Howard,TX,ERCO
+Forward Wind Energy Center,null,99,01/07/2008,Dodge,WI,MISO
+Goodnoe Hills,null,103.4,01/06/2008,Klickitat,WA,BPAT
+Blue Sky Green Field Wind Project,null,145.2,01/05/2008,Fond Du Lac,WI,MISO
+Clinton,null,100.5,01/05/2008,Clinton,NY,NYIS
+Ellenburg,null,81,01/05/2008,Clinton,NY,NYIS
+Bliss,null,100.5,01/05/2008,Wyoming,NY,NYIS
+Taconite Ridge 1 Wind Energy Center,null,25,01/05/2008,St Louis,MN,MISO
+Mountain Home,null,21,01/05/2008,Elmore,ID,IPCO
+Benton County Wind Farm,null,130.5,01/05/2008,Benton,IN,MISO
+Odin Wind Farm LLC,null,20,01/05/2008,Cottonwood,MN,MISO
+Capricorn Ridge Wind LLC,null,112.5,01/05/2008,Sterling,TX,ERCO
+Ribeye Wind (11) LLC,null,10,01/05/2008,Moore,TX,SWPP
+T-Bone Wind (10) LLC,null,8.8,01/05/2008,Moore,TX,SWPP
+Welcome Wind Turbine,null,2.1,01/05/2008,Martin,MN,MISO
+Cow Branch,null,50.4,01/04/2008,Atchison,MO,AECI
+Conception,null,50.4,01/04/2008,Nodaway,MO,AECI
+Charles City Wind Farm,null,80,01/04/2008,Floyd,IA,MISO
+Forward Windpower LLC,null,29.4,01/04/2008,Somerset,PA,PJM
+Goat Wind LP,null,80,01/04/2008,Sterling,TX,ERCO
+Capricorn Ridge Wind LLC,null,186,01/04/2008,Sterling,TX,ERCO
+Dillon Wind LLC,null,45,01/04/2008,Riverside,CA,CISO
+Tri-Tip Wind (9) LLC,null,10,01/04/2008,Moore,TX,SWPP
+Brisket Wind (8) LLC,null,10,01/04/2008,Moore,TX,SWPP
+Flat Iron Wind (7) LLC,null,10,01/04/2008,Moore,TX,SWPP
+Post Oak Wind LLC,null,200,01/03/2008,Shackelford,TX,ERCO
+NedPower Mount Storm,null,164,01/03/2008,Grant,WV,PJM
+Top of Iowa Windfarm III,null,29.7,01/02/2008,Worth,IA,MISO
+Loess Hills,null,5,01/02/2008,Atchison,MO,AECI
+Champion Wind Farm LLC,null,126.5,01/02/2008,Nolan,TX,ERCO
+Roscoe Wind Farm LLC,null,209,01/02/2008,Nolan,TX,ERCO
+Stanton Wind Energy LLC,null,120,01/02/2008,Martin,TX,ERCO
+Cisco,null,8.4,01/02/2008,Jackson,MN,MISO
+Northern Iowa Windpower II,null,80,01/01/2008,Worth,IA,MISO
+MinnDakota Wind LLC,null,150,01/01/2008,Lincoln,MN,MISO
+Marengo Wind Plant,null,78,01/01/2008,Columbia,WA,PACW
+Porterhouse Wind (4) LLC,null,79.8,01/01/2008,Hansford,TX,SWPP
+"Ewington Energy Systems, LLC",null,22.5,01/01/2008,Jackson,MN,MISO
+Harvest,null,52.8,01/01/2008,Huron,MI,MISO
+Tatanka Wind Power LLC,null,180,01/01/2008,Dickey,ND,MISO
+Century,null,35,01/12/2007,Hamilton,IA,MISO
+Century,null,16.2,01/12/2007,Hamilton,IA,MISO
+Casselman Wind Power Project,null,34.5,01/12/2007,Somerset,PA,PJM
+Sweetwater Wind 5,null,80.5,01/12/2007,Nolan,TX,ERCO
+Biglow Canyon Wind Farm,null,125.4,01/12/2007,Sherman,OR,PGE
+Prairie Star Wind Farm,null,100.7,01/12/2007,Mower,MN,MISO
+Pomeroy Wind Farm,null,123,01/12/2007,Pocahontas,IA,MISO
+Pomeroy Wind Farm,null,75,01/12/2007,Pocahontas,IA,MISO
+FPL Energy Oliver Wind II LLC,null,48,01/12/2007,Oliver,ND,MISO
+"Langdon Renewables, LLC",null,118.5,01/12/2007,Cavalier,ND,MISO
+Old Trail Wind Farm,null,213.8,01/12/2007,McLean,IL,PJM
+Elkhorn Valley Wind Farm,null,100.7,01/12/2007,Union,OR,IPCO
+Camp Grove Wind Farm,null,150,01/12/2007,STARK,IL,PJM
+Whirlwind Energy Center,null,59.8,01/12/2007,Floyd,TX,ERCO
+Scurry County Wind II,null,120,01/12/2007,Scurry,TX,ERCO
+Diamond Willow Wind Facility,null,30,01/12/2007,Fallon,MT,MISO
+Marshall Wind 2 LLC,null,4.2,01/12/2007,Lyon,MN,MISO
+Marshall Wind 3 LLC,null,4.2,01/12/2007,Lyon,MN,MISO
+Marshall Wind 4 LLC,null,4.2,01/12/2007,Lyon,MN,MISO
+Marshall Wind 5 LLC,null,2.1,01/12/2007,Lyon,MN,MISO
+Marshall Wind 6 LLC,null,2.1,01/12/2007,Lyon,MN,MISO
+Marshall Wind 1 LLC,null,2.1,01/12/2007,Lyon,MN,MISO
+Langdon Wind Energy Center,null,40.5,01/12/2007,Cavalier,ND,MISO
+Solano Wind,Sacramento Municipal Utility District,63,01/12/2007,Solano,CA,CISO
+Cedar Creek Wind,null,221,01/11/2007,Weld,CO,PSCO
+Cedar Creek Wind,null,79.5,01/11/2007,Weld,CO,PSCO
+Mesquite Wind Power LLC,null,200,01/11/2007,Shackelford,TX,ERCO
+Klondike Windpower III,null,221,01/11/2007,Sherman,OR,AVRN
+White Creek Wind Farm,null,204,01/11/2007,Klickitat,WA,BPAT
+Capricorn Ridge Wind LLC,null,149.5,01/11/2007,Sterling,TX,ERCO
+Capricorn Ridge Wind LLC,null,214.5,01/11/2007,Sterling,TX,ERCO
+Munnsville Wind Farm LLC,null,34.5,01/10/2007,Madison,NY,NYIS
+Logan Wind Energy,null,201,01/10/2007,Logan,CO,PSCO
+Sleeping Bear LLC,null,94.5,01/10/2007,Harper,OK,SWPP
+Com Adam 1WF-1,null,2.5,01/10/2007,Lee,IL,PJM
+Com Adam 1WF-1,null,2.5,01/10/2007,Lee,IL,PJM
+Peetz Table Wind Energy,null,199.5,01/09/2007,Logan,CO,PSCO
+Fenton Wind Farm,null,205.5,01/09/2007,Murray,MN,MISO
+Marengo Wind Plant,null,156,01/08/2007,Columbia,WA,PACW
+Jiminy Peak Wind QF,null,1.5,01/08/2007,Berkshire,MA,ISNE
+Mountain Lake,null,1.2,01/07/2007,Cottonwood,MN,MISO
+Agriwind,null,8.4,01/07/2007,Bureau,IL,MISO
+Twin Buttes Wind Project,null,75,01/07/2007,Bent,CO,PSCO
+Buffalo Gap 2 Wind Farm,null,232.5,01/07/2007,Nolan,TX,ERCO
+GSG LLC,null,80,01/06/2007,Lee,IL,PJM
+Allegheny Ridge Wind Farm,null,80,01/06/2007,Cambria,PA,PJM
+Bluegrass Ridge,null,56.7,01/06/2007,Gentry,MO,AECI
+Steel Winds Wind Farm,null,20,01/06/2007,Erie,NY,NYIS
+Crosswind Energy Project,null,21,01/06/2007,Palo Alto,IA,SWPP
+Sweetwater Wind 4 LLC,null,241,01/05/2007,Nolan,TX,ERCO
+Scurry County Wind LP,null,130.5,01/05/2007,Scurry,TX,ERCO
+Hardin Hilltop Wind LLC,null,14.7,01/05/2007,Greene,IA,MISO
+Pakini Nui Wind Farm,null,21,01/04/2007,Hawaii,HI,null
+Wildorado Wind LLC,null,161,01/04/2007,Oldham,TX,SWPP
+High Trail Wind Farm LLC,null,210.9,01/03/2007,McLean,IL,PJM
+Mars Hill Wind Farm Project,null,42,01/03/2007,Aroostook,ME,NBSO
+Locust Ridge,null,26,01/03/2007,Schuylkill,PA,PJM
+Sand Bluff Wind Farm,null,89.5,01/01/2007,Glasscock,TX,ERCO
+Tenderloin Wind (6) LLC,null,10,01/01/2007,Sherman,TX,SWPP
+Maple Ridge Wind Farm,null,90.1,01/12/2006,Lewis,NY,NYIS
+Wild Horse,null,228.6,01/12/2006,Kittitas,WA,PSEI
+Aragonne Wind LLC,null,90,01/12/2006,Guadalupe,NM,PNM
+Victory Wind Farm,null,105,01/12/2006,Carroll,IA,MISO
+Centennial Wind Farm,null,120,01/12/2006,Harper,OK,SWPP
+FPL Energy Oliver Wind I LLC,null,50.6,01/12/2006,Oliver,ND,MISO
+Forest Creek Wind Farm LLC,null,124.2,01/12/2006,Glasscock,TX,ERCO
+Mower County Wind Energy Center,null,98.9,01/12/2006,Mower,MN,MISO
+Buena Vista Energy LLC,Leeward Energy,38,01/12/2006,Contra Costa,CA,CISO
+Filet Wind (5) LLC,null,10,01/11/2006,Sherman,TX,SWPP
+Leaning Juniper,null,110.4,01/10/2006,Gilliam,OR,BPAT
+Big Horn Wind Project,null,199,01/10/2006,Klickitat,WA,AVRN
+Spearville,null,100.5,01/09/2006,Ford,KS,SWPP
+St. Olaf Wind Turbine,null,1.6,01/09/2006,Rice,MN,MISO
+Shane's Wind Machine,null,1.3,01/07/2006,Pipestone,MN,MISO
+Maple Ridge Wind Farm,null,33,01/06/2006,Lewis,NY,NYIS
+Horse Hollow Wind Energy Center,null,223.5,01/06/2006,Taylor,TX,ERCO
+Horse Hollow Wind Energy Center,null,299,01/06/2006,Taylor,TX,ERCO
+Solano Wind,Sacramento Municipal Utility District,24,01/06/2006,Solano,CA,CISO
+Kotzebue Hybrid,null,0.1,01/05/2006,NORTHWEST ARCTIC,AK,null
+Kotzebue Hybrid,null,0.1,01/05/2006,NORTHWEST ARCTIC,AK,null
+Kotzebue Hybrid,null,0.1,01/05/2006,NORTHWEST ARCTIC,AK,null
+Kotzebue Hybrid,null,0.1,01/05/2006,NORTHWEST ARCTIC,AK,null
+Shiloh I Wind Project,null,150,01/05/2006,Solano,CA,CISO
+Hawi Wind Farm,null,10.6,01/05/2006,Hawaii,HI,null
+Blue Breezes LLC,null,1.3,01/05/2006,Faribault,MN,MISO
+Blue Breezes II LLC,null,1.3,01/05/2006,Faribault,MN,MISO
+Sunset Breeze LLC,null,1.3,01/05/2006,Nobles,MN,MISO
+Minnesota Breeze LLC,null,1.3,01/05/2006,Nobles,MN,MISO
+G Flow Wind LLC,null,1.3,01/05/2006,Nobles,MN,MISO
+Wolf Wind Enterprises LLC,null,1.3,01/05/2006,Nobles,MN,MISO
+Green Acres Breeze LLC,null,1.3,01/05/2006,Nobles,MN,MISO
+Hull Wind II,null,1.8,01/05/2006,Plymouth,MA,ISNE
+Lincoln Heights I,null,5.2,01/05/2006,Lincoln,MN,MISO
+Lincoln Heights II,null,3.9,01/05/2006,Lincoln,MN,MISO
+Buffalo Gap Wind Farm,null,120.6,01/04/2006,Taylor,TX,ERCO
+Post Wind Farm LP,null,84,01/04/2006,Borden,TX,ERCO
+Eastridge Wind Project,null,10.4,01/04/2006,Murray,MN,MISO
+Wind Park Bear Creek,null,24,01/03/2006,Luzerne,PA,PJM
+Jersey-Atlantic Wind Farm,null,7.5,01/03/2006,Atlantic,NJ,PJM
+Windom Wind Project,null,15.6,01/03/2006,Cottonwood,MN,MISO
+Windshare LLC,null,5.4,01/03/2006,Murray,MN,MISO
+Wolverine Creek,null,64.5,01/02/2006,Bonneville,ID,PACE
+Spring Canyon,null,60,01/02/2006,Logan,CO,PSCO
+FPL Energy Burleigh County Wind,null,18,01/02/2006,Burleigh,ND,MISO
+Horseshoe Bend Wind Park,null,9,01/02/2006,Cascade,MT,NWMT
+Maple Ridge Wind Farm,null,61.1,01/01/2006,Lewis,NY,NYIS
+Kaheawa Pastures Wind Farm Hybrid,null,30,01/01/2006,Maui,HI,null
+Intrepid,null,15,01/12/2005,Buena Vista,IA,MISO
+Weatherford Wind Energy Center,null,40.5,01/12/2005,Custer,OK,SWPP
+Maple Ridge Wind Farm,null,137,01/12/2005,Lewis,NY,NYIS
+Horse Hollow Wind Energy Center,null,213,01/12/2005,Taylor,TX,ERCO
+Kumeyaay Wind,null,50,01/12/2005,San Diego,CA,CISO
+Crescent Ridge,null,53,01/12/2005,Bureau,IL,PJM
+Elk River Wind,null,150,01/12/2005,Butler,KS,SWPP
+San Juan Mesa Wind Project LLC,null,120,01/12/2005,Roosevelt,NM,SWPP
+Sweetwater Wind 3 LLC,null,135,01/12/2005,Nolan,TX,ERCO
+Blue Canyon Windpower II,null,151.4,01/12/2005,Comanche,OK,SWPP
+FPL Energy Burleigh County Wind,null,31.5,01/12/2005,Burleigh,ND,MISO
+Judith Gap Wind Energy Center,null,135,01/12/2005,Wheatland,MT,NWMT
+Velva Windfarm LLC,null,11.9,01/12/2005,McHenry,ND,MISO
+Hopkins Ridge Wind,null,149.4,01/11/2005,Columbia,WA,BPAT
+Trimont Area Wind Farm,null,100.5,01/11/2005,Martin,MN,MISO
+Ainsworth Wind,null,59.4,01/10/2005,Brown,NE,SWPP
+Century,null,150,01/09/2005,Hamilton,IA,MISO
+Klondike Windpower II,null,75,01/07/2005,Sherman,OR,AVRN
+Kotzebue Hybrid,null,0.1,01/05/2005,NORTHWEST ARCTIC,AK,null
+Coram Energy LLC (ECT),null,7.5,01/05/2005,Kern,CA,CISO
+Caprock Wind Farm,null,20,01/05/2005,Quay,NM,SWPP
+Pike County Wind Power,null,1.7,01/05/2005,Pike,IL,MISO
+Weatherford Wind Energy Center,null,106.5,01/04/2005,Custer,OK,SWPP
+Callahan Divide Wind Energy Center,null,114,01/03/2005,Taylor,TX,ERCO
+WCROC Wind Farm,null,1.7,01/03/2005,Stevens,MN,MISO
+Sweetwater Wind 2 LLC,null,98.8,01/02/2005,Nolan,TX,ERCO
+Fossil Gulch,null,10.5,01/02/2005,Gooding,ID,IPCO
+Iowa Lakes Community College Wind Farm,null,1.7,01/02/2005,Emmet,IA,MISO
+Coram Energy LLC,null,3,01/01/2005,Kern,CA,CISO
+Redwood Falls Wind,null,1.7,01/01/2005,Redwood,MN,MISO
+Fairmont Wind,null,1.7,01/01/2005,Martin,MN,MISO
+Bowling Green Wind,null,1.8,01/12/2004,Wood,OH,PJM
+Intrepid,null,160.5,01/12/2004,Buena Vista,IA,MISO
+Diablo Winds LLC,null,18,01/12/2004,Alameda,CA,CISO
+Caprock Wind Farm,null,80,01/12/2004,Quay,NM,SWPP
+Oasis Wind,null,60.3,01/12/2004,Kern,CA,CISO
+Stahl Wind Energy,null,1.7,01/12/2004,Pipestone,MN,MISO
+Carstensen Wind,null,1.7,01/12/2004,Pipestone,MN,MISO
+Northern Lights Wind LLC,null,1.7,01/12/2004,Pipestone,MN,MISO
+Lucky Wind,null,1.7,01/12/2004,Pipestone,MN,MISO
+Greenback Energy,null,1.7,01/12/2004,Pipestone,MN,MISO
+Redwood Falls Wind,null,1.7,01/12/2004,Redwood,MN,MISO
+Fairmont Wind,null,1.7,01/12/2004,Martin,MN,MISO
+Bowling Green Wind,null,1.8,01/11/2004,Wood,OH,PJM
+Carleton College,null,1.6,01/09/2004,Rice,MN,MISO
+Adams Wind Farm,null,9.8,01/07/2004,Mower,MN,MISO
+G McNeilus Wind Farm Dodge Center,null,3,01/05/2004,Dodge,MN,MISO
+Lamar Plant,null,4.5,01/02/2004,Prowers,CO,PSCO
+Lamar Plant,null,1.5,01/02/2004,Prowers,CO,PSCO
+Springfield Wind,null,1.5,01/02/2004,Baca,CO,PSCO
+Coram Energy LLC (4.5MW),null,4.5,01/01/2004,Kern,CA,CISO
+Worthington,null,1,01/12/2003,Nobles,MN,MISO
+Worthington,null,1,01/12/2003,Nobles,MN,MISO
+"Meyersdale Windpower, LLC",null,30,01/12/2003,Somerset,PA,PJM
+High Winds LLC,null,16.2,01/12/2003,Solano,CA,CISO
+Blue Canyon Windpower,null,74.3,01/12/2003,Comanche,OK,SWPP
+TransAlta Wyoming Wind,null,144,01/12/2003,Uinta,WY,PACE
+Brazos Wind Farm,null,182.4,01/12/2003,Scurry,TX,ERCO
+Mountain View III,null,22.4,01/12/2003,Riverside,CA,CISO
+Flying Cloud Power Partners LLC,null,43.5,01/12/2003,Dickinson,IA,MISO
+Colorado Green Holdings LLC,null,162,01/12/2003,Prowers,CO,PSCO
+Moraine Wind LLC,null,51,01/12/2003,Pipestone,MN,MISO
+Combine Hills I,null,43,01/12/2003,Umatilla,OR,PACW
+CG Windfarm LLC,null,2,01/12/2003,Pipestone,MN,MISO
+DL Windy Acres LLC,null,2,01/12/2003,Jackson,MN,MISO
+S&P Windfarm LLC,null,2,01/12/2003,Jackson,MN,MISO
+B&K Energy Systems LLC,null,2,01/12/2003,Jackson,MN,MISO
+Sweetwater Wind 1 LLC,null,37.5,01/12/2003,Nolan,TX,ERCO
+"Mendota Hills, LLC",null,76.2,01/11/2003,Lee,IL,PJM
+TG Windfarm LLC,null,2,01/11/2003,Pipestone,MN,MISO
+Westridge Windfarm LLC,null,2,01/11/2003,Pipestone,MN,MISO
+Bowling Green Wind,null,1.8,01/11/2003,Wood,OH,PJM
+Bowling Green Wind,null,1.8,01/11/2003,Wood,OH,PJM
+Waymart Wind,null,64.5,01/10/2003,Wayne,PA,PJM
+South Dakota Wind Energy Cente,null,40.5,01/10/2003,Hyde,SD,WACM
+Oklahoma Wind Energy Center,null,51,01/10/2003,Woodward,OK,SWPP
+Oklahoma Wind Energy Center,null,51,01/10/2003,Woodward,OK,SWPP
+FPL Energy North Dakota Wind I/II,null,61.5,01/10/2003,LaMoure,ND,MISO
+Bisson Windfarm LLC,null,2,01/10/2003,Pipestone,MN,MISO
+Tofteland Windfarm LLC,null,2,01/10/2003,Pipestone,MN,MISO
+New Mexico Wind Energy Center,null,204,01/09/2003,Quay,NM,PNM
+Fey Windfarm LLC,null,2,01/09/2003,Pipestone,MN,MISO
+Windcurrent Farms LLC,null,2,01/09/2003,Pipestone,MN,MISO
+Adams Wind Farm,null,13.5,01/09/2003,Mower,MN,MISO
+Boeve Windfarm LLC,null,2,01/08/2003,Pipestone,MN,MISO
+High Winds LLC,null,145.8,01/07/2003,Solano,CA,CISO
+G McNeilus Wind Farm Dodge Center,null,8,01/05/2003,Dodge,MN,MISO
+Allendorf,null,2,01/05/2003,Osceola,IA,MISO
+Fairmont Wind,null,1,01/03/2003,Martin,MN,MISO
+Fairmont Wind,null,1,01/03/2003,Martin,MN,MISO
+K-Brink Windfarm LLC,null,2,01/02/2003,Pipestone,MN,MISO
+Mountaineer Wind Energy Center,null,66,01/12/2002,Tucker,WV,PJM
+Hancock County Wind Energy Center,null,98,01/12/2002,Hancock,IA,MISO
+Tehachapi Wind Resource II,CalWind,8.3,01/12/2002,Kern,CA,CISO
+Minwind,null,3.8,01/10/2002,Rock,MN,MISO
+Cabazon Wind Partners,null,41,01/10/2002,Riverside,CA,CISO
+Whitewater Hill Wind Partners,null,61.5,01/10/2002,Riverside,CA,CISO
+Nine Canyon,null,95.9,01/09/2002,Benton,WA,BPAT
+G McNeilus Wind Farm Dodge Center,null,32,01/09/2002,Dodge,MN,MISO
+Worthington,null,0.9,01/07/2002,Nobles,MN,MISO
+Worthington,null,0.9,01/07/2002,Nobles,MN,MISO
+Worthington,null,0.9,01/07/2002,Nobles,MN,MISO
+Worthington,null,0.9,01/07/2002,Nobles,MN,MISO
+Montfort Wind Energy Center,null,30,01/06/2002,Iowa,WI,MISO
+Kotzebue Hybrid,null,0.1,01/05/2002,NORTHWEST ARCTIC,AK,null
+Condon Windpower LLC,null,25.2,01/05/2002,Gilliam,OR,BPAT
+Klondike Wind Power,null,24.5,01/01/2002,Sherman,OR,AVRN
+Desert Sky,null,167.7,01/01/2002,Pecos,TX,ERCO
+FPL Energy Vansycle LLC (WA),null,176.9,01/12/2001,Walla Walla,WA,BPAT
+Llano Estacado Wind Ranch,null,80,01/12/2001,Carson,TX,SWPP
+Condon Windpower LLC,null,24.6,01/12/2001,Gilliam,OR,BPAT
+Ridge Crest Wind Partners,null,29.7,01/12/2001,Logan,CO,PSCO
+Noble Ridge LLC,null,1.5,01/12/2001,Nobles,MN,MISO
+Somerset Windpower LLC,null,9,01/12/2001,Somerset,PA,PJM
+Mill Run Windpower LLC,null,15,01/12/2001,Somerset,PA,PJM
+Kas Brothers Windfarm,null,1.5,01/12/2001,Pipestone,MN,MISO
+FPL Energy Vansycle LLC (OR),null,122.8,01/12/2001,Umatilla,OR,BPAT
+Waverly Community Wind Project,null,0.9,01/12/2001,Bremer,IA,MISO
+Harbec Energy,null,0.3,01/12/2001,Wayne,NY,NYIS
+Gray County Wind Energy,null,112.2,01/11/2001,Gray,KS,SWPP
+Fenner Wind,null,30,01/10/2001,Madison,NY,NYIS
+"Old Gold Energy Center, LLC",null,80,01/10/2001,Worth,IA,MISO
+Moorhead Wind Turbine,null,0.7,01/09/2001,Clay,MN,SWPP
+Woodward Mountain II,null,78,01/07/2001,Pecos,TX,ERCO
+Woodward Mountain I,null,82,01/07/2001,Pecos,TX,ERCO
+Trent Wind Farm,null,152,01/07/2001,Nolan,TX,ERCO
+King Mountain Wind Ranch 1,null,278,01/06/2001,Upton,TX,ERCO
+NWP Indian Mesa Wind Farm,null,82.5,01/05/2001,Pecos,TX,ERCO
+Tsar Nicholas LLC,null,1.9,01/02/2001,Lincoln,MN,MISO
+Sun River LLC,null,1.9,01/02/2001,Lincoln,MN,MISO
+Julia Hills LLC,null,1.9,01/02/2001,Lincoln,MN,MISO
+Jessica Mills LLC,null,1.9,01/02/2001,Lincoln,MN,MISO
+Jack River LLC,null,1.9,01/02/2001,Lincoln,MN,MISO
+Autumn Hills LLC,null,1.9,01/02/2001,Lincoln,MN,MISO
+Agassiz Beach LLC,null,1.9,01/02/2001,Clay,MN,MISO
+Florence Hills LLC,null,1.9,01/01/2001,Lincoln,MN,MISO
+Winters Spawn LLC,null,1.9,01/01/2001,Lincoln,MN,MISO
+Spartan Hills LLC,null,1.9,01/01/2001,Lincoln,MN,MISO
+Soliloquoy Ridge LLC,null,1.9,01/01/2001,Lincoln,MN,MISO
+Ruthton Ridge LLC,null,1.9,01/01/2001,Lincoln,MN,MISO
+Hope Creek LLC,null,1.9,01/01/2001,Lincoln,MN,MISO
+Twin Lake Hills LLC,null,1.9,01/12/2000,Lincoln,MN,MISO
+Hadley Ridge LLC,null,1.9,01/12/2000,Lincoln,MN,MISO
+Buffalo Mountain,null,0.6,01/10/2000,Anderson,TN,TVA
+Buffalo Mountain,null,0.6,01/10/2000,Anderson,TN,TVA
+Buffalo Mountain,null,0.6,01/10/2000,Anderson,TN,TVA
+Madison Windpower LLC,null,11.5,01/10/2000,Madison,NY,NYIS
+Iowa Distributed Wind Generation Project,null,2.3,01/06/2000,Kossuth,IA,SWPP
+Victory Garden (Tehachapi),null,1.5,01/05/2000,Kern,CA,CISO
+Shaokatan Hills LLC,null,11.8,01/08/1999,Lincoln,MN,MISO
+Wind Turbine,null,11,01/06/1999,Kewaunee,WI,MISO
+San Gorgonio Westwinds II LLC,null,43.4,01/06/1999,Riverside,CA,CISO
+Oak Creek Energy Systems I,null,23.1,01/06/1999,Kern,CA,CISO
+Oak Creek Energy Systems I,null,3.7,01/06/1999,Kern,CA,CISO
+Storm Lake 1,null,0.7,01/06/1999,Buena Vista,IA,MISO
+Storm Lake 1,null,0.7,01/06/1999,Buena Vista,IA,MISO
+Lake Benton II,null,100.2,01/06/1999,Pipestone,MN,MISO
+Phoenix Wind Power LLC,null,2.1,01/06/1999,Riverside,CA,CISO
+Kotzebue Hybrid,null,0.6,01/05/1999,NORTHWEST ARCTIC,AK,null
+Kotzebue Hybrid,null,0.1,01/05/1999,NORTHWEST ARCTIC,AK,null
+Moorhead Wind Turbine,null,0.7,01/05/1999,Clay,MN,SWPP
+Storm Lake 1,null,112.5,01/05/1999,Buena Vista,IA,MISO
+Woodstock Windfarm,null,9.2,01/05/1999,Pipestone,MN,MISO
+Storm Lake II,null,80.2,01/04/1999,Buena Vista,IA,MISO
+Lakota Ridge LLC,null,11.2,01/04/1999,Lincoln,MN,MISO
+Hawkeye Power Partners LLC,null,42,01/04/1999,Cerro Gordo,IA,MISO
+Salka Cabazon Wind,null,38.9,01/01/1999,Riverside,CA,CISO
+Big Spring Wind Power Facility,null,34.3,01/12/1998,Howard,TX,ERCO
+Allendorf,null,1.2,01/10/1998,Osceola,IA,MISO
+Allendorf,null,0.6,01/10/1998,Osceola,IA,MISO
+Vansycle,null,25,01/08/1998,Umatilla,OR,BPAT
+Lake Benton I,null,107.2,01/02/1998,Lincoln,MN,MISO
+Searsburg Wind Turbine,null,6,01/06/1997,Bennington,VT,ISNE
+Kotzebue Hybrid,null,0.2,01/01/1997,NORTHWEST ARCTIC,AK,null
+Tehachapi Wind Resource II,CalWind,13.6,01/01/1997,Kern,CA,CISO
+Ridgetop,null,46.8,01/04/1994,Kern,CA,CISO
+Oak Creek Energy Systems I,null,4.2,01/12/1993,Kern,CA,CISO
+Coram Tehachapi,null,6.5,01/09/1992,Kern,CA,CISO
+Mojave 3/4/5,null,75,01/12/1990,Kern,CA,CISO
+EDF Renewable Windfarm V Inc,null,15.5,01/01/1990,Solano,CA,CISO
+Mojave 16/17/18,null,88.5,01/12/1989,Kern,CA,CISO
+Dinosaur Point,null,17.4,01/05/1988,Merced,CA,CISO
+Difwind Farms Ltd VI,null,27.1,01/01/1987,Kern,CA,CISO
+TPC Windfarms LLC,null,28.7,01/12/1986,Kern,CA,CISO
+Helzel & Schwarzhoff 86,null,2.4,01/12/1986,Kern,CA,CISO
+Coram Energy LLC (4.5MW),null,0.1,01/12/1985,Kern,CA,CISO
+ZCO,null,1.6,01/12/1985,Kern,CA,CISO
+Karen Avenue Wind Farm,null,11.7,01/01/1985,Riverside,CA,CISO
+East Winds Project,null,3,01/01/1985,Riverside,CA,CISO
+Tehachapi Wind Resource I,null,8.7,01/12/1984,Kern,CA,CISO
+Cameron Ridge LLC,null,59.6,01/12/1984,Kern,CA,CISO
+Mesa Wind Power LLC,null,33.6,01/11/1984,Riverside,CA,CISO
+Ridgetop Energy LLC,null,29,01/01/1984,Kern,CA,CISO
+Terra-Gen VG Wind LLC,null,7.4,01/01/1984,Kern,CA,CISO
+San Gorgonio Farms Wind Farm,null,31,01/03/1983,Riverside,CA,CISO
+Oak Creek Energy Systems I,null,3.5,01/06/1982,Kern,CA,CISO
+Victory Garden (Tehachapi),null,24.6,01/12/1981,Kern,CA,CISO
