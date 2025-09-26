@@ -1,0 +1,251 @@
+# Configuration for Power Grid and Weather Data Fetcher
+# This file configures locations, time parameters, and features to fetch
+
+# Location configurations
+locations:
+  - name: "Eland Solar & Storage Center"
+    latitude: 35.3733
+    longitude: -119.0187
+    county: "Kern"
+    state: "CA"
+    caiso_zone: "SP15"  # Southern California zone
+    operator: "Avantus"
+    capacity_mw: 200.0
+    grid: "LDWP"
+
+  - name: "Bakeoven Solar"
+    latitude: 45.2588
+    longitude: -121.0949
+    county: "Wasco"
+    state: "OR"
+    caiso_zone: null  # Not in CAISO, set to null
+    operator: "Avangrid Renewables"
+    capacity_mw: 60.0
+    grid: "AVRN"
+
+  - name: "Corpus Refinery"
+    latitude: 27.8006
+    longitude: -97.3964
+    county: "Nueces"
+    state: "TX"
+    caiso_zone: null  # Not in CAISO (ERCOT region)
+    operator: "Flint Hills Resources"
+    capacity_mw: 27.5
+    grid: "ERCO"
+
+  - name: "CTGB Maloney and Webster"
+    latitude: 41.8722
+    longitude: -72.3695
+    county: "Tolland"
+    state: "CT"
+    caiso_zone: null  # Not in CAISO (ISO-NE region)
+    operator: "TotalEnergies"
+    capacity_mw: 2.0
+    grid: "ISNE"
+
+  - name: "CSU Northridge Plant"
+    latitude: 34.2381
+    longitude: -118.5276
+    county: "Los Angeles"
+    state: "CA"
+    caiso_zone: "SP15"  # Southern California zone
+    operator: "Unable to find"
+    capacity_mw: 0.8
+    grid: "LDWP"
+
+# Time parameters
+time_parameters:
+  # Duration in days to fetch historical data
+  duration_days: 7
+
+  # Start date (if null, will use duration_days from current date)
+  # Format: "YYYY-MM-DD" or null for automatic
+  start_date: null
+
+  # End date (if null, will use current date)
+  # Format: "YYYY-MM-DD" or null for automatic
+  end_date: null
+
+  # Time interval for aggregation
+  # Options: "hourly", "daily", "5min", "15min", "30min"
+  time_interval: "hourly"
+
+  # Timezone for data (auto will use location-based timezone)
+  timezone: "auto"
+
+# Weather features to fetch
+weather_features:
+  # Core weather parameters
+  - temperature_2m
+  - relative_humidity_2m
+  - dew_point_2m
+  - apparent_temperature
+  - precipitation
+  - rain
+  - snowfall
+  - weather_code
+  - pressure_msl
+  - surface_pressure
+
+  # Cloud cover
+  - cloud_cover
+  - cloud_cover_low
+  - cloud_cover_mid
+  - cloud_cover_high
+
+  # Wind parameters
+  - wind_speed_10m
+  - wind_speed_100m
+  - wind_direction_10m
+  - wind_direction_100m
+  - wind_gusts_10m
+
+  # Evapotranspiration
+  - evapotranspiration
+  - et0_fao_evapotranspiration
+  - vapour_pressure_deficit
+
+  # Soil parameters
+  - soil_temperature_0_to_7cm
+  - soil_moisture_0_to_7cm
+
+# Air quality features to fetch
+air_quality_features:
+  # Particulate matter
+  - pm10
+  - pm2_5
+
+  # Gases
+  - carbon_monoxide
+  - nitrogen_dioxide
+  - sulphur_dioxide
+  - ozone
+  - ammonia
+
+  # Other
+  - dust
+  - uv_index
+  - uv_index_clear_sky
+
+  # Pollen (seasonal)
+  - alder_pollen
+  - birch_pollen
+  - grass_pollen
+  - mugwort_pollen
+  - olive_pollen
+  - ragweed_pollen
+
+# CAISO market data parameters
+caiso_parameters:
+  # Enable CAISO data fetching (only for CA locations)
+  enabled: true
+
+  # Market types to fetch
+  markets:
+    - "DAM"  # Day-Ahead Market
+    - "RTM"  # Real-Time Market
+
+  # Price nodes (if empty, will use zone default nodes)
+  # Can specify custom nodes like "TH_SP15_GEN-APND"
+  custom_nodes: []
+
+  # Data types to fetch
+  data_types:
+    - "LMP"  # Locational Marginal Price
+    # - "AS"  # Ancillary Services (if needed)
+
+  # RT interval in minutes
+  rt_interval_minutes: 5
+
+# Output configuration
+output:
+  # Output directory
+  directory: "./data"
+
+  # File naming pattern
+  # Available variables: {location}, {start_date}, {end_date}, {interval}
+  filename_pattern: "{location}_{interval}_{start_date}_to_{end_date}.csv"
+
+  # Include daily aggregation file
+  create_daily_aggregation: true
+
+  # CSV options
+  csv_options:
+    index: false
+    compression: null  # Options: null, "gzip", "bz2", "zip", "xz"
+
+  # Columns to include in output (if empty, includes all)
+  # You can specify a subset of columns to reduce file size
+  include_columns: []  # Empty means include all
+
+  # Exclude columns from output
+  exclude_columns: []
+
+# Data processing options
+processing:
+  # Calculate AQI from PM2.5 and PM10
+  calculate_aqi: true
+
+  # Handle missing values
+  missing_values:
+    # Options: "drop", "forward_fill", "interpolate", "zero", "mean", null (keep as NaN)
+    weather: null
+    air_quality: null
+    caiso_prices: null
+
+  # Outlier detection
+  outlier_detection:
+    enabled: false
+    method: "zscore"  # Options: "zscore", "iqr"
+    threshold: 3  # For zscore method
+
+  # Data quality checks
+  quality_checks:
+    check_duplicates: true
+    check_missing_critical: true  # Will warn if critical data is missing
+    critical_columns: ["datetime", "latitude", "longitude"]
+
+# API configuration
+api_config:
+  # Request timeout in seconds
+  timeout: 60
+
+  # Max retries for failed requests
+  max_retries: 3
+
+  # Retry delay in seconds (exponential backoff)
+  retry_delay: 2
+
+  # Cache settings
+  cache:
+    enabled: true
+    expire_after: 3600  # seconds
+    directory: ".cache"
+
+# Logging configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "INFO"
+
+  # Log to file
+  file: "data_fetcher.log"
+
+  # Also print to console
+  console: true
+
+  # Include timestamps in logs
+  timestamps: true
+
+# Run configuration
+run:
+  # Process locations in parallel (faster but more resource intensive)
+  parallel_processing: false
+
+  # Max workers for parallel processing
+  max_workers: 3
+
+  # Dry run (validate config without fetching data)
+  dry_run: false
+
+  # Continue on error (if one location fails, continue with others)
+  continue_on_error: true
