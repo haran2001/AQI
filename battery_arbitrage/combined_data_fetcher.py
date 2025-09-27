@@ -465,7 +465,8 @@ class CombinedDataFetcher:
         if time_params.get('start_date'):
             start_dt = pd.to_datetime(time_params['start_date'])
         else:
-            duration_days = time_params.get('duration_days', 7)
+            duration_days = time_params.get('duration_days', 100)
+            print('Duration days: ', duration_days)
             start_dt = end_dt - timedelta(days=duration_days)
 
         # Ensure times are at hour boundaries

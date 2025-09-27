@@ -13,50 +13,10 @@ locations:
     capacity_mw: 200.0
     grid: "LDWP"
 
-  - name: "Bakeoven Solar"
-    latitude: 45.2588
-    longitude: -121.0949
-    county: "Wasco"
-    state: "OR"
-    caiso_zone: null  # Not in CAISO, set to null
-    operator: "Avangrid Renewables"
-    capacity_mw: 60.0
-    grid: "AVRN"
-
-  - name: "Corpus Refinery"
-    latitude: 27.8006
-    longitude: -97.3964
-    county: "Nueces"
-    state: "TX"
-    caiso_zone: null  # Not in CAISO (ERCOT region)
-    operator: "Flint Hills Resources"
-    capacity_mw: 27.5
-    grid: "ERCO"
-
-  - name: "CTGB Maloney and Webster"
-    latitude: 41.8722
-    longitude: -72.3695
-    county: "Tolland"
-    state: "CT"
-    caiso_zone: null  # Not in CAISO (ISO-NE region)
-    operator: "TotalEnergies"
-    capacity_mw: 2.0
-    grid: "ISNE"
-
-  - name: "CSU Northridge Plant"
-    latitude: 34.2381
-    longitude: -118.5276
-    county: "Los Angeles"
-    state: "CA"
-    caiso_zone: "SP15"  # Southern California zone
-    operator: "Unable to find"
-    capacity_mw: 0.8
-    grid: "LDWP"
-
 # Time parameters
 time_parameters:
   # Duration in days to fetch historical data
-  duration_days: 7
+  duration_days: 100
 
   # Start date (if null, will use duration_days from current date)
   # Format: "YYYY-MM-DD" or null for automatic
@@ -87,53 +47,16 @@ weather_features:
   - pressure_msl
   - surface_pressure
 
-  # Cloud cover
-  - cloud_cover
-  - cloud_cover_low
-  - cloud_cover_mid
-  - cloud_cover_high
-
-  # Wind parameters
-  - wind_speed_10m
-  - wind_speed_100m
-  - wind_direction_10m
-  - wind_direction_100m
-  - wind_gusts_10m
-
-  # Evapotranspiration
-  - evapotranspiration
-  - et0_fao_evapotranspiration
-  - vapour_pressure_deficit
-
-  # Soil parameters
-  - soil_temperature_0_to_7cm
-  - soil_moisture_0_to_7cm
-
 # Air quality features to fetch
 air_quality_features:
   # Particulate matter
   - pm10
   - pm2_5
 
-  # Gases
-  - carbon_monoxide
-  - nitrogen_dioxide
-  - sulphur_dioxide
-  - ozone
-  - ammonia
-
   # Other
   - dust
   - uv_index
   - uv_index_clear_sky
-
-  # Pollen (seasonal)
-  - alder_pollen
-  - birch_pollen
-  - grass_pollen
-  - mugwort_pollen
-  - olive_pollen
-  - ragweed_pollen
 
 # CAISO market data parameters
 caiso_parameters:
