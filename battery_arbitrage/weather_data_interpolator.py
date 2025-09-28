@@ -113,10 +113,14 @@ def interpolate_weather_data(input_file, output_file, points_per_hour=12):
     minutes_per_point = 60 / points_per_hour
     freq_string = f"{int(minutes_per_point)}min" if minutes_per_point.is_integer() else f"{minutes_per_point:.1f}min"
 
+    # Extend end time to complete the last hour with all intervals
+    # This ensures we get all 5-min intervals up to 23:55 instead of stopping at 23:00
+    extended_end = df.index.max() + pd.Timedelta(hours=1) - pd.Timedelta(minutes=minutes_per_point)
+
     # Create new index with higher frequency
     new_index = pd.date_range(
         start=df.index.min(),
-        end=df.index.max(),
+        end=extended_end,
         freq=freq_string
     )
 
