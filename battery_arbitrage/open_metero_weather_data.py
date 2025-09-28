@@ -9,8 +9,8 @@ from retry_requests import retry
 cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
 retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
 openmeteo = openmeteo_requests.Client(session = retry_session)
-start_date = '2025-08-25'
-end_date = '2025-09-25'
+start_date = '2025-08-01'
+end_date = '2025-09-01'
 latitude=35.3733
 longitude=-119.0187
 
