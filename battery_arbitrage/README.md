@@ -193,6 +193,32 @@ python xgboost_price_forecaster.py --lookback-steps 48
 - `data/sample_forecast.csv` - Sample predictions
 - `data/xgboost_model_results.png` - Performance visualizations
 
+**Model Performance Visualizations**:
+
+![XGBoost Model Results](data/xgboost_model_results.png)
+
+The performance plots demonstrate excellent model quality:
+
+**📊 Top Left - Actual vs Predicted Prices:**
+- Strong linear correlation (R² = 0.993)
+- Points clustered tightly around the diagonal line
+- Handles both negative prices and high volatility spikes
+
+**📈 Top Right - Time Series Predictions (24h Test Period):**
+- Blue line: Actual prices showing natural volatility
+- Orange line: Model predictions tracking actual patterns
+- Captures both gradual trends and sudden price changes
+
+**🎯 Bottom Left - Feature Importance (Top 15):**
+- `price_high` (60.5%): High price period indicator dominates
+- `price_negative` (15.8%): Negative pricing periods crucial
+- Price change features and weather variables complete top predictors
+
+**🔍 Bottom Right - Residuals Analysis:**
+- Residuals randomly distributed around zero
+- No systematic bias or patterns
+- Confirms model captures underlying price dynamics
+
 ### 6. Analysis and Modeling
 
 **Script**: `data_analysis.ipynb`
