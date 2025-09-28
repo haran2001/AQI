@@ -15,13 +15,16 @@ This repository contains scripts for analyzing battery arbitrage opportunities a
 
 ```
 battery_arbitrage/
-├── data/                          # Generated data files
-├── caiso.py                       # Original CAISO analysis (reference)
-├── caiso_sp15_data_fetch.py       # CAISO price data fetcher
-├── open_metero_weather_data.py    # Weather data fetcher
-├── weather_data_interpolator.py   # Weather interpolation tool
-├── grid_status_caiso_data_fetch.py# Alternative CAISO data source
-└── data_analysis.ipynb           # Jupyter notebook for analysis
+├── data/                            # Generated data files
+├── models/                          # Trained ML models
+├── caiso.py                         # Original CAISO analysis (reference)
+├── caiso_sp15_data_fetch.py         # CAISO price data fetcher
+├── open_metero_weather_data.py      # Weather data fetcher
+├── weather_data_interpolator.py     # Weather interpolation tool
+├── create_merged_dataset.py         # Data merging script
+├── xgboost_price_forecaster.py     # XGBoost forecasting model
+├── grid_status_caiso_data_fetch.py  # Alternative CAISO data source
+└── data_analysis.ipynb             # Jupyter notebook for analysis
 ```
 
 ## Data Pipeline & Usage Sequence
@@ -37,9 +40,15 @@ python caiso_sp15_data_fetch.py
 ```
 
 **Outputs**:
-- `data/eland_sp15_da_prices_2025-08-01_2025-08-31.csv` - Day-ahead hourly prices
-- `data/eland_sp15_rt_prices_2025-08-01_2025-08-31.csv` - Real-time 5-minute prices
+- `data/eland_sp15_da_prices_2025-08-01_2025-08-31.csv` - Day-ahead hourly prices (720 records)
+- `data/eland_sp15_rt_prices_2025-08-01_2025-08-31.csv` - Real-time 5-minute prices (8,640 records)
 - `data/eland_sp15_combined_prices_2025-08-01_2025-08-31.csv` - Combined hourly data with spreads
+
+**Sample Results**:
+- Price range: $-30.98 to $1,061.20/MWh
+- Average price: $19.87/MWh
+- Negative price periods: 38.1%
+- High price periods (>$100): 0.3%
 
 **Key Features**:
 - Uses CAISO OASIS API directly
@@ -93,7 +102,60 @@ python weather_data_interpolator.py --points-per-hour 6   # 10-minute
 - **Circular**: Wind direction (handles 360° boundary correctly)
 - **Forward-fill**: Precipitation, weather codes (discrete events)
 
-### 4. Analysis and Modeling
+### 4. Data Merging
+
+**Script**: `create_merged_dataset.py`
+
+Merges CAISO real-time price data with interpolated weather data for analysis.
+
+```bash
+python create_merged_dataset.py
+```
+
+**Outputs**:
+- `data/merged_weather_prices_2025-08-01_2025-08-30.csv` - Combined dataset with 8,640 records
+
+**Features Added**:
+- Time-based features (hour, day of week, peak/off-peak)
+- Price indicators (negative prices, high prices)
+- Temperature conversions (Celsius/Fahrenheit)
+- Wind speed conversions (m/s to mph)
+
+### 5. Price Forecasting with XGBoost
+
+**Script**: `xgboost_price_forecaster.py`
+
+Advanced machine learning model for n-step ahead price forecasting using XGBoost.
+
+```bash
+# 1-hour forecast (12 x 5-minute intervals)
+python xgboost_price_forecaster.py --forecast-steps 12
+
+# 12-hour forecast
+python xgboost_price_forecaster.py --forecast-steps 144
+
+# Custom lookback period
+python xgboost_price_forecaster.py --lookback-steps 48
+```
+
+**Model Performance**:
+- **Test RMSE**: $2.10/MWh
+- **Test R²**: 0.993 (99.3% variance explained)
+- **Test MAE**: $1.24/MWh
+- **Training Time**: ~2 minutes on 8,640 samples
+
+**Key Features** (111 total):
+- Lagged prices (1-24 steps back = 2 hours)
+- Rolling statistics (6, 12, 24 step windows)
+- Weather features with temporal lags
+- Price change indicators and volatility measures
+
+**Outputs**:
+- `models/xgboost_price_model.pkl` - Trained model
+- `data/sample_forecast.csv` - Sample predictions
+- `data/xgboost_model_results.png` - Performance visualizations
+
+### 6. Analysis and Modeling
 
 **Script**: `data_analysis.ipynb`
 
@@ -118,8 +180,9 @@ Jupyter notebook for correlation analysis and battery arbitrage modeling.
 |---------|-----------|---------|------|
 | DA Prices | Hourly | 720 | ~24KB |
 | RT Prices | 5-minute | 8,640 | ~291KB |
-| Weather (Hourly) | Hourly | 720 | ~XXkB |
-| Weather (5-min) | 5-minute | 8,629 | ~XXkB |
+| Weather (Hourly) | Hourly | 720 | ~73KB |
+| Weather (5-min) | 5-minute | 8,640 | ~2.1MB |
+| Merged Dataset | 5-minute | 8,640 | ~2.3MB |
 
 ## Key Analysis Features
 
@@ -176,11 +239,12 @@ python grid_status_caiso_data_fetch.py
 
 ## Usage Notes
 
-1. **Run scripts in sequence**: Price data → Weather data → Interpolation → Analysis
+1. **Run scripts in sequence**: Price data → Weather data → Interpolation → Merging → Forecasting → Analysis
 2. **Date consistency**: Ensure all scripts use the same date range
 3. **API limits**: CAISO OASIS has a 31-day limit per request
 4. **Rate limiting**: Scripts include retry logic for API rate limits
 5. **Data validation**: Check output files for completeness before analysis
+6. **Model dependencies**: Install required packages: `pip install xgboost scikit-learn matplotlib seaborn joblib`
 
 ## Output File Naming Convention
 
@@ -191,6 +255,8 @@ Examples:
 - 2025-08-01_2025-08-31_caiso_sp15_combined_prices.csv
 - 2025-08-01_2025-08-30_open_metero_weather_data_5min.csv
 - eland_sp15_da_prices_2025-08-01_2025-08-31.csv
+- merged_weather_prices_2025-08-01_2025-08-30.csv
+- sample_forecast.csv
 ```
 
 ## Troubleshooting
