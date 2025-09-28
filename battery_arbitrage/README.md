@@ -29,6 +29,44 @@ battery_arbitrage/
 
 ## Data Pipeline & Usage Sequence
 
+```mermaid
+flowchart TD
+    A[📊 CAISO Price Data<br/>caiso_sp15_data_fetch.py] --> A1[Day-Ahead Prices<br/>720 hourly records]
+    A --> A2[Real-Time Prices<br/>8,640 5-min records]
+
+    B[🌤️ Weather Data<br/>open_metero_weather_data.py] --> B1[Hourly Weather<br/>720 records, 42 variables]
+
+    B1 --> C[⚡ Interpolation<br/>weather_data_interpolator.py]
+    C --> C1[5-min Weather<br/>8,640 records, 42 variables]
+
+    A2 --> D[🔀 Data Merging<br/>create_merged_dataset.py]
+    C1 --> D
+    D --> D1[Merged Dataset<br/>8,640 records, 53 features]
+
+    D1 --> E[🤖 XGBoost Training<br/>xgboost_price_forecaster.py]
+    E --> E1[Train Set<br/>6,884 samples<br/>80%]
+    E --> E2[Test Set<br/>1,721 samples<br/>20%]
+
+    E1 --> F[📈 Model Training<br/>111 engineered features]
+    F --> F1[Trained Model<br/>RMSE: $2.10/MWh<br/>R²: 0.993]
+
+    F1 --> G[🔮 Forecasting<br/>n-step ahead predictions]
+    G --> G1[1-hour forecast<br/>12 steps]
+    G --> G2[12-hour forecast<br/>144 steps]
+
+    E2 --> H[📊 Model Evaluation<br/>Performance metrics]
+    H --> H1[Visualizations<br/>Feature importance<br/>Prediction plots]
+
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#fff3e0
+    style D fill:#e8f5e8
+    style E fill:#fce4ec
+    style F fill:#fff8e1
+    style G fill:#e0f2f1
+    style H fill:#f1f8e9
+```
+
 ### 1. Fetch CAISO Price Data
 
 **Script**: `caiso_sp15_data_fetch.py`
