@@ -15,16 +15,18 @@ This repository contains scripts for analyzing battery arbitrage opportunities a
 
 ```
 battery_arbitrage/
-├── data/                            # Generated data files
-├── models/                          # Trained ML models
-├── caiso.py                         # Original CAISO analysis (reference)
-├── caiso_sp15_data_fetch.py         # CAISO price data fetcher
-├── open_metero_weather_data.py      # Weather data fetcher
-├── weather_data_interpolator.py     # Weather interpolation tool
-├── create_merged_dataset.py         # Data merging script
-├── xgboost_price_forecaster.py     # XGBoost forecasting model
-├── grid_status_caiso_data_fetch.py  # Alternative CAISO data source
-└── data_analysis.ipynb             # Jupyter notebook for analysis
+├── data/                               # Generated data files
+├── models/                             # Trained ML models
+├── caiso.py                            # Original CAISO analysis (reference)
+├── caiso_sp15_data_fetch.py            # CAISO price data fetcher
+├── open_metero_weather_data.py         # Weather data fetcher
+├── weather_data_interpolator.py        # Weather interpolation tool
+├── create_merged_dataset.py            # Data merging script
+├── xgboost_price_forecaster.py        # XGBoost forecasting model
+├── rolling_internsic_battery_arbitrage.py  # Battery arbitrage strategy
+├── visualize_arbitrage_results.py     # Arbitrage results visualization
+├── grid_status_caiso_data_fetch.py     # Alternative CAISO data source
+└── data_analysis.ipynb                # Jupyter notebook for analysis
 ```
 
 ## Data Pipeline & Usage Sequence
@@ -225,6 +227,71 @@ The performance plots demonstrate excellent model quality:
 
 Jupyter notebook for correlation analysis and battery arbitrage modeling.
 
+### 7. Battery Arbitrage Strategy & Visualization
+
+**Script**: `rolling_internsic_battery_arbitrage.py`
+
+Implements rolling intrinsic battery arbitrage strategy using dynamic programming optimization to determine optimal charge/discharge schedules based on electricity price forecasts.
+
+```bash
+# Run battery arbitrage analysis (generates arbitrage_results.csv)
+python rolling_internsic_battery_arbitrage.py
+```
+
+**Visualization Script**: `visualize_arbitrage_results.py`
+
+Creates comprehensive visualizations of battery arbitrage performance and strategy analysis.
+
+```bash
+python visualize_arbitrage_results.py
+```
+
+**Outputs**:
+- `arbitrage_results.csv` - Detailed battery operations with timestamps, prices, actions, and revenue
+- `battery_arbitrage_analysis.png` - Comprehensive 9-panel analysis visualization
+
+**Battery Arbitrage Results**:
+
+![Battery Arbitrage Analysis](battery_arbitrage_analysis.png)
+
+The comprehensive analysis demonstrates excellent battery arbitrage performance over a 47-hour period (September 13-15, 2025):
+
+**📊 Performance Metrics:**
+- **Total Revenue**: $55.88
+- **Energy Charged**: 1,697.7 kWh
+- **Energy Discharged**: 1,626.7 kWh
+- **Round-trip Efficiency**: 95.8%
+- **Revenue per kWh**: $0.034/kWh
+
+**🔋 Operational Strategy:**
+- **Charge Actions**: 44.4% of time (251/565 intervals) - executed during low/negative price periods
+- **Discharge Actions**: 36.5% of time (206/565 intervals) - executed during higher price periods
+- **Hold Actions**: 19.1% of time (108/565 intervals) - maintained position during neutral prices
+
+**💰 Price Arbitrage Success:**
+- **Price Range**: $-0.027 to $0.062/MWh
+- **Average Price**: $0.015/MWh
+- **Strategy**: Successfully charged during negative/low prices, discharged during peak prices
+- **Daily Performance**: Consistent revenue generation across all 3 days
+
+**📈 Key Insights:**
+1. **Efficient Operations**: 95.8% round-trip efficiency indicates minimal energy losses
+2. **Smart Timing**: Clear correlation between price signals and battery actions
+3. **Revenue Growth**: Steady cumulative revenue progression to $55.88
+4. **Daily Optimization**: Highest revenue ($25.17) achieved during day with greatest price volatility
+5. **Capacity Utilization**: Strategic cycling between 0-250 kWh capacity range
+
+**Visualization Features:**
+- Battery state of charge progression over time
+- Scatter plot of actions vs electricity prices (charge=red, discharge=green)
+- Cumulative revenue growth trajectory
+- Daily revenue breakdown with performance metrics
+- Action distribution and timing patterns
+- Price histogram analysis for different battery operations
+- Hourly operation patterns showing peak activity during business hours
+- Revenue correlation with state of charge levels
+- Comprehensive performance metrics dashboard
+
 ## Data Specifications
 
 ### CAISO Price Data
@@ -303,12 +370,13 @@ python grid_status_caiso_data_fetch.py
 
 ## Usage Notes
 
-1. **Run scripts in sequence**: Price data → Weather data → Interpolation → Merging → Forecasting → Analysis
+1. **Run scripts in sequence**: Price data → Weather data → Interpolation → Merging → Forecasting → Arbitrage → Visualization
 2. **Date consistency**: Ensure all scripts use the same date range
 3. **API limits**: CAISO OASIS has a 31-day limit per request
 4. **Rate limiting**: Scripts include retry logic for API rate limits
 5. **Data validation**: Check output files for completeness before analysis
 6. **Model dependencies**: Install required packages: `pip install xgboost scikit-learn matplotlib seaborn joblib`
+7. **Visualization requirements**: Install plotting packages: `pip install matplotlib seaborn pandas numpy`
 
 ## Output File Naming Convention
 
@@ -321,6 +389,8 @@ Examples:
 - eland_sp15_da_prices_2025-08-01_2025-08-31.csv
 - merged_weather_prices_2025-08-01_2025-08-30.csv
 - sample_forecast.csv
+- arbitrage_results.csv
+- battery_arbitrage_analysis.png
 ```
 
 ## Troubleshooting
