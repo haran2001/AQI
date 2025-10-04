@@ -202,34 +202,63 @@ The existing training workflow requires manual execution of:
 **FR-7: Dataset Merging**
 - **Priority:** P0
 - **Description:** Merge weather and price data on aligned timestamps
+- **Implementation Note:** Adapts logic from `create_merged_dataset.py` (70% code reuse)
 - **Requirements:**
   - Inner join on timestamp (only keep matching records)
-  - Handle timezone differences
+  - Handle different column names (`date` in weather, `timestamp` in prices)
+  - Parse timestamps with timezone awareness (UTC standardization)
   - Log number of merged vs dropped records
   - Validate no duplicate timestamps
+  - Check timestamp frequency (all 5-minute intervals)
+  - Report date range coverage for each dataset
   - Save merged dataset with clear naming
+  - **NEW**: Detect and report timestamp gaps (missing intervals)
+  - **NEW**: Validate data types for all columns
 - **Acceptance Criteria:**
-  - Successfully merge 8,640 records
+  - Successfully merge 8,640 records (30-day dataset)
   - Zero duplicate timestamps
-  - All timestamps are 5-minute intervals
-  - Missing data report generated
+  - All timestamps are exactly 5-minute intervals
+  - Missing data report generated with column-wise statistics
+  - Gap detection identifies any missing 5-min intervals
+  - Execution time <10 seconds
 
-**FR-8: Feature Engineering**
+**FR-8: Feature Engineering (Two-Stage Approach)**
 - **Priority:** P0
-- **Description:** Create derived features for model training
+- **Description:** Create derived features for model training in two stages
+- **Implementation Note:**
+  - Stage 1: Reuses `create_merged_dataset.py` logic (basic features)
+  - Stage 2: Adapts `xgboost_price_forecaster.py::create_lagged_features()` (advanced features)
+
+**Stage 1 - Basic Features (during merge):**
 - **Requirements:**
-  - **Temporal features:** hour, day_of_week, is_weekend, is_peak_hours
-  - **Price lags:** Configurable lag steps (default: 1-24)
-  - **Rolling statistics:** Mean, std, min, max over configurable windows
-  - **Weather features:** Temperature conversions, wind speed conversions
-  - **Derived indicators:** price_negative, price_high, price volatility
-  - Support custom feature definitions via config
-  - Save feature metadata (names, types, transformations)
+  - **Temporal features:** hour, day_of_week, is_weekend, is_peak_hours (configurable hours)
+  - **Weather conversions:** temp_fahrenheit, wind_speed_mph
+  - **Price indicators:** price_negative (< $0), price_high (> threshold from config)
+  - **Cyclical encoding:** hour_sin, hour_cos, day_sin, day_cos (for temporal cyclicity)
 - **Acceptance Criteria:**
-  - Generate 111+ features as specified in config
-  - Handle edge cases at start of timeseries (NaN for lags)
-  - Feature metadata JSON saved with model
-  - Execution time <1 minute
+  - Generate ~15 basic features
+  - All features have correct data types
+  - No NaN values introduced (except intentional)
+  - Execution time <5 seconds
+
+**Stage 2 - Advanced Features (before training):**
+- **Requirements:**
+  - **Price lag features:** Configurable lag steps (default: 1-24 steps = 2 hours)
+  - **Rolling statistics:** Mean, std, min, max over configurable windows (6, 12, 24 steps)
+  - **Weather lag features:** Temperature, humidity, wind (lags at 6, 12, 24 steps)
+  - **Price change features:** Diff over 1, 6, 12 steps (velocity indicators)
+  - **Interaction features:** temp × hour, temp × weekend (configurable combinations)
+  - **Weather-price interactions:** Configurable feature crosses
+  - Handle edge cases at start of timeseries (NaN rows from lagging)
+  - Drop rows with NaN values after feature creation
+  - Save feature metadata JSON (names, types, transformations, config used)
+  - Support feature selection (enable/disable feature groups via config)
+- **Acceptance Criteria:**
+  - Generate 111+ features for XGBoost (exact count depends on config)
+  - Properly handle NaN values (drop ~24 rows from start due to max lag)
+  - Feature metadata JSON includes all feature definitions
+  - Execution time <30 seconds
+  - Feature importance can be traced back to metadata
 
 ### 3.4 Data Splitting
 
@@ -553,8 +582,10 @@ Weather API → Raw Weather Data → data/raw/weather_*.csv
     ↓
 [Stage 2: Preprocessing]
 Interpolation → data/processed/weather_5min.csv
-Merging → data/processed/merged_dataset.csv
-Feature Engineering → data/processed/features.csv
+    ↓
+Merging + Basic Features → data/processed/merged_dataset.csv
+    ↓
+Advanced Feature Engineering → data/processed/features_engineered.csv
     ↓
 [Stage 3: Splitting]
 Train/Val/Test Sets → data/processed/{train,val,test}.csv
@@ -575,7 +606,179 @@ Summary Report → reports/summary_YYYYMMDD.html
 
 ### 5.4 Configuration Schema
 
-See Section 3.1 for detailed configuration structure. Full JSON schema will be provided in `config/schema.json` for validation.
+**Example Configuration File:** `config/training_config.yaml`
+
+```yaml
+# Training Pipeline Configuration
+pipeline_version: "1.0"
+
+# Date Range Configuration
+date_range:
+  start_date: "2025-08-01"
+  end_date: "2025-08-31"
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+
+# Site Configuration (Eland Solar & Storage Center)
+site:
+  name: "Eland Solar & Storage Center, Phase 2"
+  latitude: 35.3733
+  longitude: -119.0187
+  caiso_zone: "SP15"
+  caiso_node: "TH_SP15_GEN-APND"
+
+# Data Collection Settings
+data_collection:
+  caiso:
+    fetch_day_ahead: true
+    fetch_real_time: true
+    auto_chunk: true  # Automatic 30-day chunking
+    max_retries: 3
+    retry_delay_seconds: 2
+
+  weather:
+    provider: "open-meteo"
+    hourly_variables:
+      - temperature_2m
+      - relative_humidity_2m
+      - wind_speed_10m
+      - wind_direction_10m
+      - pressure_msl
+      - cloud_cover
+      # ... (42 total variables)
+
+    interpolation:
+      enabled: true
+      target_frequency: "5min"
+      methods:  # Auto-selected by variable type
+        temperature: "cubic"
+        wind_direction: "circular"
+        humidity: "linear"
+        precipitation: "forward_fill"
+
+# Feature Engineering (Two-Stage)
+features:
+  # Stage 1: Basic Features (during merge)
+  basic:
+    temporal:
+      - hour
+      - day_of_week
+      - is_weekend
+      - is_peak_hours  # 6 AM - 10 PM default
+
+    cyclical:
+      - hour_sin
+      - hour_cos
+      - day_sin
+      - day_cos
+
+    weather_conversions:
+      - temp_fahrenheit
+      - wind_speed_mph
+
+    price_indicators:
+      price_negative_threshold: 0  # < $0/MWh
+      price_high_threshold: 100    # > $100/MWh
+
+  # Stage 2: Advanced Features (before training)
+  advanced:
+    price_lags:
+      enabled: true
+      lag_steps: [1, 2, 3, 4, 5, 6, 12, 24]  # Steps back
+
+    rolling_statistics:
+      enabled: true
+      windows: [6, 12, 24]  # 30min, 1hr, 2hr
+      functions:
+        - mean
+        - std
+        - min
+        - max
+
+    weather_lags:
+      enabled: true
+      variables:
+        - temperature_2m
+        - relative_humidity_2m
+        - wind_speed_10m
+      lag_steps: [6, 12, 24]
+
+    price_changes:
+      enabled: true
+      diff_steps: [1, 6, 12]  # Price velocity
+
+    interactions:
+      enabled: true
+      combinations:
+        - [temperature_2m, hour]
+        - [temperature_2m, is_weekend]
+        - [wind_speed_10m, hour]
+
+    drop_nan_rows: true  # Drop rows with NaN from lagging
+
+# Model Configuration
+models:
+  xgboost:
+    enabled: true
+    params:
+      n_estimators: 1000
+      max_depth: 6
+      learning_rate: 0.1
+      subsample: 0.8
+      colsample_bytree: 0.8
+      early_stopping_rounds: 50
+      random_state: 42
+
+    forecast_steps: 12  # 1 hour ahead (12 x 5min)
+    lookback_steps: 24  # 2 hours history
+
+  # Future models
+  lstm:
+    enabled: false
+  lightgbm:
+    enabled: false
+
+# Battery Configuration (for validation)
+battery:
+  capacity_kwh: 500.0
+  max_power_kw: 100.0
+  efficiency_charge: 0.95
+  efficiency_discharge: 0.95
+  degradation_cost_per_kwh: 0.004
+  trading_cost_per_kwh: 0.00009
+
+# Validation Settings
+validation:
+  run_arbitrage_backtest: true
+  rolling_window: 12  # 1 hour window
+  reoptimize_freq: 1  # Every 5 minutes
+  baseline_strategies:
+    - naive
+    - persistence
+    - day_ahead_only
+
+# Output Paths
+paths:
+  data_dir: "data"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  models_dir: "models"
+  plots_dir: "plots"
+  logs_dir: "logs"
+  reports_dir: "reports"
+  cache_dir: "cache"
+
+# Pipeline Options
+pipeline:
+  skip_if_exists: false
+  save_intermediate: true
+  generate_plots: true
+  verbose: true
+  random_seed: 42
+```
+
+Full JSON schema will be provided in `config/schema.json` for validation.
 
 ### 5.5 API Contracts
 
@@ -588,9 +791,11 @@ class DataCollector:
     def _chunk_date_range(self, start: str, end: str, max_days: int = 30) -> List[Tuple[str, str]]
 
 class DataPreprocessor:
-    def interpolate(self, df: pd.DataFrame, method: str) -> pd.DataFrame
-    def merge(self, weather: pd.DataFrame, prices: pd.DataFrame) -> pd.DataFrame
-    def engineer_features(self, df: pd.DataFrame) -> pd.DataFrame
+    def interpolate_weather(self, df: pd.DataFrame, target_freq: str = "5min") -> pd.DataFrame
+    def merge_datasets(self, weather: pd.DataFrame, prices: pd.DataFrame) -> pd.DataFrame
+    def add_basic_features(self, df: pd.DataFrame, config: Dict) -> pd.DataFrame
+    def add_advanced_features(self, df: pd.DataFrame, config: Dict) -> pd.DataFrame
+    def validate_data_quality(self, df: pd.DataFrame) -> Dict
 
 class ModelTrainer:
     def train(self, X_train: pd.DataFrame, y_train: pd.Series) -> Model
@@ -668,39 +873,106 @@ class ModelTrainer:
 
 ## 7. Implementation Plan
 
-### 7.1 Phases
+### 7.1 Code Reuse from Existing Scripts
+
+The pipeline will leverage ~70% of existing code from proven scripts:
+
+| Existing Script | Reuse % | Pipeline Module | Notes |
+|----------------|---------|-----------------|-------|
+| `caiso_sp15_data_fetch.py` | 85% | `DataCollector.fetch_caiso_data()` | Add chunking logic, config params |
+| `open_metero_weather_data.py` | 90% | `DataCollector.fetch_weather_data()` | Parameterize variables, add error handling |
+| `weather_data_interpolator.py` | 95% | `DataPreprocessor.interpolate_weather()` | Already well-structured, minimal changes |
+| `create_merged_dataset.py` | 70% | `DataPreprocessor.merge_datasets()` | Core logic preserved, add validation |
+| `create_merged_dataset.py` | 50% | `DataPreprocessor.add_basic_features()` | Extract feature creation, make config-driven |
+| `xgboost_price_forecaster.py` | 80% | `ModelTrainer.train_xgboost()` | Adapt class structure, add config support |
+| `xgboost_price_forecaster.py` | 90% | `DataPreprocessor.add_advanced_features()` | Extract lagged feature creation |
+| `rolling_internsic_battery_arbitrage.py` | 95% | `PipelineValidator.run_backtest()` | Already well-architected |
+| `visualize_arbitrage_results.py` | 100% | `PipelineReporter.generate_plots()` | Reuse as-is |
+
+**Overall Code Reuse: ~75-80%**
+
+### 7.2 Phases
 
 **Phase 1: Core Pipeline (Weeks 1-2)**
 - Configuration management (FR-1, FR-2)
+  - YAML parser with validation
+  - Schema definition in JSON
 - Data collection (FR-3, FR-4, FR-5)
+  - Adapt `caiso_sp15_data_fetch.py` with chunking
+  - Adapt `open_metero_weather_data.py` with config
+  - Implement cache checking
 - Basic error handling (FR-18)
+  - Retry logic with exponential backoff
 - CLI interface
+  - `train_pipeline.py` entry point
+  - Argument parsing (config file, stages, resume)
 
 **Phase 2: Preprocessing & Features (Week 3)**
 - Interpolation (FR-6)
+  - Reuse `weather_data_interpolator.py` logic
+  - Make frequency configurable
 - Merging (FR-7)
-- Feature engineering (FR-8)
+  - Extract core logic from `create_merged_dataset.py`
+  - Add timestamp gap detection
+  - Enhance validation
+- Basic feature engineering (FR-8 Stage 1)
+  - Extract from `create_merged_dataset.py`
+  - Add cyclical encoding
+  - Make configurable
+- Advanced feature engineering (FR-8 Stage 2)
+  - Extract from `xgboost_price_forecaster.py::create_lagged_features()`
+  - Make all lags/windows configurable
+  - Support feature groups (enable/disable)
 - Data splitting (FR-9)
+  - Temporal split logic
+  - Save split metadata
 
 **Phase 3: Model Training (Week 4)**
 - XGBoost trainer (FR-10)
+  - Adapt `xgboost_price_forecaster.py::PriceForecastModel`
+  - Config-driven hyperparameters
+  - Save model artifacts with metadata
 - Model evaluation (FR-12)
+  - Reuse evaluation logic
+  - Generate plots
+  - Save metrics JSON
 - Multi-model support (FR-11)
+  - Abstract base class for models
+  - Plugin architecture for new models
 
 **Phase 4: Validation & Reporting (Week 5)**
 - Arbitrage validation (FR-13)
+  - Integrate `rolling_internsic_battery_arbitrage.py`
+  - Config-driven battery params
+  - Calculate trading metrics
 - Pipeline reports (FR-15)
+  - Markdown/HTML report generator
+  - Embed plots
+  - Include config snapshot
 - Logging system (FR-16)
+  - Structured logging (JSON format)
+  - Stage-specific log files
+  - Console + file output
 
 **Phase 5: Robustness (Week 6)**
 - Checkpointing (FR-17)
+  - Save state after each stage
+  - Resume from checkpoint
 - Data validation (FR-19)
+  - Outlier detection
+  - Range validation
+  - Data quality report
 - Strategy comparison (FR-14)
+  - Baseline strategies
+  - Statistical testing
 - Testing & documentation
+  - Unit tests (80% coverage target)
+  - Integration tests
+  - User guide with examples
 
-### 7.2 Dependencies
+### 7.3 Dependencies
 
-- Existing scripts provide reference implementations
+- Existing scripts provide reference implementations (75-80% code reuse)
 - Current model achieves R² = 0.993 (baseline target)
 - CAISO and Open-Meteo APIs are stable
 - No new infrastructure required
@@ -817,14 +1089,42 @@ The pipeline will be considered successful when:
 - **CAISO**: California Independent System Operator
 - **OASIS**: Open Access Same-time Information System (CAISO's API)
 
-### 12.2 References
+### 12.2 Existing Codebase Analysis
+
+**Key Insights from Script Study:**
+
+1. **Well-Structured Foundation**: Existing scripts are well-documented, modular, and production-ready (~75-80% reusable)
+
+2. **Two-Stage Feature Engineering Discovery**:
+   - `create_merged_dataset.py` creates 8 basic features (temporal, conversions)
+   - `xgboost_price_forecaster.py` creates 111+ advanced features (lags, rolling stats, interactions)
+   - Pipeline should preserve this separation for clarity and performance
+
+3. **Proven Interpolation Logic**: `weather_data_interpolator.py` handles circular wind direction correctly with vector interpolation - critical for accuracy
+
+4. **Robust Optimization**: `rolling_internsic_battery_arbitrage.py` implements dynamic programming with 51-point SoC discretization - already optimized
+
+5. **Missing Pieces**:
+   - No configuration management (all hardcoded)
+   - No CAISO 30-day chunking (assumes single API call)
+   - Limited error handling and retry logic
+   - No structured logging or checkpointing
+   - No data validation (outliers, gaps, duplicates)
+
+6. **Performance Baselines**:
+   - Current XGBoost model: R² = 0.993, RMSE = $2.10/MWh
+   - Training time: ~2 minutes for 8,640 samples
+   - Arbitrage results: $55.88 revenue over 47 hours, 95.8% efficiency
+
+### 12.3 References
 
 - [CAISO OASIS API Documentation](http://oasis.caiso.com/mrioasis/logon.do)
 - [Open-Meteo API Documentation](https://open-meteo.com/en/docs)
 - [XGBoost Documentation](https://xgboost.readthedocs.io/)
 - Current codebase: `/Users/hari/Desktop/aqi/battery_arbitrage/`
+- Existing scripts: See Section 7.1 for detailed reuse mapping
 
-### 12.3 Stakeholders
+### 12.4 Stakeholders
 
 - **Project Owner**: Battery Arbitrage Team
 - **Technical Lead**: ML Engineering Team
