@@ -5,15 +5,11 @@ CAISO SP15 Price Data Fetcher for Eland Solar & Storage Center
 Fetches Day-Ahead hourly and Real-Time 5-minute LMP prices from CAISO OASIS API
 for the SP15 zone where Eland Solar & Storage Center is located.
 
-Location: Eland Solar & Storage Center, Phase 2
-Owner: Avantus
-Capacity: 200.0 MW
-COD: 01/07/2025
-County: Kern, CA
-Zone: SP15 (LDWP area)
+This version is config-driven - all parameters loaded from training_config.yaml
 
 Usage:
-    python caiso_sp15_data_fetch.py
+    python caiso_sp15_data_fetch.py --config config/training_config.yaml
+    python caiso_sp15_data_fetch.py --config config/training_config.yaml --start-date 2025-08-01 --end-date 2025-08-31
 
 Output:
     - CSV files with Day-Ahead and Real-Time prices
@@ -27,55 +23,78 @@ import requests
 import pandas as pd
 import xml.etree.ElementTree as ET
 import time
+import yaml
+import argparse
 from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Dict, List, Tuple, Optional
 
 # ----------------------------
-# Configuration
+# Configuration Loading
 # ----------------------------
 
-# Eland Solar & Storage Center Configuration
-SITE_INFO = {
-    'name': 'Eland Solar & Storage Center, Phase 2',
-    'owner': 'Avantus',
-    'capacity_mw': 200.0,
-    'cod': '01/07/2025',
-    'county': 'Kern',
-    'state': 'CA',
-    'utility': 'LDWP',
-    'zone': 'SP15',
-    'node': 'TH_SP15_GEN-APND'  # SP15 Trading Hub node for CAISO OASIS
-}
+def load_config(config_path: str) -> Dict:
+    """Load configuration from YAML file"""
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+    return config
 
-# CAISO OASIS API Configuration
-OASIS_BASE = "https://oasis.caiso.com/oasisapi/SingleZip"
 
-# Date range for data fetch
-# Note: CAISO OASIS limits requests to 31 days maximum
-START_DATE = '2025-08-01'
-END_DATE = '2025-08-31'  # Changed to 31 days (Aug has 31 days)
+def chunk_date_range(start_dt: datetime, end_dt: datetime, max_days: int = 30) -> List[Tuple[datetime, datetime]]:
+    """
+    Split a date range into chunks of max_days or less.
 
-# Convert to datetime objects
-start_dt = datetime.strptime(START_DATE, '%Y-%m-%d')
-end_dt = datetime.strptime(END_DATE, '%Y-%m-%d')
+    Args:
+        start_dt: Start date
+        end_dt: End date
+        max_days: Maximum days per chunk (default: 30 for CAISO limit of 31)
+
+    Returns:
+        List of (start, end) datetime tuples
+    """
+    chunks = []
+    current_start = start_dt
+
+    while current_start < end_dt:
+        # Calculate chunk end (max_days from current_start or end_dt, whichever is earlier)
+        current_end = min(current_start + timedelta(days=max_days), end_dt)
+        chunks.append((current_start, current_end))
+
+        # Move to next chunk (add 1 day to avoid overlap)
+        current_start = current_end + timedelta(days=1)
+
+    return chunks
+
 
 # ----------------------------
 # Helper Functions
 # ----------------------------
 
-def _format_dt_for_oasis(dt: datetime):
+def _format_dt_for_oasis(dt: datetime) -> str:
     """Format datetime for CAISO OASIS API (UTC timezone)"""
     return dt.strftime("%Y%m%dT%H:%M-0000")
 
-def _make_oasis_request(url: str, params: dict, max_retries: int = 3) -> requests.Response:
-    """Make a request to CAISO OASIS API with retry logic for rate limiting"""
+
+def _make_oasis_request(url: str, params: dict, max_retries: int = 3,
+                        retry_delay: int = 2, timeout: int = 60) -> requests.Response:
+    """
+    Make a request to CAISO OASIS API with retry logic for rate limiting
+
+    Args:
+        url: API endpoint URL
+        params: Query parameters
+        max_retries: Maximum number of retry attempts
+        retry_delay: Base delay in seconds between retries
+        timeout: Request timeout in seconds
+    """
     for attempt in range(max_retries):
         try:
-            response = requests.get(url, params=params, timeout=60)
+            response = requests.get(url, params=params, timeout=timeout)
 
             # Handle rate limiting
             if response.status_code == 429:
                 if attempt < max_retries - 1:
-                    wait_time = (2 ** attempt) * 2  # Exponential backoff
+                    wait_time = (2 ** attempt) * retry_delay  # Exponential backoff
                     print(f"Rate limited, waiting {wait_time} seconds before retry {attempt + 1}/{max_retries}")
                     time.sleep(wait_time)
                     continue
@@ -98,6 +117,7 @@ def _make_oasis_request(url: str, params: dict, max_retries: int = 3) -> request
                 raise e
 
     raise requests.RequestException(f"Failed after {max_retries} attempts")
+
 
 def _parse_oasis_xml(payload_bytes: bytes) -> pd.DataFrame:
     """Parse CAISO OASIS XML response to extract price data"""
@@ -192,12 +212,26 @@ def _parse_oasis_xml(payload_bytes: bytes) -> pd.DataFrame:
 
     return df
 
+
 # ----------------------------
 # Data Fetching Functions
 # ----------------------------
 
-def fetch_da_prices(node_id: str, start_dt: datetime, end_dt: datetime) -> pd.DataFrame:
-    """Fetch Day-Ahead hourly LMP prices from CAISO OASIS API"""
+def fetch_da_prices(node_id: str, start_dt: datetime, end_dt: datetime,
+                    oasis_base_url: str, max_retries: int = 3,
+                    retry_delay: int = 2, timeout: int = 60) -> pd.DataFrame:
+    """
+    Fetch Day-Ahead hourly LMP prices from CAISO OASIS API
+
+    Args:
+        node_id: CAISO node identifier
+        start_dt: Start datetime
+        end_dt: End datetime
+        oasis_base_url: CAISO OASIS API base URL
+        max_retries: Maximum retry attempts
+        retry_delay: Retry delay in seconds
+        timeout: Request timeout in seconds
+    """
     params = {
         "queryname": "PRC_LMP",
         "market_run_id": "DAM",
@@ -207,8 +241,8 @@ def fetch_da_prices(node_id: str, start_dt: datetime, end_dt: datetime) -> pd.Da
         "version": "1"
     }
 
-    print(f"Fetching Day-Ahead prices for {node_id}...")
-    response = _make_oasis_request(OASIS_BASE, params)
+    print(f"Fetching Day-Ahead prices for {node_id} ({start_dt.date()} to {end_dt.date()})...")
+    response = _make_oasis_request(oasis_base_url, params, max_retries, retry_delay, timeout)
 
     # Process response (usually a ZIP file)
     content = response.content
@@ -259,8 +293,22 @@ def fetch_da_prices(node_id: str, start_dt: datetime, end_dt: datetime) -> pd.Da
     else:
         raise ValueError(f"No timestamp column found. Available columns: {list(df.columns)}")
 
-def fetch_rt_prices(node_id: str, start_dt: datetime, end_dt: datetime) -> pd.DataFrame:
-    """Fetch Real-Time 5-minute LMP prices from CAISO OASIS API"""
+
+def fetch_rt_prices(node_id: str, start_dt: datetime, end_dt: datetime,
+                    oasis_base_url: str, max_retries: int = 3,
+                    retry_delay: int = 2, timeout: int = 60) -> pd.DataFrame:
+    """
+    Fetch Real-Time 5-minute LMP prices from CAISO OASIS API
+
+    Args:
+        node_id: CAISO node identifier
+        start_dt: Start datetime
+        end_dt: End datetime
+        oasis_base_url: CAISO OASIS API base URL
+        max_retries: Maximum retry attempts
+        retry_delay: Retry delay in seconds
+        timeout: Request timeout in seconds
+    """
     params = {
         "queryname": "PRC_INTVL_LMP",
         "market_run_id": "RTM",
@@ -270,8 +318,8 @@ def fetch_rt_prices(node_id: str, start_dt: datetime, end_dt: datetime) -> pd.Da
         "version": "1"
     }
 
-    print(f"Fetching Real-Time prices for {node_id}...")
-    response = _make_oasis_request(OASIS_BASE, params)
+    print(f"Fetching Real-Time prices for {node_id} ({start_dt.date()} to {end_dt.date()})...")
+    response = _make_oasis_request(oasis_base_url, params, max_retries, retry_delay, timeout)
 
     # Process response
     content = response.content
@@ -319,69 +367,238 @@ def fetch_rt_prices(node_id: str, start_dt: datetime, end_dt: datetime) -> pd.Da
     else:
         raise ValueError(f"No timestamp column found. Available columns: {list(df.columns)}")
 
+
+def fetch_prices_with_chunking(node_id: str, start_dt: datetime, end_dt: datetime,
+                               fetch_func, oasis_base_url: str, max_days: int = 30,
+                               max_retries: int = 3, retry_delay: int = 2,
+                               timeout: int = 60, rate_limit_delay: int = 1) -> pd.DataFrame:
+    """
+    Fetch prices with automatic chunking for date ranges > max_days
+
+    Args:
+        node_id: CAISO node identifier
+        start_dt: Start datetime
+        end_dt: End datetime
+        fetch_func: Function to fetch prices (fetch_da_prices or fetch_rt_prices)
+        oasis_base_url: CAISO OASIS API base URL
+        max_days: Maximum days per chunk
+        max_retries: Maximum retry attempts
+        retry_delay: Retry delay in seconds
+        timeout: Request timeout in seconds
+        rate_limit_delay: Delay between chunks in seconds
+    """
+    # Calculate number of days
+    total_days = (end_dt - start_dt).days
+
+    if total_days <= max_days:
+        # Single request
+        return fetch_func(node_id, start_dt, end_dt, oasis_base_url, max_retries, retry_delay, timeout)
+
+    # Multiple chunks required
+    chunks = chunk_date_range(start_dt, end_dt, max_days)
+    print(f"Date range spans {total_days} days - splitting into {len(chunks)} chunks")
+
+    all_data = []
+
+    for i, (chunk_start, chunk_end) in enumerate(chunks, 1):
+        print(f"\nFetching chunk {i}/{len(chunks)}: {chunk_start.date()} to {chunk_end.date()}")
+
+        try:
+            chunk_data = fetch_func(node_id, chunk_start, chunk_end, oasis_base_url,
+                                   max_retries, retry_delay, timeout)
+            all_data.append(chunk_data)
+
+            # Rate limiting between chunks
+            if i < len(chunks):
+                print(f"Waiting {rate_limit_delay} seconds before next chunk...")
+                time.sleep(rate_limit_delay)
+
+        except Exception as e:
+            print(f"Error fetching chunk {i}: {e}")
+            raise
+
+    # Concatenate all chunks
+    print(f"\nConcatenating {len(all_data)} chunks...")
+    combined_df = pd.concat(all_data, axis=0)
+
+    # Remove any duplicate timestamps at chunk boundaries
+    combined_df = combined_df[~combined_df.index.duplicated(keep='first')]
+    combined_df = combined_df.sort_index()
+
+    print(f"Combined dataset: {len(combined_df)} total records")
+
+    return combined_df
+
+
 # ----------------------------
 # Main Execution
 # ----------------------------
 
-if __name__ == "__main__":
-    print("=" * 60)
-    print("CAISO Price Data Fetcher for Eland Solar & Storage Center")
-    print("=" * 60)
-    print(f"Site: {SITE_INFO['name']}")
-    print(f"Owner: {SITE_INFO['owner']}")
-    print(f"Capacity: {SITE_INFO['capacity_mw']} MW")
-    print(f"Location: {SITE_INFO['county']}, {SITE_INFO['state']}")
-    print(f"CAISO Zone: {SITE_INFO['zone']}")
-    print(f"Node: {SITE_INFO['node']}")
-    print(f"Period: {START_DATE} to {END_DATE}")
-    print("-" * 60)
+def main():
+    parser = argparse.ArgumentParser(description='Fetch CAISO price data from OASIS API')
+    parser.add_argument('--config', type=str, default='config/training_config.yaml',
+                       help='Path to configuration YAML file')
+    parser.add_argument('--start-date', type=str, default=None,
+                       help='Start date (YYYY-MM-DD) - overrides config')
+    parser.add_argument('--end-date', type=str, default=None,
+                       help='End date (YYYY-MM-DD) - overrides config')
+    parser.add_argument('--output-dir', type=str, default=None,
+                       help='Output directory - overrides config')
+
+    args = parser.parse_args()
+
+    # Load configuration
+    print(f"Loading configuration from: {args.config}")
+    config = load_config(args.config)
+
+    # Extract configuration values
+    site_info = config['site']
+    caiso_config = config['data_collection']['caiso']
+    date_range = config['date_range']
+    paths = config['paths']
+
+    # Use command-line args if provided, otherwise use config
+    start_date = args.start_date if args.start_date else date_range['start_date']
+    end_date = args.end_date if args.end_date else date_range['end_date']
+    output_dir = args.output_dir if args.output_dir else paths['raw_dir']
+
+    # Parse dates
+    start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+    end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+
+    # OASIS API URL
+    oasis_base = "https://oasis.caiso.com/oasisapi/SingleZip"
+
+    # Display configuration
+    print("=" * 70)
+    print("CAISO Price Data Fetcher (Config-Driven)")
+    print("=" * 70)
+    print(f"Site: {site_info['name']}")
+    print(f"Owner: {site_info['owner']}")
+    print(f"Capacity: {site_info['capacity_mw']} MW")
+    print(f"Location: {site_info['county']}, {site_info['state']}")
+    print(f"CAISO Zone: {site_info['caiso_zone']}")
+    print(f"Node: {site_info['caiso_node']}")
+    print(f"Period: {start_date} to {end_date}")
+    print(f"Auto-chunking: {'Enabled' if caiso_config['auto_chunk'] else 'Disabled'}")
+    print(f"Max retries: {caiso_config['max_retries']}")
+    print("-" * 70)
 
     try:
-        # Create data directory if it doesn't exist
-        os.makedirs('data', exist_ok=True)
+        # Create output directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
 
-        # Fetch Day-Ahead prices
-        da_prices = fetch_da_prices(SITE_INFO['node'], start_dt, end_dt)
-        da_filename = f"data/eland_sp15_da_prices_{START_DATE}_{END_DATE}.csv"
-        da_prices.to_csv(da_filename)
-        print(f"✓ Day-Ahead prices saved to: {da_filename}")
-        print(f"  Records: {len(da_prices)}")
-        print(f"  Avg price: ${da_prices['price_mwh'].mean():.2f}/MWh")
-        print(f"  Min price: ${da_prices['price_mwh'].min():.2f}/MWh")
-        print(f"  Max price: ${da_prices['price_mwh'].max():.2f}/MWh")
+        # Fetch Day-Ahead prices (with chunking if needed)
+        if caiso_config['fetch_day_ahead']:
+            print("\n" + "=" * 70)
+            print("Fetching Day-Ahead Prices")
+            print("=" * 70)
 
-        # Fetch Real-Time prices
-        rt_prices = fetch_rt_prices(SITE_INFO['node'], start_dt, end_dt)
-        rt_filename = f"data/eland_sp15_rt_prices_{START_DATE}_{END_DATE}.csv"
-        rt_prices.to_csv(rt_filename)
-        print(f"\n✓ Real-Time prices saved to: {rt_filename}")
-        print(f"  Records: {len(rt_prices)}")
-        print(f"  Avg price: ${rt_prices['price_mwh'].mean():.2f}/MWh")
-        print(f"  Min price: ${rt_prices['price_mwh'].min():.2f}/MWh")
-        print(f"  Max price: ${rt_prices['price_mwh'].max():.2f}/MWh")
+            if caiso_config['auto_chunk']:
+                da_prices = fetch_prices_with_chunking(
+                    node_id=site_info['caiso_node'],
+                    start_dt=start_dt,
+                    end_dt=end_dt,
+                    fetch_func=fetch_da_prices,
+                    oasis_base_url=oasis_base,
+                    max_days=caiso_config['max_days_per_chunk'],
+                    max_retries=caiso_config['max_retries'],
+                    retry_delay=caiso_config['retry_delay_seconds'],
+                    timeout=caiso_config['timeout_seconds'],
+                    rate_limit_delay=caiso_config['rate_limit_delay_seconds']
+                )
+            else:
+                da_prices = fetch_da_prices(
+                    node_id=site_info['caiso_node'],
+                    start_dt=start_dt,
+                    end_dt=end_dt,
+                    oasis_base_url=oasis_base,
+                    max_retries=caiso_config['max_retries'],
+                    retry_delay=caiso_config['retry_delay_seconds'],
+                    timeout=caiso_config['timeout_seconds']
+                )
+
+            da_filename = f"{output_dir}/caiso_da_prices_{start_date}_{end_date}.csv"
+            da_prices.to_csv(da_filename)
+            print(f"\n✓ Day-Ahead prices saved to: {da_filename}")
+            print(f"  Records: {len(da_prices)}")
+            print(f"  Avg price: ${da_prices['price_mwh'].mean():.2f}/MWh")
+            print(f"  Min price: ${da_prices['price_mwh'].min():.2f}/MWh")
+            print(f"  Max price: ${da_prices['price_mwh'].max():.2f}/MWh")
+
+        # Fetch Real-Time prices (with chunking if needed)
+        if caiso_config['fetch_real_time']:
+            print("\n" + "=" * 70)
+            print("Fetching Real-Time Prices")
+            print("=" * 70)
+
+            if caiso_config['auto_chunk']:
+                rt_prices = fetch_prices_with_chunking(
+                    node_id=site_info['caiso_node'],
+                    start_dt=start_dt,
+                    end_dt=end_dt,
+                    fetch_func=fetch_rt_prices,
+                    oasis_base_url=oasis_base,
+                    max_days=caiso_config['max_days_per_chunk'],
+                    max_retries=caiso_config['max_retries'],
+                    retry_delay=caiso_config['retry_delay_seconds'],
+                    timeout=caiso_config['timeout_seconds'],
+                    rate_limit_delay=caiso_config['rate_limit_delay_seconds']
+                )
+            else:
+                rt_prices = fetch_rt_prices(
+                    node_id=site_info['caiso_node'],
+                    start_dt=start_dt,
+                    end_dt=end_dt,
+                    oasis_base_url=oasis_base,
+                    max_retries=caiso_config['max_retries'],
+                    retry_delay=caiso_config['retry_delay_seconds'],
+                    timeout=caiso_config['timeout_seconds']
+                )
+
+            rt_filename = f"{output_dir}/caiso_rt_prices_{start_date}_{end_date}.csv"
+            rt_prices.to_csv(rt_filename)
+            print(f"\n✓ Real-Time prices saved to: {rt_filename}")
+            print(f"  Records: {len(rt_prices)}")
+            print(f"  Avg price: ${rt_prices['price_mwh'].mean():.2f}/MWh")
+            print(f"  Min price: ${rt_prices['price_mwh'].min():.2f}/MWh")
+            print(f"  Max price: ${rt_prices['price_mwh'].max():.2f}/MWh")
 
         # Create combined hourly dataset
-        combined_df = pd.DataFrame({
-            'da_price_mwh': da_prices['price_mwh'],
-            'rt_price_mwh': rt_prices['price_mwh'].resample('h').mean()
-        })
+        if caiso_config['fetch_day_ahead'] and caiso_config['fetch_real_time']:
+            print("\n" + "=" * 70)
+            print("Creating Combined Dataset")
+            print("=" * 70)
 
-        # Add price spread and metadata
-        combined_df['price_spread_mwh'] = combined_df['rt_price_mwh'] - combined_df['da_price_mwh']
-        combined_df['site'] = SITE_INFO['name']
-        combined_df['zone'] = SITE_INFO['zone']
-        combined_df['node'] = SITE_INFO['node']
+            combined_df = pd.DataFrame({
+                'da_price_mwh': da_prices['price_mwh'],
+                'rt_price_mwh': rt_prices['price_mwh'].resample('h').mean()
+            })
 
-        combined_filename = f"data/eland_sp15_combined_prices_{START_DATE}_{END_DATE}.csv"
-        combined_df.to_csv(combined_filename)
-        print(f"\n✓ Combined hourly prices saved to: {combined_filename}")
-        print(f"  Avg spread (RT-DA): ${combined_df['price_spread_mwh'].mean():.2f}/MWh")
-        print(f"  Spread volatility: ${combined_df['price_spread_mwh'].std():.2f}/MWh")
+            # Add price spread and metadata
+            combined_df['price_spread_mwh'] = combined_df['rt_price_mwh'] - combined_df['da_price_mwh']
+            combined_df['site'] = site_info['name']
+            combined_df['zone'] = site_info['caiso_zone']
+            combined_df['node'] = site_info['caiso_node']
 
-        print("\n" + "=" * 60)
+            combined_filename = f"{output_dir}/caiso_combined_prices_{start_date}_{end_date}.csv"
+            combined_df.to_csv(combined_filename)
+            print(f"\n✓ Combined hourly prices saved to: {combined_filename}")
+            print(f"  Avg spread (RT-DA): ${combined_df['price_spread_mwh'].mean():.2f}/MWh")
+            print(f"  Spread volatility: ${combined_df['price_spread_mwh'].std():.2f}/MWh")
+
+        print("\n" + "=" * 70)
         print("Data fetch completed successfully!")
+        print("=" * 70)
 
     except Exception as e:
         print(f"\nError fetching data: {e}")
         import traceback
         traceback.print_exc()
+        return 1
+
+    return 0
+
+
+if __name__ == "__main__":
+    exit(main())

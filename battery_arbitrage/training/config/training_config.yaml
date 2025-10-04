@@ -1,0 +1,465 @@
+# Training Pipeline Configuration
+# Version: 1.0
+# Last Updated: 2025-10-04
+# Description: Configuration for consolidated battery arbitrage model training pipeline
+
+pipeline_version: "1.0"
+
+# =============================================================================
+# Date Range Configuration
+# =============================================================================
+date_range:
+  start_date: "2025-08-01"
+  end_date: "2025-10-01"
+
+  # Train/validation/test split ratios (must sum to 1.0)
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+
+# =============================================================================
+# Site Configuration (Eland Solar & Storage Center)
+# =============================================================================
+site:
+  name: "Eland Solar & Storage Center, Phase 2"
+  owner: "Avantus"
+  capacity_mw: 200.0
+  cod: "01/07/2025"
+
+  # Location
+  latitude: 35.3733
+  longitude: -119.0187
+  county: "Kern"
+  state: "CA"
+
+  # CAISO Configuration
+  caiso_zone: "SP15"
+  caiso_node: "TH_SP15_GEN-APND"
+  utility: "LDWP"
+
+# =============================================================================
+# Data Collection Settings
+# =============================================================================
+data_collection:
+
+  # CAISO Price Data
+  caiso:
+    fetch_day_ahead: true
+    fetch_real_time: true
+
+    # Automatic chunking for date ranges >30 days (CAISO API limit)
+    auto_chunk: true
+    max_days_per_chunk: 30
+
+    # API retry settings
+    max_retries: 5
+    retry_delay_seconds: 3
+    timeout_seconds: 300  # 5 minutes for large RT datasets (8,640 records)
+
+    # Rate limiting
+    rate_limit_delay_seconds: 2
+
+  # Weather Data (Open-Meteo)
+  weather:
+    provider: "open-meteo"
+    api_url: "https://historical-forecast-api.open-meteo.com/v1/forecast"
+
+    # Weather variables to fetch (42 total)
+    hourly_variables:
+      # Temperature
+      - temperature_2m
+      - apparent_temperature
+      - dew_point_2m
+      - temperature_80m
+      - temperature_120m
+      - temperature_180m
+
+      # Humidity & Pressure
+      - relative_humidity_2m
+      - pressure_msl
+      - surface_pressure
+      - vapour_pressure_deficit
+
+      # Wind
+      - wind_speed_10m
+      - wind_speed_80m
+      - wind_speed_120m
+      - wind_speed_180m
+      - wind_direction_10m
+      - wind_direction_80m
+      - wind_direction_120m
+      - wind_direction_180m
+      - wind_gusts_10m
+
+      # Precipitation
+      - precipitation
+      - precipitation_probability
+      - rain
+      - showers
+      - snowfall
+      - snow_depth
+
+      # Cloud Cover
+      - cloud_cover
+      - cloud_cover_low
+      - cloud_cover_mid
+      - cloud_cover_high
+
+      # Other
+      - weather_code
+      - visibility
+      - evapotranspiration
+      - et0_fao_evapotranspiration
+
+      # Soil
+      - soil_temperature_0cm
+      - soil_temperature_6cm
+      - soil_temperature_18cm
+      - soil_temperature_54cm
+      - soil_moisture_0_to_1cm
+      - soil_moisture_1_to_3cm
+      - soil_moisture_3_to_9cm
+      - soil_moisture_9_to_27cm
+      - soil_moisture_27_to_81cm
+
+    # API retry settings
+    max_retries: 5
+    backoff_factor: 0.2
+    cache_expire_seconds: 3600
+
+    # Interpolation settings
+    interpolation:
+      enabled: true
+      target_frequency: "5min"
+      points_per_hour: 12
+
+      # Interpolation methods by variable type (auto-selected)
+      methods:
+        # Cubic interpolation for smooth temperature curves
+        cubic:
+          - temperature_2m
+          - apparent_temperature
+          - dew_point_2m
+          - temperature_80m
+          - temperature_120m
+          - temperature_180m
+          - soil_temperature_0cm
+          - soil_temperature_6cm
+          - soil_temperature_18cm
+          - soil_temperature_54cm
+
+        # Linear interpolation for smooth continuous variables
+        linear:
+          - relative_humidity_2m
+          - pressure_msl
+          - surface_pressure
+          - visibility
+          - evapotranspiration
+          - et0_fao_evapotranspiration
+          - vapour_pressure_deficit
+          - soil_moisture_0_to_1cm
+          - soil_moisture_1_to_3cm
+          - soil_moisture_3_to_9cm
+          - soil_moisture_9_to_27cm
+          - soil_moisture_27_to_81cm
+          - cloud_cover
+          - cloud_cover_low
+          - cloud_cover_mid
+          - cloud_cover_high
+
+        # Wind speed (linear)
+        wind_speed:
+          - wind_speed_10m
+          - wind_speed_80m
+          - wind_speed_120m
+          - wind_speed_180m
+          - wind_gusts_10m
+
+        # Wind direction (circular interpolation - handles 0°/360° boundary)
+        wind_direction:
+          - wind_direction_10m
+          - wind_direction_80m
+          - wind_direction_120m
+          - wind_direction_180m
+
+        # Discrete events (forward-fill, no interpolation)
+        nearest:
+          - snow_depth
+          - snowfall
+          - showers
+          - rain
+          - precipitation
+          - precipitation_probability
+          - weather_code
+
+# =============================================================================
+# Feature Engineering (Two-Stage Approach)
+# =============================================================================
+features:
+
+  # Stage 1: Basic Features (created during merge)
+  # Based on create_merged_dataset.py
+  basic:
+
+    # Temporal features
+    temporal:
+      enabled: true
+      features:
+        - hour                # Hour of day (0-23)
+        - day_of_week         # Day of week (0=Monday, 6=Sunday)
+        - is_weekend          # Weekend indicator
+        - is_peak_hours       # Peak hours indicator
+
+    # Peak hours configuration
+    peak_hours:
+      start_hour: 6   # 6 AM
+      end_hour: 22    # 10 PM
+
+    # Cyclical encoding for temporal features
+    cyclical:
+      enabled: true
+      features:
+        - hour_sin           # sin(2π * hour / 24)
+        - hour_cos           # cos(2π * hour / 24)
+        - day_sin            # sin(2π * day_of_week / 7)
+        - day_cos            # cos(2π * day_of_week / 7)
+
+    # Weather unit conversions
+    weather_conversions:
+      enabled: true
+      conversions:
+        - temp_fahrenheit    # (temp_celsius * 9/5) + 32
+        - wind_speed_mph     # wind_speed_m/s * 2.237
+
+    # Price indicator flags
+    price_indicators:
+      enabled: true
+      price_negative_threshold: 0      # Prices < $0/MWh
+      price_high_threshold: 100        # Prices > $100/MWh
+
+  # Stage 2: Advanced Features (created before training)
+  # Based on xgboost_price_forecaster.py::create_lagged_features()
+  advanced:
+
+    # Price lag features
+    price_lags:
+      enabled: true
+      lag_steps: [1, 2, 3, 4, 5, 6, 12, 24]  # Steps back (24 = 2 hours at 5-min intervals)
+      # Creates: price_lag_1, price_lag_2, ..., price_lag_24
+
+    # Rolling statistics for prices
+    rolling_statistics:
+      enabled: true
+      windows: [6, 12, 24]  # Window sizes in steps (6=30min, 12=1hr, 24=2hr)
+      functions:
+        - mean    # Rolling mean
+        - std     # Rolling standard deviation
+        - min     # Rolling minimum
+        - max     # Rolling maximum
+      # Creates: price_rolling_mean_6, price_rolling_std_6, price_rolling_min_6, price_rolling_max_6, etc.
+
+    # Weather lag features
+    weather_lags:
+      enabled: true
+      variables:
+        - temperature_2m
+        - relative_humidity_2m
+        - wind_speed_10m
+        - pressure_msl
+        - cloud_cover
+      lag_steps: [6, 12, 24]  # 30min, 1hr, 2hr lags
+      # Creates: temperature_2m_lag_6, temperature_2m_lag_12, etc.
+
+    # Price change features (velocity indicators)
+    price_changes:
+      enabled: true
+      diff_steps: [1, 6, 12]  # Time differences in steps
+      # Creates: price_change_1, price_change_6, price_change_12
+
+    # Interaction features (feature crosses)
+    interactions:
+      enabled: true
+      combinations:
+        - [temperature_2m, hour]              # temp_hour_interaction
+        - [temperature_2m, is_weekend]        # temp_weekend_interaction
+        # Add more combinations as needed
+
+    # NaN handling after feature creation
+    drop_nan_rows: true  # Drop rows with NaN values from lagging (typically ~24 rows at start)
+
+# =============================================================================
+# Model Configuration
+# =============================================================================
+models:
+
+  # XGBoost Price Forecasting Model
+  xgboost:
+    enabled: true
+
+    # Model hyperparameters
+    params:
+      n_estimators: 1000
+      max_depth: 6
+      learning_rate: 0.1
+      subsample: 0.8
+      colsample_bytree: 0.8
+      random_state: 42
+
+      # Early stopping
+      early_stopping_rounds: 50
+      eval_metric: "rmse"
+
+    # Forecasting configuration
+    forecast_steps: 12       # Number of steps ahead to forecast (12 = 1 hour)
+    lookback_steps: 24       # Number of past steps to use as features (24 = 2 hours)
+
+    # Feature scaling
+    scale_features: true
+    scaler_type: "standard"  # Options: standard, minmax, robust
+
+  # Future models (disabled for now)
+  lstm:
+    enabled: false
+    # Add LSTM configuration here when implemented
+
+  lightgbm:
+    enabled: false
+    # Add LightGBM configuration here when implemented
+
+# =============================================================================
+# Battery Configuration (for validation)
+# =============================================================================
+battery:
+  # Battery specifications
+  capacity_kwh: 500.0
+  max_power_kw: 100.0
+  min_soc_kwh: 0.0
+  max_soc_kwh: 500.0
+
+  # Efficiency parameters
+  efficiency_charge: 0.95
+  efficiency_discharge: 0.95
+
+  # Cost parameters
+  degradation_cost_per_kwh: 0.004   # Battery degradation cost ($/kWh)
+  trading_cost_per_kwh: 0.00009     # Trading transaction cost ($/kWh)
+
+# =============================================================================
+# Validation Settings
+# =============================================================================
+validation:
+
+  # Run arbitrage backtest on test set
+  run_arbitrage_backtest: true
+
+  # Rolling intrinsic strategy parameters
+  rolling_window: 12           # Planning horizon in steps (12 = 1 hour)
+  reoptimize_freq: 1           # Reoptimize every N steps (1 = every 5 minutes)
+
+  # Baseline strategy comparison
+  baseline_strategies:
+    - naive                    # Always charge at min price, discharge at max price
+    - persistence              # Assume prices don't change
+    - day_ahead_only           # Use day-ahead prices only
+
+  # Visualization
+  generate_plots: true
+  plot_format: "png"
+  plot_dpi: 300
+
+# =============================================================================
+# Output Paths
+# =============================================================================
+paths:
+  # Base directories
+  data_dir: "data"
+  models_dir: "models"
+  plots_dir: "plots"
+  logs_dir: "logs"
+  reports_dir: "reports"
+  cache_dir: "cache"
+
+  # Subdirectories
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+
+  # File naming patterns (use {start_date}, {end_date} placeholders)
+  caiso_rt_prices: "data/raw/caiso_rt_prices_{start_date}_{end_date}.csv"
+  caiso_da_prices: "data/raw/caiso_da_prices_{start_date}_{end_date}.csv"
+  weather_hourly: "data/raw/weather_hourly_{start_date}_{end_date}.csv"
+  weather_interpolated: "data/processed/weather_5min_{start_date}_{end_date}.csv"
+  merged_dataset: "data/processed/merged_dataset_{start_date}_{end_date}.csv"
+  features_engineered: "data/processed/features_engineered_{start_date}_{end_date}.csv"
+  train_set: "data/processed/train_set_{start_date}_{end_date}.csv"
+  val_set: "data/processed/val_set_{start_date}_{end_date}.csv"
+  test_set: "data/processed/test_set_{start_date}_{end_date}.csv"
+
+  # Model artifacts
+  model_dir_pattern: "models/xgboost_{timestamp}"
+  model_file: "model.pkl"
+  scaler_file: "scaler.pkl"
+  config_snapshot: "config.json"
+  metrics_file: "metrics.json"
+  feature_metadata: "feature_metadata.json"
+
+  # Results
+  arbitrage_results: "results/arbitrage_results_{start_date}_{end_date}.csv"
+  arbitrage_plot: "plots/battery_arbitrage_analysis_{start_date}_{end_date}.png"
+  training_plot: "plots/xgboost_model_results_{start_date}_{end_date}.png"
+
+  # Reports
+  pipeline_report: "reports/pipeline_summary_{timestamp}.html"
+  pipeline_report_md: "reports/pipeline_summary_{timestamp}.md"
+
+# =============================================================================
+# Pipeline Options
+# =============================================================================
+pipeline:
+
+  # Execution options
+  skip_if_exists: false          # Skip stages if output files already exist
+  save_intermediate: true        # Save intermediate datasets (merged, features, etc.)
+  generate_plots: true           # Generate training and validation plots
+  verbose: true                  # Verbose logging to console
+
+  # Random seed for reproducibility
+  random_seed: 42
+
+  # Checkpointing
+  enable_checkpointing: true
+  checkpoint_file: "cache/pipeline_checkpoint.pkl"
+
+  # Performance
+  n_jobs: -1                     # Number of parallel jobs (-1 = use all cores)
+
+  # Logging
+  log_level: "INFO"              # Options: DEBUG, INFO, WARNING, ERROR
+  log_format: "structured"       # Options: structured (JSON), simple (text)
+  log_to_file: true
+  log_to_console: true
+
+# =============================================================================
+# Data Validation Rules
+# =============================================================================
+validation_rules:
+
+  # Price validation
+  price:
+    min_value: -100              # Minimum reasonable price ($/MWh)
+    max_value: 2000              # Maximum reasonable price ($/MWh)
+    outlier_threshold_std: 5     # Flag values > 5 std deviations
+
+  # Temperature validation
+  temperature:
+    min_value: -50               # Minimum temperature (°C)
+    max_value: 60                # Maximum temperature (°C)
+
+  # Wind speed validation
+  wind_speed:
+    min_value: 0                 # Minimum wind speed (m/s)
+    max_value: 50                # Maximum wind speed (m/s)
+
+  # General validation
+  max_missing_pct: 5             # Maximum percentage of missing values allowed
+  check_timestamp_gaps: true     # Check for gaps in timestamp sequence
+  check_duplicates: true         # Check for duplicate timestamps
