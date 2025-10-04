@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAISO SP15 Real-Time Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .status-bar {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.connected {
+            background: #10b981;
+        }
+
+        .status-indicator.disconnected {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            font-size: 1.2em;
+            color: #374151;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-display {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1f2937;
+            margin: 10px 0;
+        }
+
+        .price-display.positive {
+            color: #10b981;
+        }
+
+        .price-display.negative {
+            color: #ef4444;
+        }
+
+        .price-display.high {
+            color: #f59e0b;
+        }
+
+        .timestamp {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        .alert {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .alert.critical {
+            background: #fee2e2;
+            border-left-color: #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #1f2937;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .feed {
+            max-height: 400px;
+            overflow-y: auto;
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .feed-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ CAISO SP15 Real-Time Energy Dashboard</h1>
+
+        <div class="status-bar">
+            <div class="status">
+                <div class="status-indicator disconnected" id="status-indicator"></div>
+                <span id="status-text">Connecting...</span>
+            </div>
+            <div>
+                <span id="last-update">Last update: --</span>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Real-Time Price Card -->
+            <div class="card">
+                <h2>
+                    <span class="icon">⚡</span>
+                    Real-Time Price (5-min)
+                </h2>
+                <div class="price-display" id="rt-price">--</div>
+                <div class="timestamp" id="rt-timestamp">--</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">24h Average</div>
+                        <div class="stat-value" id="rt-avg">--</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">24h High</div>
+                        <div class="stat-value" id="rt-high">--</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">24h Low</div>
+                        <div class="stat-value" id="rt-low">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day-Ahead Price Card -->
+            <div class="card">
+                <h2>
+                    <span class="icon">📅</span>
+                    Day-Ahead Price (Hourly)
+                </h2>
+                <div class="price-display" id="da-price">--</div>
+                <div class="timestamp" id="da-timestamp">--</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Tomorrow Avg</div>
+                        <div class="stat-value" id="da-avg">--</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Peak Hour</div>
+                        <div class="stat-value" id="da-peak">--</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Off-Peak</div>
+                        <div class="stat-value" id="da-offpeak">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Spread Card -->
+            <div class="card">
+                <h2>
+                    <span class="icon">📊</span>
+                    RT-DA Spread
+                </h2>
+                <div class="price-display" id="spread">--</div>
+                <div class="timestamp">Current spread</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">24h Avg Spread</div>
+                        <div class="stat-value" id="spread-avg">--</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Volatility</div>
+                        <div class="stat-value" id="volatility">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Price Chart -->
+        <div class="card">
+            <h2>24-Hour Price Trend</h2>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Alerts -->
+            <div class="card">
+                <h2>
+                    <span class="icon">🚨</span>
+                    Price Alerts
+                </h2>
+                <div id="alerts-container">
+                    <p style="color: #6b7280;">No active alerts</p>
+                </div>
+            </div>
+
+            <!-- Live Feed -->
+            <div class="card">
+                <h2>
+                    <span class="icon">📡</span>
+                    Live Update Feed
+                </h2>
+                <div class="feed" id="feed"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // WebSocket connection
+        let ws;
+        let reconnectTimeout;
+        let priceHistory = [];
+        let chart;
+
+        // Initialize Chart.js
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Real-Time Price',
+                    data: [],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Day-Ahead Price',
+                    data: [],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Price ($/MWh)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            }
+        });
+
+        function connect() {
+            ws = new WebSocket('ws://localhost:8000/ws');
+
+            ws.onopen = function(event) {
+                console.log('Connected to WebSocket');
+                updateStatus(true);
+                addFeedItem('Connected to server', 'success');
+            };
+
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                handleMessage(data);
+            };
+
+            ws.onclose = function(event) {
+                console.log('Disconnected from WebSocket');
+                updateStatus(false);
+                addFeedItem('Disconnected from server', 'error');
+
+                // Reconnect after 5 seconds
+                clearTimeout(reconnectTimeout);
+                reconnectTimeout = setTimeout(connect, 5000);
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                addFeedItem('Connection error', 'error');
+            };
+        }
+
+        function handleMessage(data) {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById('last-update').textContent = `Last update: ${now}`;
+
+            if (data.type === 'RT') {
+                updateRTPrice(data);
+                updateChart(data);
+                addFeedItem(`RT: $${data.price.toFixed(2)}/MWh`, 'rt');
+            } else if (data.type === 'DA') {
+                updateDAPrice(data);
+                addFeedItem(`DA: $${data.price.toFixed(2)}/MWh`, 'da');
+            } else if (data.channel === 'caiso:alerts') {
+                handleAlert(data);
+            } else if (data.type === 'history') {
+                loadHistory(data.data);
+            }
+
+            // Update spread if both prices available
+            updateSpread();
+        }
+
+        function updateRTPrice(data) {
+            const priceEl = document.getElementById('rt-price');
+            const timestampEl = document.getElementById('rt-timestamp');
+
+            priceEl.textContent = `$${data.price.toFixed(2)}/MWh`;
+            timestampEl.textContent = new Date(data.timestamp).toLocaleString();
+
+            // Update color based on price
+            priceEl.className = 'price-display';
+            if (data.price < 0) {
+                priceEl.classList.add('negative');
+            } else if (data.price > 100) {
+                priceEl.classList.add('high');
+            } else {
+                priceEl.classList.add('positive');
+            }
+
+            // Store for statistics
+            priceHistory.push({
+                timestamp: data.timestamp,
+                price: data.price,
+                type: 'RT'
+            });
+
+            // Update statistics
+            updateRTStats();
+        }
+
+        function updateDAPrice(data) {
+            const priceEl = document.getElementById('da-price');
+            const timestampEl = document.getElementById('da-timestamp');
+
+            priceEl.textContent = `$${data.price.toFixed(2)}/MWh`;
+            timestampEl.textContent = new Date(data.timestamp).toLocaleString();
+
+            // Update color
+            priceEl.className = 'price-display';
+            if (data.price < 0) {
+                priceEl.classList.add('negative');
+            } else if (data.price > 100) {
+                priceEl.classList.add('high');
+            } else {
+                priceEl.classList.add('positive');
+            }
+        }
+
+        function updateSpread() {
+            const rtPriceText = document.getElementById('rt-price').textContent;
+            const daPriceText = document.getElementById('da-price').textContent;
+
+            if (rtPriceText !== '--' && daPriceText !== '--') {
+                const rtPrice = parseFloat(rtPriceText.replace('$', '').replace('/MWh', ''));
+                const daPrice = parseFloat(daPriceText.replace('$', '').replace('/MWh', ''));
+                const spread = rtPrice - daPrice;
+
+                const spreadEl = document.getElementById('spread');
+                spreadEl.textContent = `$${spread.toFixed(2)}/MWh`;
+                spreadEl.className = 'price-display';
+                spreadEl.classList.add(spread >= 0 ? 'positive' : 'negative');
+            }
+        }
+
+        function updateRTStats() {
+            const rtPrices = priceHistory.filter(p => p.type === 'RT').map(p => p.price);
+            if (rtPrices.length > 0) {
+                const avg = rtPrices.reduce((a, b) => a + b, 0) / rtPrices.length;
+                const high = Math.max(...rtPrices);
+                const low = Math.min(...rtPrices);
+
+                document.getElementById('rt-avg').textContent = `$${avg.toFixed(2)}`;
+                document.getElementById('rt-high').textContent = `$${high.toFixed(2)}`;
+                document.getElementById('rt-low').textContent = `$${low.toFixed(2)}`;
+            }
+        }
+
+        function updateChart(data) {
+            // Add new data point
+            const time = new Date(data.timestamp).toLocaleTimeString();
+
+            if (data.type === 'RT') {
+                chart.data.labels.push(time);
+                chart.data.datasets[0].data.push(data.price);
+
+                // Keep only last 50 points
+                if (chart.data.labels.length > 50) {
+                    chart.data.labels.shift();
+                    chart.data.datasets[0].data.shift();
+                }
+            }
+
+            chart.update('none'); // Update without animation for performance
+        }
+
+        function loadHistory(history) {
+            // Load historical data into chart
+            history.forEach(item => {
+                const time = new Date(item.timestamp).toLocaleTimeString();
+                chart.data.labels.push(time);
+                chart.data.datasets[0].data.push(item.price);
+            });
+
+            chart.update();
+        }
+
+        function handleAlert(data) {
+            const container = document.getElementById('alerts-container');
+
+            // Clear "no alerts" message
+            if (container.querySelector('p')) {
+                container.innerHTML = '';
+            }
+
+            const alert = document.createElement('div');
+            alert.className = 'alert';
+            if (data.type === 'negative_price') {
+                alert.classList.add('critical');
+            }
+
+            alert.innerHTML = `
+                <strong>${data.type.replace('_', ' ').toUpperCase()}</strong><br>
+                Price: $${data.price.toFixed(2)}/MWh<br>
+                <small>${new Date(data.timestamp).toLocaleTimeString()}</small>
+            `;
+
+            container.insertBefore(alert, container.firstChild);
+
+            // Keep only last 5 alerts
+            while (container.children.length > 5) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        function addFeedItem(text, type) {
+            const feed = document.getElementById('feed');
+            const item = document.createElement('div');
+            item.className = 'feed-item';
+            item.innerHTML = `
+                <strong>${new Date().toLocaleTimeString()}</strong>: ${text}
+            `;
+
+            feed.insertBefore(item, feed.firstChild);
+
+            // Keep only last 20 items
+            while (feed.children.length > 20) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+
+        function updateStatus(connected) {
+            const indicator = document.getElementById('status-indicator');
+            const text = document.getElementById('status-text');
+
+            if (connected) {
+                indicator.className = 'status-indicator connected';
+                text.textContent = 'Connected';
+            } else {
+                indicator.className = 'status-indicator disconnected';
+                text.textContent = 'Disconnected';
+            }
+        }
+
+        // Send ping every 30 seconds to keep connection alive
+        setInterval(() => {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send('ping');
+            }
+        }, 30000);
+
+        // Start connection
+        connect();
+    </script>
+</body>
+</html>

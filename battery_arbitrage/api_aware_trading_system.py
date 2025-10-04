@@ -196,12 +196,108 @@ class APIRateLimiter:
             ]
 
 
+class DataPreprocessor:
+    """Preprocesses and merges weather and price data for analysis"""
+
+    @staticmethod
+    def merge_weather_price_data(weather_df: pd.DataFrame, price_df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Merge weather and price data with aligned timestamps
+        Based on create_merged_dataset.py logic
+        """
+        # Ensure both have timestamp columns
+        if 'date' in weather_df.columns and 'timestamp' not in weather_df.columns:
+            weather_df['timestamp'] = pd.to_datetime(weather_df['date'])
+            weather_df = weather_df.drop('date', axis=1)
+        elif 'timestamp' in weather_df.columns:
+            weather_df['timestamp'] = pd.to_datetime(weather_df['timestamp'])
+
+        if 'timestamp' in price_df.columns:
+            price_df['timestamp'] = pd.to_datetime(price_df['timestamp'])
+
+        # Set timestamp as index for merging
+        weather_df = weather_df.set_index('timestamp')
+        price_df = price_df.set_index('timestamp')
+
+        # Merge on timestamp index
+        merged_df = price_df.join(weather_df, how='inner', rsuffix='_weather')
+
+        # Add derived features
+        merged_df = DataPreprocessor.add_derived_features(merged_df)
+
+        # Reset index to have timestamp as column
+        merged_df = merged_df.reset_index()
+
+        return merged_df
+
+    @staticmethod
+    def add_derived_features(df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Add derived features for analysis and forecasting
+        Based on create_merged_dataset.py logic
+        """
+        # Time-based features
+        df['hour'] = df.index.hour
+        df['day_of_week'] = df.index.dayofweek
+        df['is_weekend'] = df['day_of_week'].isin([5, 6]).astype(int)
+
+        # Price features (if price column exists)
+        if 'price_mwh' in df.columns:
+            df['price_negative'] = (df['price_mwh'] < 0).astype(int)
+            df['price_high'] = (df['price_mwh'] > 100).astype(int)  # High price threshold
+
+        # Weather features (if temperature exists)
+        if 'temperature_2m' in df.columns:
+            df['temp_celsius'] = df['temperature_2m']
+            df['temp_fahrenheit'] = (df['temperature_2m'] * 9/5) + 32
+
+        if 'wind_speed_10m' in df.columns:
+            df['wind_speed_mph'] = df['wind_speed_10m'] * 2.237  # m/s to mph
+
+        # Peak/off-peak periods
+        df['is_peak_hours'] = df['hour'].between(6, 22).astype(int)  # 6 AM - 10 PM
+
+        return df
+
+    @staticmethod
+    def prepare_features_for_forecast(merged_df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Prepare features in the format expected by XGBoost model
+        """
+        # Ensure all required features are present
+        required_features = [
+            'hour', 'day_of_week', 'is_weekend', 'is_peak_hours',
+            'temperature_2m', 'relative_humidity_2m', 'wind_speed_10m',
+            'pressure_msl', 'cloud_cover'
+        ]
+
+        for feature in required_features:
+            if feature not in merged_df.columns:
+                # Add default values for missing features
+                if feature == 'temperature_2m':
+                    merged_df[feature] = 20.0  # Default 20°C
+                elif feature == 'relative_humidity_2m':
+                    merged_df[feature] = 50.0  # Default 50%
+                elif feature == 'wind_speed_10m':
+                    merged_df[feature] = 5.0  # Default 5 m/s
+                elif feature == 'pressure_msl':
+                    merged_df[feature] = 1013.0  # Default sea level pressure
+                elif feature == 'cloud_cover':
+                    merged_df[feature] = 25.0  # Default 25% cloud cover
+                elif feature in ['hour', 'day_of_week', 'is_weekend', 'is_peak_hours']:
+                    # These should already be added by add_derived_features
+                    pass
+
+        return merged_df
+
+
 class SmartDataFetcher:
     """Intelligent data fetching with API limit awareness"""
 
     def __init__(self, cache: DataCache, limiter: APIRateLimiter):
         self.cache = cache
         self.limiter = limiter
+        self.preprocessor = DataPreprocessor()
 
     def fetch_weather_forecast(self, timestamp: datetime) -> pd.DataFrame:
         """
@@ -331,6 +427,27 @@ class SmartDataFetcher:
             logger.error(f"CAISO API call failed: {e}")
             return self._get_last_known_prices(timestamp, market_type)
 
+    def fetch_merged_data(self, timestamp: datetime) -> pd.DataFrame:
+        """
+        Fetch and merge weather and price data for current timestamp
+        Returns a merged dataset with all features for forecasting
+        """
+        # Fetch weather data (with caching)
+        weather_data = self.fetch_weather_forecast(timestamp)
+
+        # Fetch price data (with caching)
+        price_data = self.fetch_price_data(timestamp, 'RTM')
+
+        # Merge the datasets
+        merged_data = self.preprocessor.merge_weather_price_data(weather_data, price_data)
+
+        # Prepare features for forecasting
+        merged_data = self.preprocessor.prepare_features_for_forecast(merged_data)
+
+        logger.info(f"Merged data prepared: {len(merged_data)} records with {len(merged_data.columns)} features")
+
+        return merged_data
+
     def _call_caiso_api(self, timestamp: datetime, market_type: str) -> pd.DataFrame:
         """Actually call the CAISO API (simplified version)"""
         # This would use the actual CAISO API from caiso_sp15_data_fetch.py
@@ -428,20 +545,163 @@ class APIAwareTradingSystem:
         self.latest_weather = weather_data
 
     def update_price_forecast(self):
-        """Update price forecast using latest data"""
+        """Update price forecast using XGBoost model with merged weather and price data"""
         if not self.trading_active:
             return
 
-        logger.info("Updating price forecast")
+        logger.info("Updating price forecast with XGBoost model")
         current_time = datetime.now()
 
-        # Get latest prices with caching
-        price_data = self.fetcher.fetch_price_data(current_time, 'RTM')
+        try:
+            # Get merged dataset with all features
+            merged_data = self.fetcher.fetch_merged_data(current_time)
 
-        # Here you would use the XGBoost model to generate forecast
-        # For now, we'll use the fetched data as forecast
-        self.cached_forecast = price_data
-        self.last_forecast_time = current_time
+            # Use XGBoost model for forecasting if available
+            forecast_prices = self._generate_xgboost_forecast(merged_data, current_time)
+
+            # Create forecast DataFrame
+            forecast_timestamps = pd.date_range(
+                start=current_time,
+                periods=len(forecast_prices),
+                freq='5min'
+            )
+
+            self.cached_forecast = pd.DataFrame({
+                'timestamp': forecast_timestamps,
+                'price_mwh': forecast_prices
+            })
+
+            self.latest_merged_data = merged_data
+            self.last_forecast_time = current_time
+            logger.info(f"XGBoost price forecast updated: {len(forecast_prices)} steps ahead")
+
+        except Exception as e:
+            logger.error(f"Failed to update XGBoost forecast: {e}")
+            # Fallback to simple price data
+            price_data = self.fetcher.fetch_price_data(current_time, 'RTM')
+            self.cached_forecast = price_data
+
+    def _generate_xgboost_forecast(self, merged_data: pd.DataFrame, current_time: datetime, horizon: int = 12) -> np.ndarray:
+        """
+        Generate price forecast using XGBoost model
+
+        Args:
+            merged_data: Historical data with weather and price features
+            current_time: Current timestamp
+            horizon: Number of 5-minute steps to forecast
+
+        Returns:
+            Array of forecasted prices
+        """
+        try:
+            # Try to load the trained XGBoost model
+            import joblib
+            from pathlib import Path
+
+            model_path = Path('models/xgboost_price_model.pkl')
+            if not model_path.exists():
+                logger.warning("XGBoost model not found, using fallback forecast")
+                return self._fallback_forecast(merged_data, horizon)
+
+            # Load the trained model
+            model_data = joblib.load(model_path)
+            model = model_data['model']
+            scaler = model_data['scaler']
+            feature_columns = model_data['feature_columns']
+
+            logger.info("XGBoost model loaded successfully")
+
+            # Prepare features for forecasting
+            forecast_features = self._prepare_forecast_features(merged_data, current_time, horizon)
+
+            forecasts = []
+            current_features = forecast_features.iloc[-1:].copy()
+
+            for step in range(horizon):
+                # Select and scale features
+                feature_values = current_features[feature_columns].fillna(0)
+                scaled_features = scaler.transform(feature_values)
+
+                # Make prediction
+                prediction = model.predict(scaled_features)[0]
+                forecasts.append(prediction)
+
+                # Update features for next step (simplified)
+                if step < horizon - 1:
+                    current_features = self._update_features_for_next_step(
+                        current_features, prediction, current_time + pd.Timedelta(minutes=5*(step+1))
+                    )
+
+            return np.array(forecasts)
+
+        except Exception as e:
+            logger.error(f"XGBoost forecasting failed: {e}")
+            return self._fallback_forecast(merged_data, horizon)
+
+    def _prepare_forecast_features(self, merged_data: pd.DataFrame, current_time: datetime, horizon: int) -> pd.DataFrame:
+        """
+        Prepare features for XGBoost forecasting
+        """
+        if len(merged_data) == 0:
+            # Create minimal feature set with defaults
+            return pd.DataFrame({
+                'timestamp': [current_time],
+                'price_mwh': [30.0],  # Default price
+                'hour': [current_time.hour],
+                'day_of_week': [current_time.dayofweek],
+                'is_weekend': [1 if current_time.dayofweek >= 5 else 0],
+                'is_peak_hours': [1 if 6 <= current_time.hour <= 22 else 0],
+                'temperature_2m': [20.0],
+                'relative_humidity_2m': [50.0],
+                'wind_speed_10m': [5.0],
+                'pressure_msl': [1013.0],
+                'cloud_cover': [25.0]
+            })
+
+        # Use the merged data as-is, ensuring required columns exist
+        features_df = merged_data.copy()
+
+        # Add lagged price features if price column exists
+        if 'price_mwh' in features_df.columns:
+            for lag in range(1, 25):  # 24 lags (2 hours)
+                features_df[f'price_lag_{lag}'] = features_df['price_mwh'].shift(lag)
+
+            # Add rolling statistics
+            for window in [6, 12, 24]:
+                features_df[f'price_rolling_mean_{window}'] = features_df['price_mwh'].rolling(window=window).mean()
+                features_df[f'price_rolling_std_{window}'] = features_df['price_mwh'].rolling(window=window).std()
+
+        return features_df
+
+    def _update_features_for_next_step(self, current_features: pd.DataFrame, prediction: float, next_time: datetime) -> pd.DataFrame:
+        """
+        Update features for the next forecasting step
+        """
+        updated_features = current_features.copy()
+
+        # Update price lag features
+        if 'price_lag_1' in updated_features.columns:
+            updated_features['price_lag_1'] = prediction
+
+        # Update temporal features
+        updated_features['hour'] = next_time.hour
+        updated_features['day_of_week'] = next_time.dayofweek
+        updated_features['is_weekend'] = 1 if next_time.dayofweek >= 5 else 0
+        updated_features['is_peak_hours'] = 1 if 6 <= next_time.hour <= 22 else 0
+
+        return updated_features
+
+    def _fallback_forecast(self, merged_data: pd.DataFrame, horizon: int) -> np.ndarray:
+        """
+        Fallback forecast when XGBoost model is not available
+        """
+        if len(merged_data) > 0 and 'price_mwh' in merged_data.columns:
+            # Use persistence forecast with some noise
+            base_price = merged_data['price_mwh'].iloc[-1]
+            return np.array([base_price + np.random.normal(0, 2) for _ in range(horizon)])
+        else:
+            # Default constant forecast
+            return np.array([30.0] * horizon)
 
     def execute_trading_decision(self):
         """
