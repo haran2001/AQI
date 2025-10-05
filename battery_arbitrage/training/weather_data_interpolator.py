@@ -293,15 +293,15 @@ def main():
     interpolation_config = interp_settings.get('methods', {})
     points_per_hour = interp_settings.get('points_per_hour', 12)
 
-    output_dir = config.get('paths', {}).get('processed_data', 'data')
+    raw_data_dir = config.get('paths', {}).get('raw_dir', 'data/raw')
+    output_dir = raw_data_dir  # Save interpolated data to raw data folder
 
     # Determine input file
     if args.input_file:
         input_file = args.input_file
     else:
         # Construct default input filename from config
-        input_filename = f"{start_date}_{end_date}_open_metero_weather_data.csv"
-        raw_data_dir = config.get('paths', {}).get('raw_data', 'data')
+        input_filename = f"weather_hourly_{start_date}_{end_date}.csv"
         input_file = str(Path(raw_data_dir) / input_filename)
 
     # Determine output file
