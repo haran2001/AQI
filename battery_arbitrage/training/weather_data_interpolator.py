@@ -6,54 +6,25 @@ Interpolates hourly weather data to higher frequency intervals (e.g., 5-minute i
 Uses various interpolation methods appropriate for different weather variables.
 
 Usage:
-    python weather_data_interpolator.py
-    python weather_data_interpolator.py --points-per-hour 12  # 5-minute intervals
-    python weather_data_interpolator.py --points-per-hour 4   # 15-minute intervals
+    python weather_data_interpolator.py --config config/training_config.yaml
+    python weather_data_interpolator.py --config config/training_config.yaml --input-file data/weather.csv
 """
 
 import pandas as pd
 import numpy as np
 from scipy import interpolate
 import argparse
+import yaml
 from pathlib import Path
+from typing import Dict, Optional
+from datetime import datetime
 
-# Configuration for interpolation methods by variable type
-INTERPOLATION_CONFIG = {
-    # Continuous variables - use cubic or linear interpolation
-    'cubic': [
-        'temperature_2m', 'apparent_temperature', 'dew_point_2m',
-        'temperature_80m', 'temperature_120m', 'temperature_180m',
-        'soil_temperature_0cm', 'soil_temperature_6cm',
-        'soil_temperature_18cm', 'soil_temperature_54cm'
-    ],
 
-    # Smooth continuous variables - linear interpolation
-    'linear': [
-        'relative_humidity_2m', 'pressure_msl', 'surface_pressure',
-        'visibility', 'evapotranspiration', 'et0_fao_evapotranspiration',
-        'vapour_pressure_deficit', 'soil_moisture_0_to_1cm',
-        'soil_moisture_1_to_3cm', 'soil_moisture_3_to_9cm',
-        'soil_moisture_9_to_27cm', 'soil_moisture_27_to_81cm',
-        'cloud_cover', 'cloud_cover_low', 'cloud_cover_mid', 'cloud_cover_high'
-    ],
-
-    # Wind data - special handling for direction (circular) and speed
-    'wind_speed': [
-        'wind_speed_10m', 'wind_speed_80m',
-        'wind_speed_120m', 'wind_speed_180m', 'wind_gusts_10m'
-    ],
-
-    'wind_direction': [
-        'wind_direction_10m', 'wind_direction_80m',
-        'wind_direction_120m', 'wind_direction_180m'
-    ],
-
-    # Precipitation - use nearest neighbor (no interpolation for discrete events)
-    'nearest': [
-        'snow_depth', 'snowfall', 'showers', 'rain',
-        'precipitation', 'precipitation_probability', 'weather_code'
-    ]
-}
+def load_config(config_path: str) -> Dict:
+    """Load configuration from YAML file."""
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+    return config
 
 
 def interpolate_circular(values, num_points):
@@ -89,25 +60,38 @@ def interpolate_circular(values, num_points):
     return new_degrees
 
 
-def interpolate_weather_data(input_file, output_file, points_per_hour=12):
+def interpolate_weather_data(
+    input_file: str,
+    output_file: str,
+    interpolation_config: Dict,
+    points_per_hour: int = 12,
+    verbose: bool = True
+) -> pd.DataFrame:
     """
     Interpolate hourly weather data to higher frequency.
 
     Args:
         input_file: Path to input CSV file with hourly data
         output_file: Path to output CSV file for interpolated data
+        interpolation_config: Dictionary mapping interpolation methods to variable lists
         points_per_hour: Number of data points per hour (12 for 5-min, 4 for 15-min, etc.)
-    """
+        verbose: Whether to print progress messages
 
-    print(f"Loading weather data from: {input_file}")
+    Returns:
+        DataFrame with interpolated data
+    """
+    if verbose:
+        print(f"Loading weather data from: {input_file}")
+
     df = pd.read_csv(input_file)
 
     # Parse the date column
     df['date'] = pd.to_datetime(df['date'])
     df = df.set_index('date')
 
-    print(f"Original data shape: {df.shape}")
-    print(f"Date range: {df.index.min()} to {df.index.max()}")
+    if verbose:
+        print(f"Original data shape: {df.shape}")
+        print(f"Date range: {df.index.min()} to {df.index.max()}")
 
     # Calculate new frequency
     minutes_per_point = 60 / points_per_hour
@@ -124,8 +108,9 @@ def interpolate_weather_data(input_file, output_file, points_per_hour=12):
         freq=freq_string
     )
 
-    print(f"\nInterpolating to {points_per_hour} points per hour ({freq_string} intervals)")
-    print(f"New data will have {len(new_index)} rows (vs {len(df)} original)")
+    if verbose:
+        print(f"\nInterpolating to {points_per_hour} points per hour ({freq_string} intervals)")
+        print(f"New data will have {len(new_index)} rows (vs {len(df)} original)")
 
     # First, reindex the dataframe to the new frequency
     # This will create NaN values between existing hourly data points
@@ -136,27 +121,31 @@ def interpolate_weather_data(input_file, output_file, points_per_hour=12):
 
     # Process each column based on its interpolation method
     for col in df.columns:
-        print(f"Processing {col}...", end=" ")
+        if verbose:
+            print(f"Processing {col}...", end=" ")
 
         # Skip if column has all NaN values
         if df[col].isna().all():
             result[col] = np.nan
-            print("skipped (all NaN)")
+            if verbose:
+                print("skipped (all NaN)")
             continue
 
         # Determine interpolation method
-        if col in INTERPOLATION_CONFIG['cubic']:
+        if col in interpolation_config.get('cubic', []):
             # Cubic interpolation for smooth temperature curves
             # Use pandas interpolate on the reindexed data
             result[col] = df_reindexed[col].interpolate(method='cubic')
-            print("cubic")
+            if verbose:
+                print("cubic")
 
-        elif col in INTERPOLATION_CONFIG['linear']:
+        elif col in interpolation_config.get('linear', []):
             # Linear interpolation
             result[col] = df_reindexed[col].interpolate(method='linear')
-            print("linear")
+            if verbose:
+                print("linear")
 
-        elif col in INTERPOLATION_CONFIG['wind_direction']:
+        elif col in interpolation_config.get('wind_direction', []):
             # Circular interpolation for wind direction
             # Need special handling for circular data
             valid_indices = ~df[col].isna()
@@ -187,22 +176,26 @@ def interpolate_weather_data(input_file, output_file, points_per_hour=12):
                 result[col] = np.rad2deg(new_radians) % 360
             else:
                 result[col] = df_reindexed[col].fillna(method='ffill')
-            print("circular")
+            if verbose:
+                print("circular")
 
-        elif col in INTERPOLATION_CONFIG['wind_speed']:
+        elif col in interpolation_config.get('wind_speed', []):
             # Linear interpolation for wind speed
             result[col] = df_reindexed[col].interpolate(method='linear')
-            print("linear")
+            if verbose:
+                print("linear")
 
-        elif col in INTERPOLATION_CONFIG['nearest']:
+        elif col in interpolation_config.get('nearest', []):
             # Forward fill for discrete variables (precipitation, weather codes)
             result[col] = df_reindexed[col].fillna(method='ffill')
-            print("nearest/forward-fill")
+            if verbose:
+                print("nearest/forward-fill")
 
         else:
             # Default to linear for unknown columns
             result[col] = df_reindexed[col].interpolate(method='linear')
-            print("linear (default)")
+            if verbose:
+                print("linear (default)")
 
     # Reset index to have date as a column
     result = result.reset_index()
@@ -210,60 +203,145 @@ def interpolate_weather_data(input_file, output_file, points_per_hour=12):
 
     # Save to file
     result.to_csv(output_file, index=False)
-    print(f"\n✓ Interpolated data saved to: {output_file}")
-    print(f"  Shape: {result.shape}")
 
-    # Print sample statistics
-    print("\nSample statistics (first 5 columns):")
-    for col in result.columns[:6]:
-        if col != 'date' and pd.api.types.is_numeric_dtype(result[col]):
-            print(f"  {col}: mean={result[col].mean():.2f}, std={result[col].std():.2f}")
+    if verbose:
+        print(f"\n✓ Interpolated data saved to: {output_file}")
+        print(f"  Shape: {result.shape}")
+
+        # Print sample statistics
+        print("\nSample statistics (first 5 columns):")
+        for col in result.columns[:6]:
+            if col != 'date' and pd.api.types.is_numeric_dtype(result[col]):
+                print(f"  {col}: mean={result[col].mean():.2f}, std={result[col].std():.2f}")
 
     return result
 
 
+def generate_output_filename(
+    input_file: str,
+    output_dir: str,
+    start_date: str,
+    end_date: str,
+    points_per_hour: int
+) -> str:
+    """
+    Generate output filename based on config parameters.
+
+    Args:
+        input_file: Path to input file (used if no output_dir specified)
+        output_dir: Output directory from config
+        start_date: Start date string
+        end_date: End date string
+        points_per_hour: Number of points per hour
+
+    Returns:
+        Output file path
+    """
+    minutes = 60 // points_per_hour
+    filename = f"{start_date}_{end_date}_weather_interpolated_{minutes}min.csv"
+
+    if output_dir:
+        output_path = Path(output_dir) / filename
+    else:
+        # Use same directory as input file
+        input_path = Path(input_file)
+        output_path = input_path.parent / filename
+
+    return str(output_path)
+
+
 def main():
-    parser = argparse.ArgumentParser(description='Interpolate hourly weather data to higher frequency')
+    parser = argparse.ArgumentParser(
+        description='Interpolate hourly weather data to higher frequency'
+    )
+    parser.add_argument(
+        '--config',
+        type=str,
+        required=True,
+        help='Path to YAML configuration file'
+    )
     parser.add_argument(
         '--input-file',
         type=str,
-        default='data/2025-08-01_2025-08-30_open_metero_weather_data.csv',
-        help='Path to input CSV file with hourly weather data'
+        default=None,
+        help='Path to input CSV file (overrides config)'
     )
     parser.add_argument(
         '--output-file',
         type=str,
         default=None,
-        help='Path to output CSV file (default: adds _5min to input filename)'
-    )
-    parser.add_argument(
-        '--points-per-hour',
-        type=int,
-        default=12,
-        help='Number of data points per hour (12=5min, 4=15min, 2=30min)'
+        help='Path to output CSV file (overrides config)'
     )
 
     args = parser.parse_args()
 
-    # Generate output filename if not provided
-    if args.output_file is None:
-        input_path = Path(args.input_file)
-        minutes = 60 // args.points_per_hour
-        output_name = input_path.stem + f'_{minutes}min' + input_path.suffix
-        args.output_file = str(input_path.parent / output_name)
-
+    # Load configuration
     print("=" * 60)
     print("Weather Data Interpolator")
     print("=" * 60)
+    print(f"\nLoading configuration from: {args.config}")
+
+    config = load_config(args.config)
+
+    # Extract config values
+    date_config = config.get('date_range', {})
+    start_date = date_config.get('start_date')
+    end_date = date_config.get('end_date')
+
+    weather_config = config.get('data_collection', {}).get('weather', {})
+    interp_settings = weather_config.get('interpolation', {})
+    interpolation_config = interp_settings.get('methods', {})
+    points_per_hour = interp_settings.get('points_per_hour', 12)
+
+    output_dir = config.get('paths', {}).get('processed_data', 'data')
+
+    # Determine input file
+    if args.input_file:
+        input_file = args.input_file
+    else:
+        # Construct default input filename from config
+        input_filename = f"{start_date}_{end_date}_open_metero_weather_data.csv"
+        raw_data_dir = config.get('paths', {}).get('raw_data', 'data')
+        input_file = str(Path(raw_data_dir) / input_filename)
+
+    # Determine output file
+    if args.output_file:
+        output_file = args.output_file
+    else:
+        output_file = generate_output_filename(
+            input_file=input_file,
+            output_dir=output_dir,
+            start_date=start_date,
+            end_date=end_date,
+            points_per_hour=points_per_hour
+        )
+
+    print(f"\nConfiguration:")
+    print(f"  Input file: {input_file}")
+    print(f"  Output file: {output_file}")
+    print(f"  Points per hour: {points_per_hour} ({60 // points_per_hour}-minute intervals)")
+    print(f"  Interpolation methods loaded: {list(interpolation_config.keys())}")
+
+    # Validate input file exists
+    if not Path(input_file).exists():
+        raise FileNotFoundError(f"Input file not found: {input_file}")
+
+    # Create output directory if needed
+    Path(output_file).parent.mkdir(parents=True, exist_ok=True)
 
     # Run interpolation
+    print("\n" + "=" * 60)
     interpolate_weather_data(
-        input_file=args.input_file,
-        output_file=args.output_file,
-        points_per_hour=args.points_per_hour
+        input_file=input_file,
+        output_file=output_file,
+        interpolation_config=interpolation_config,
+        points_per_hour=points_per_hour,
+        verbose=True
     )
 
-    print("\nInterpolation complete!")
+    print("\n" + "=" * 60)
+    print("Interpolation complete!")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
